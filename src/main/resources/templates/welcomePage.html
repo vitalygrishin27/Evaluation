@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title th:utext="${title}"></title>
+    <meta charset="utf-8">
+    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" />
+</head>
+
+<body>
+<div style="text-align: right;padding:5px;margin:5px 0px;background:#ccc;">
+    <a th:href="@{/?lang=en}">Login (English)</a>
+    &nbsp;|&nbsp;
+    <a th:href="@{/?lang=ru}">Login (Русский)</a>
+    &nbsp;|&nbsp;
+    <a th:href="@{/?lang=vi}">Login (Vietnamese)</a>
+</div>
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"></th:block>
+
+<h2>Message : <span th:utext="${message}"></span></h2>
+
+</body>
+</html>

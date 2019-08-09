@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <title th:utext="${title}"></title>
+</head>
+<body>
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"></th:block>
+
+<h2>Admin Page</h2>
+<h3>Welcome :
+    <span th:utext="${#request.userPrincipal.name}"></span>
+</h3>
+<b>This is protected page!</b>
+
+<br/><br/>
+
+<div th:if="${userInfo != null}" th:utext="${userInfo}"></div>
+
+<div>
+    <ul th:each="jury: ${juries}">
+        <li th:utext="${jury.login}"></li>
+    </ul>
+
+   <!-- <span th:utext="${juries}"></span> -->
+</div>
+<h2 th:utext="${title}">..!..</h2>
+<!-- <a th:href="@{/personList}">Person List</a> -->
+
+</body>
+
+</html>

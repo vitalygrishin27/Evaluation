@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:utext="${title}"></title>
+    <link href="../static/css/login.css" th:href="@{/css/login.css}" rel="stylesheet" />
+    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" />
+</head>
+
+<body>
+
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"></th:block>
+
+<div th:if="${#request.getParameter('error') == 'true'}"
+     style="color:red;margin:10px 0px;">
+    Неверные данные для входа!!!<br />
+    Reason :
+    <span th:if="${#session!= null and #session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION') != null}"
+          th:utext="${#session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION').message}">
+                Static summary
+         </span>
+
+</div>
+
+<form name='f' th:action="@{/j_spring_security_check}" method='POST'>
+    <div class="imgcontainer">
+        <img alt="Avatar" th:src="@{/img/login.png}" class="avatar">
+    </div>
+
+    <div class="container">
+        <label for="uname" th:utext="#{label.username}"><b>Username</b></label>
+        <input type="text"  id="uname"  name='username' required>
+
+        <label for="psw"><b th:utext="#{label.password}">Password</b></label>
+        <input type="password" id="psw" name='password' required>
+
+        <button type="submit" th:utext="#{label.submit}">Login</button>
+    </div>
+    <div class="container" style="background-color:#f1f1f1">
+        <a href="/" th:href="@{/?lang=} + ${#request.Locale.getDefault()}" class="cancelbtn" th:utext="#{label.cancel}">Назад</a>
+    </div>
+</form>
+
+</body>
+</html>
