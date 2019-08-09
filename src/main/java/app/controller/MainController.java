@@ -34,6 +34,12 @@ public class MainController {
       return "welcomePage";
     }
 
+    @RequestMapping(value = "/start", method = RequestMethod.GET)
+    public String start(Model model, Principal principal){
+        return "redirect:/?lang="+Locale.getDefault();
+    }
+
+
     @RequestMapping(value = "/jury", method = RequestMethod.GET)
     public String adminPage(Model model, Principal principal){
         User loginedUser =(User)((Authentication)principal).getPrincipal();
