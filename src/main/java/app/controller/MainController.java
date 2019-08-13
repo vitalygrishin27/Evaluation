@@ -1,17 +1,24 @@
 package app.controller;
 
+import app.model.UserContact;
 import app.service.impl.UserServiceImpl;
+import app.utils.EncrytedPasswordUtils;
 import app.utils.WebUtils;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 import java.util.Locale;
@@ -43,10 +50,11 @@ public class MainController {
     @RequestMapping(value = "/jury", method = RequestMethod.GET)
     public String adminPage(Model model, Principal principal){
         User loginedUser =(User)((Authentication)principal).getPrincipal();
-        List<app.model.User> juries=serviceRepository.findAllJuries();
+        List<app.model.User> juries=serviceRepository.findAllUsers();
         String userInfo= WebUtils.toString(loginedUser);
         model.addAttribute("userInfo",userInfo);
         model.addAttribute("juries",juries);
+
         return "jury";
     }
 
@@ -91,4 +99,41 @@ public class MainController {
         return "403Page";
     }
 
+    @RequestMapping(value = "/jury/form")
+    public String showform(Model model){
+        model.addAttribute("command", new app.model.User());
+        return "juryform";
+    }
+
+    @RequestMapping(value = "/jury/save", method = RequestMethod.POST)
+    public String save(@ModelAttribute("user") app.model.User user, @ModelAttribute("user_contacts")UserContact contact){
+        user.setUserContact(contact);
+        serviceRepository.save(user);
+        return "redirect:/jury";
+    }
+
+    @RequestMapping(value = "/jury/edit/{id}")
+    public String edit(@PathVariable int id, Model model){
+        app.model.User user=serviceRepository.findUserById(id);
+        model.addAttribute("jury", user);
+        return "/editform";
+    }
+
+    @RequestMapping(value = "/jury/editsave", method = RequestMethod.POST)
+    public String editsave(@ModelAttribute("jury")app.model.User user, @ModelAttribute("user_contacts") UserContact contact){
+        //Проверка: изменился ли пароль? если да, тогда перекодировать его и сохранить в базе
+        if(!serviceRepository.findUserById(user.getUserId()).getEncrytedPassword().equals(user.getEncrytedPassword())){
+            user.setEncrytedPassword(EncrytedPasswordUtils.encrytePassword(user.getEncrytedPassword()));
+        }
+        user.setUserContact(contact);
+        serviceRepository.delete(serviceRepository.findUserById(user.getUserId()));
+        serviceRepository.save(user);
+        return "redirect:/jury";
+    }
+
+    @RequestMapping(value = "/jury/delete/{id}", method = RequestMethod.GET)
+    public String delete(@PathVariable long id){
+        serviceRepository.delete(serviceRepository.findUserById(id));
+        return "redirect:/jury";
+    }
 }

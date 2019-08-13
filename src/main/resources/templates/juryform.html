@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet"/>
+    <link href="../static/css/jury.css" th:href="@{/css/jury.css}" rel="stylesheet"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+    <link href="../../static/css/spring-core.css"
+          th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
+    <title th:utext="${title}"></title>
+</head>
+<body>
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"></th:block>
+
+
+<form name='f' th:action="@{/jury/save}" method='POST'>
+
+    <table>
+        <div class="container">
+            <label for="uname" th:utext="#{label.username}"><b>Username</b></label>
+            <input type="text" id="uname" name='username' required>
+
+            <label for="psw"><b th:utext="#{label.password}">Password</b></label>
+            <input type="password" id="psw" name='password' required>
+
+            <label for="role"><b th:utext="#{label.role}">Role</b></label>
+            <input type="text" id="role" name='role' required>
+
+            <label for="lastName"><b th:utext="#{label.lastName}">LastName</b></label>
+            <input type="text" id="lastName" name='lastName' required>
+
+            <label for="firstName"><b th:utext="#{label.firstName}">FirstName</b></label>
+            <input type="text" id="firstName" name='firstName' required>
+
+            <label for="secondName"><b th:utext="#{label.secondName}">SecondName</b></label>
+            <input type="text" id="secondName" name='secondName' required>
+
+            <label for="office"><b th:utext="#{label.office}">Office</b></label>
+            <input type="text" id="office" name='office'>
+
+            <button type="submit" th:utext="#{label.submit}">Login</button>
+        </div>
+        <div class="container" style="background-color:#f1f1f1">
+            <a href="/" th:href="@{/jury?lang=} + ${#request.Locale.getDefault()}" class="cancelbtn"
+               th:utext="#{label.cancel}">Назад</a>
+        </div>
+    </table>
+</form>
+
+
+</body>
+
+</html>

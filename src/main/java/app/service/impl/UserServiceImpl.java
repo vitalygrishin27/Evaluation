@@ -15,7 +15,7 @@ public class UserServiceImpl implements UserService {
     UserRepository repository;
 
     @Override
-    public void addUser(User user) {
+    public void save(User user) {
         repository.saveAndFlush(user);
     }
 
@@ -25,12 +25,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUserById(Long id) {
-        repository.deleteById(id);
+    public User findUserById(long id) {
+        return repository.findUserById(id);
+    }
+
+    @Override
+    public void delete(User user) {
+        repository.delete(user);
     }
 
     @Override
     public List<User> findAllJuries() {
         return repository.findAllJuries();
+    }
+
+    @Override
+    public void update(User user) {
+        repository.saveAndFlush(user);
+    }
+
+    @Override
+    public List<User> findAllUsers() {
+        return repository.findAll();
     }
 }

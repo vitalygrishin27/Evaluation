@@ -1,8 +1,9 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" />
-    <link href="../static/css/jury.css" th:href="@{/css/jury.css}" rel="stylesheet" />
+    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet"/>
+    <link href="../static/css/jury.css" th:href="@{/css/jury.css}" rel="stylesheet"/>
+    <link href="../static/css/href.css" th:href="@{/css/href.css}" rel="stylesheet"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
     <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
@@ -14,57 +15,45 @@
 
     <link href="../../static/css/spring-core.css"
           th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
+
     <title th:utext="${title}"></title>
 </head>
 <body>
 <!-- Include _menu.html -->
 <th:block th:include="/_menu"></th:block>
 
-
 <div class="container">
     <div th:if="${not #lists.isEmpty(juries)}">
-        <h2 th:utext="#{jury.label.tableTitle}">Jury List</h2>
+        <!--    <h2 th:utext="#{jury.label.tableTitle}">Jury List</h2>  -->
         <table>
             <tr>
-                <th th:utext="#{jury.label.id}">Id</th>
+                <th colspan="5" th:utext="#{jury.label.tableTitle}">Jury List</th>
+            </tr>
+            <tr>
                 <th th:utext="#{jury.label.username}">Username</th>
-                <th th:utext="#{jury.label.password}">Password</th>
-                <th th:utext="#{jury.label.role}">Role</th>
-                <th th:utext="#{jury.label.show}">Show</th>
+                <th th:utext="#{jury.label.fullname}">Full name</th>
+                <th th:utext="#{jury.label.office}">Office</th>
                 <th th:utext="#{jury.label.edit}">Edit</th>
                 <th th:utext="#{jury.label.delete}">Delete</th>
             </tr>
             <tr th:each="jury : ${juries}">
-                <td th:text="${jury.userId}"></td>
+                <!--     <td style="display:none;" th:text="${jury.userId}"></td> -->
                 <td th:text="${jury.login}"></td>
-                <td th:text="${jury.encrytedPassword}"></td>
-                <td th:text="${jury.role}"></td>
-                <td><a th:href="${'/jury/show/' + jury.userId}" th:utext="#{jury.label.show}">View</a> </td>
-                <td><a th:href="${'/jury/edit/' + jury.userId}" th:utext="#{jury.label.edit}">Edit</a> </td>
-                <td><a th:href="${'/jury/delete/' + jury.userId}" th:utext="#{jury.label.delete}">Delete</a> </td>
+                <td th:text="${jury.userContact.lastName} + '  ' + ${jury.userContact.firstName} + '  ' + ${jury.userContact.secondName}"></td>
+                <td th:text="${jury.userContact.office}"></td>
+                <td><a th:href="${'/jury/edit/' + jury.userId}" th:utext="#{jury.label.edit}">Edit</a></td>
+                <td><a th:href="${'/jury/delete/' + jury.userId}" th:utext="#{jury.label.delete}"
+                       onclick="return confirm('Are you sure?')">Delete</a></td>
+            </tr>
+            <tr>
+                <th colspan="5" href="/jury/form">
+                    <a class="addButton" th:utext="#{jury.label.add}" href="/jury/form">New Jury</a>
+                </th>
             </tr>
         </table>
     </div>
-    <div class="row">
-        <div class="col-sm-3">
-            <a th:utext="#{jury.label.add}" href="/jury/new">New Jury</a>
-        </div>
-    </div>
+
 </div>
-
-
-
-
-
-<div>
-    <ul th:each="jury: ${juries}">
-        <li th:utext="${jury.login}"></li>
-    </ul>
-
-   <!-- <span th:utext="${juries}"></span> -->
-</div>
-
-
 </body>
 
 </html>
