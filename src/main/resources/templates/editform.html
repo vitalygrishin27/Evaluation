@@ -3,6 +3,7 @@
 <head>
     <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" />
     <link href="../static/css/jury.css" th:href="@{/css/jury.css}" rel="stylesheet" />
+    <link href="../static/css/href.css" th:href="@{/css/href.css}" rel="stylesheet"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
     <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
@@ -22,8 +23,6 @@
 
 
 <form name='f' th:action="@{/jury/editsave}" method='POST'>
-
-    <div class="container">
         <table>
             <tr>
                 <th colspan="2" th:utext="#{jury.label.tableTitleEdit}">Jury List Edit</th>
@@ -58,16 +57,15 @@
             </tr>
 
             <tr>
-                <td colspan="2"> <button type="submit" th:utext="#{label.submit}">Login</button></td>
-            </tr>
-            <tr>
-                <td colspan="2"> <div class="container" style="background-color:#f1f1f1">
-                    <a href="/" th:href="@{/jury?lang=} + ${#request.Locale.getDefault()}" class="cancelbtn" th:utext="#{label.cancel}">Назад</a>
-                </div></td>
+                <td colspan="2"> <button type="submit" th:utext="#{jury.label.save}">Save</button></td>
             </tr>
             <tr>
                 <td colspan="2"><input type="hidden" name='userId' th:value="${jury.userId}" required></td>
             </tr>
+            <tr>
+                <td colspan="2"> <a class="cancelHref" href="/" th:href="@{/jury?lang=} + ${#request.Locale.getDefault()}" th:utext="#{label.cancel}">Назад</a></td>
+            </tr>
+
         </table>
     </div>
 
