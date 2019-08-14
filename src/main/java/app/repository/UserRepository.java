@@ -19,6 +19,9 @@ User findUserById(@Param("id") long id);
 @Query("Select u from User u where u.role= 'user'")
 List<User> findAllJuries();
 
+@Query("Select u from User u where u.role= 'admin'")
+List<User> findAllAdmins();
+
 
 
  //   public static final String SQL_UPDATE = "UPDATE " + Item.TABLE_NAME + " SET " + Item.NAME_COLUMN + " = ?" + COMMA + Item.WAREHOUSE_ID_COLUMN + " = ?" + " WHERE " + Item.ID_COLUMN + " = ?"

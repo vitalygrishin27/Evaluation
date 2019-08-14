@@ -4,21 +4,15 @@ import app.model.UserContact;
 import app.service.impl.UserServiceImpl;
 import app.utils.EncrytedPasswordUtils;
 import app.utils.WebUtils;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
-import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 import java.util.Locale;
@@ -30,6 +24,8 @@ public class MainController {
 
     @Autowired
     ReloadableResourceBundleMessageSource messageSource;
+
+    private String errorMessage=null;
 
     @RequestMapping(value = {"/"},method = RequestMethod.GET)
     public String welcomePage(WebRequest webRequest, Model model){
@@ -54,7 +50,10 @@ public class MainController {
         String userInfo= WebUtils.toString(loginedUser);
         model.addAttribute("userInfo",userInfo);
         model.addAttribute("juries",juries);
-
+        if(errorMessage!=null){
+            model.addAttribute("errorMessage",errorMessage);
+            errorMessage=null;
+        }
         return "jury";
     }
 
@@ -102,21 +101,31 @@ public class MainController {
     @RequestMapping(value = "/jury/form")
     public String showform(Model model){
         model.addAttribute("command", new app.model.User());
+        if(errorMessage!=null){
+            model.addAttribute("errorMessage",errorMessage);
+            errorMessage=null;
+        }
         return "juryform";
     }
 
     @RequestMapping(value = "/jury/save", method = RequestMethod.POST)
     public String save(@ModelAttribute("user") app.model.User user, @ModelAttribute("user_contacts")UserContact contact){
-        user.setUserContact(contact);
-        serviceRepository.save(user);
-        return "redirect:/jury";
+        if(serviceRepository.findUserByLogin(user.getLogin())!=null){
+            errorMessage= messageSource.getMessage("error.addUserWithExistsLogin",null, Locale.getDefault());
+            return "redirect:/jury/form?lang="+Locale.getDefault();
+        }else{
+            user.setEncrytedPassword(EncrytedPasswordUtils.encrytePassword(user.getEncrytedPassword()));
+            user.setUserContact(contact);
+            serviceRepository.save(user);
+            return "redirect:/jury?lang="+Locale.getDefault();
+        }
     }
 
     @RequestMapping(value = "/jury/edit/{id}")
     public String edit(@PathVariable int id, Model model){
         app.model.User user=serviceRepository.findUserById(id);
         model.addAttribute("jury", user);
-        return "/editform";
+        return "editform";
     }
 
     @RequestMapping(value = "/jury/editsave", method = RequestMethod.POST)
@@ -128,12 +137,17 @@ public class MainController {
         user.setUserContact(contact);
         serviceRepository.delete(serviceRepository.findUserById(user.getUserId()));
         serviceRepository.save(user);
-        return "redirect:/jury";
+        return "redirect:/jury?lang="+Locale.getDefault();
     }
 
     @RequestMapping(value = "/jury/delete/{id}", method = RequestMethod.GET)
-    public String delete(@PathVariable long id){
-        serviceRepository.delete(serviceRepository.findUserById(id));
-        return "redirect:/jury";
+    public String delete(@PathVariable long id, Model model){
+        app.model.User user=serviceRepository.findUserById(id);
+        if(user.getRole().equals("admin") && serviceRepository.findAllAdmins().size()==1){
+           errorMessage= messageSource.getMessage("error.deleteLastAdmin",null, Locale.getDefault());
+        }else{
+            serviceRepository.delete(user);
+        }
+        return "redirect:/jury?lang="+Locale.getDefault();
     }
 }

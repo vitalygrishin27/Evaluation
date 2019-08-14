@@ -35,8 +35,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAllJuries() {
-        return repository.findAllJuries();
+    public List<User> findAllAdmins() {
+        return repository.findAllAdmins();
     }
 
     @Override

@@ -34,6 +34,30 @@
   transition: .3s linear;
 }
 .menu-main a:hover {background: rgba(0,0,0,.3);}
+
+
+.new {
+  background-color: #1073c9;
+  box-shadow: 0 5px 0 darkblue;
+  color: white;
+  padding: 0.3em 0.7em;
+  position: relative;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.new:hover {
+  background-color: #0a1769;
+  cursor: pointer;
+}
+
+.new:active {
+  box-shadow: none;
+  top: 5px;
+}
+
+
+
 @media (max-width: 830px) {
 .menu-main {
   padding-top: 90px;

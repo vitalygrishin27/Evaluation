@@ -29,7 +29,7 @@
             </tr>
             <tr>
                 <th><label for="uname" th:utext="#{label.username}"><b>Username</b></label></th>
-                <td> <input type="text"  id="uname"  name='login' th:value="${jury.login}" required></td>
+                <td> <input type="text"  id="uname"  name='login' th:value="${jury.login}" required disabled></td>
             </tr>
             <tr>
                 <th><label for="psw"><b th:utext="#{label.password}">Password</b></label></th>
@@ -37,7 +37,14 @@
             </tr>
             <tr>
                 <th><label for="role"><b th:utext="#{label.role}">Role</b></label></th>
-                <td> <input type="text" id="role" name='role' th:value="${jury.role}" required></td>
+                <td>
+                    <select id="role" th:field="${jury.role}">
+                        <option th:value="${jury.role}"
+                                th:text="${jury.role}">Wireframe</option>
+                    </select>
+
+                </td>
+
             </tr>
             <tr>
                 <th><label for="lastName"><b th:utext="#{label.lastName}">LastName</b></label></th>
@@ -71,6 +78,18 @@
 
 </form>
 
+<script>
+  window.onload = function() {
+  let selectedOption = role.options[role.selectedIndex];
+  let newOption=null;
+  if(role.value == 'admin'){
+    newOption = new Option("user", "user");
+  }else{
+  newOption = new Option("admin", "admin");
+  }
+  role.append(newOption);
+};
+</script>
 </body>
 
 </html>

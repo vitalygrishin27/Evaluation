@@ -17,6 +17,6 @@ public interface UserService {
 
    List<User> findAllUsers();
 
-   List<User> findAllJuries();
+   List<User> findAllAdmins();
 
 }

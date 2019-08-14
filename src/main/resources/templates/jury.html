@@ -23,31 +23,32 @@
 <th:block th:include="/_menu"></th:block>
 
 <div class="container">
+    <div class="error_message"> <h2><span th:utext="${errorMessage}"></span></h2></div>
     <div th:if="${not #lists.isEmpty(juries)}">
-        <!--    <h2 th:utext="#{jury.label.tableTitle}">Jury List</h2>  -->
         <table>
             <tr>
-                <th colspan="5" th:utext="#{jury.label.tableTitle}">Jury List</th>
+                <th colspan="6" th:utext="#{jury.label.tableTitle}">Jury List</th>
             </tr>
             <tr>
                 <th th:utext="#{jury.label.username}">Username</th>
                 <th th:utext="#{jury.label.fullname}">Full name</th>
                 <th th:utext="#{jury.label.office}">Office</th>
+                <th th:utext="#{jury.label.role}">Office</th>
                 <th th:utext="#{jury.label.edit}">Edit</th>
                 <th th:utext="#{jury.label.delete}">Delete</th>
             </tr>
             <tr th:each="jury : ${juries}">
-                <!--     <td style="display:none;" th:text="${jury.userId}"></td> -->
                 <td th:text="${jury.login}"></td>
                 <td th:text="${jury.userContact.lastName} + '  ' + ${jury.userContact.firstName} + '  ' + ${jury.userContact.secondName}"></td>
                 <td th:text="${jury.userContact.office}"></td>
-                <td><a th:href="${'/jury/edit/' + jury.userId}" th:utext="#{jury.label.edit}">Edit</a></td>
+                <td th:text="${jury.role}"></td>
+                <td><a th:href="${'/jury/edit/' + jury.userId}+'?lang=' + ${#request.Locale.getDefault()}" th:utext="#{jury.label.edit}">Edit</a></td>
                 <td><a th:href="${'/jury/delete/' + jury.userId}" th:utext="#{jury.label.delete}"
                        onclick="return confirm('Are you sure?')">Delete</a></td>
             </tr>
             <tr>
-                <th colspan="5" href="/jury/form">
-                    <a class="addButton" th:utext="#{jury.label.add}" href="/jury/form">New Jury</a>
+                <th colspan="6" href="/jury/form">
+                    <a class="addButton" th:utext="#{jury.label.add}" href="/jury/form" th:href="@{/jury/form?lang=} + ${#request.Locale.getDefault()}">New Jury</a>
                 </th>
             </tr>
         </table>

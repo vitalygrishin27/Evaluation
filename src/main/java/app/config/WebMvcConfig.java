@@ -34,7 +34,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         LocaleChangeInterceptor localeChangeInterceptor=new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("lang");
-         registry.addInterceptor(localeChangeInterceptor).addPathPatterns("/*");
+         registry.addInterceptor(localeChangeInterceptor).addPathPatterns("/*").addPathPatterns("/jury/form").addPathPatterns("/jury/edit/*");
 
     }
 }
