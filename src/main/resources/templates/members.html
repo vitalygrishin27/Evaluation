@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet"/>
+    <link href="../static/css/jury.css" th:href="@{/css/members.css}" rel="stylesheet"/>
+    <link href="../static/css/href.css" th:href="@{/css/href.css}" rel="stylesheet"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+    <link href="../../static/css/spring-core.css"
+          th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
+
+    <title th:utext="${title}"></title>
+</head>
+<body>
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"></th:block>
+
+<div class="container">
+    <div class="error_message"> <h2><span th:utext="${errorMessage}"></span></h2></div>
+    <div th:if="${not #lists.isEmpty(members)}">
+        <table>
+            <tr>
+                <th colspan="7" th:utext="#{member.label.tableTitle}">Jury List</th>
+            </tr>
+            <tr>
+                <th th:utext="#{member.label.fullname}">Full name</th>
+                <th th:utext="#{member.label.office}">Office</th>
+                <th th:utext="#{member.label.boss}">Boss</th>
+                <th th:utext="#{category.label.name}">Category</th>
+                <th th:utext="#{performances.label.name}">Performances</th>
+                <th th:utext="#{member.label.edit}">Edit</th>
+                <th th:utext="#{member.label.delete}">Delete</th>
+            </tr>
+            <tr th:each="member : ${members}">
+                <td th:text="${member.lastName} + '  ' + ${member.name} + '  ' + ${member.secondName}"></td>
+                <td th:text="${member.office}"></td>
+                <td th:text="${member.boss}"></td>
+                <td th:text="${member.category.name}"></td>
+                <td >
+                    <div th:each="performance : ${member.performances}">
+                        <div th:text="${performance.name}">Performance</div>
+                    </div>
+                    <a th:href="${'/performance/edit/' + member.id}+'?lang=' + ${#request.Locale.getDefault()}" th:utext="#{member.label.edit.performance}">Edit</a>
+
+                </td>
+                <td><a th:href="${'/member/edit/' + member.id}+'?lang=' + ${#request.Locale.getDefault()}" th:utext="#{member.label.edit}">Edit</a></td>
+                <td><a th:href="${'/member/delete/' + member.id}" th:utext="#{member.label.delete}"
+                       onclick="return confirm('#{delete.label.confirm}')">Delete</a></td>
+            </tr>
+            <tr>
+                <th colspan="7" href="/member/form">
+                    <a class="addButton" th:utext="#{member.label.add}" href="/member/form" th:href="@{/member/form?lang=} + ${#request.Locale.getDefault()}">New Member</a>
+                </th>
+            </tr>
+        </table>
+    </div>
+
+</div>
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet"/>
+    <link href="../static/css/jury.css" th:href="@{/css/members.css}" rel="stylesheet"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+    <link href="../../static/css/spring-core.css"
+          th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
+    <title th:utext="${title}"></title>
+</head>
+<body>
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"></th:block>
+
+
+<form name='f' th:action="@{/member/save}" method='POST'>
+    <table>
+        <div class="error_message"> <h2><span th:utext="${errorMessage}"></span></h2></div>
+        <tr>
+            <th colspan="2" th:utext="#{member.label.tableTitleCreate}">Creating User</th>
+        </tr>
+        <tr>
+            <th><label for="lastName"><b th:utext="#{label.lastName}">LastName</b></label></th>
+            <td><input type="text" id="lastName" name='lastName'  required></td>
+        </tr>
+        <tr>
+            <th><label for="name"><b th:utext="#{label.firstName}">FirstName</b></label></th>
+            <td><input type="text" id="name" name='name'  required></td>
+        </tr>
+        <tr>
+            <th><label for="secondName"><b th:utext="#{label.secondName}">SecondName</b></label></th>
+            <td><input type="text" id="secondName" name='secondName'></td>
+        </tr>
+        <tr>
+            <th><label for="office"><b th:utext="#{label.office}">Office</b></label></th>
+            <td><input type="text" id="office" name='office' ></td>
+        </tr>
+        <tr>
+            <th><label for="boss"><b th:utext="#{member.label.boss}">Boss</b></label></th>
+            <td><input type="text" id="boss" name='boss' ></td>
+        </tr>
+        <tr>
+            <th><label for="category"><b th:utext="#{category.label.name}">Category</b></label></th>
+            <td>
+                <select id="category" name='category' th:each="category : ${categories}">
+                    <option th:text="${category.name}">Performance</option>
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2"> <button type="submit" th:utext="#{member.label.save}">Save</button></td>
+        </tr>
+        <tr>
+            <td colspan="2"> <a class="cancelHref" href="/" th:href="@{/members?lang=} + ${#request.Locale.getDefault()}" th:utext="#{label.cancel}">Назад</a></td>
+        </tr>
+
+    </table>
+    </div>
+
+</form>
+
+
+</body>
+
+</html>

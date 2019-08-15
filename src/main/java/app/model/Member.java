@@ -22,7 +22,7 @@ public class Member {
     private Long id;
 
     @Column(name = "name", nullable = false)
-    private String mainName;
+    private String name;
 
     @Column(name = "second_name")
     private String secondName;

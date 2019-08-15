@@ -3,10 +3,10 @@
     <ul class="menu-main">
         <li class="left-item"> <a th:if="${#request.userPrincipal == null}" th:href="@{/login?lang=} + ${#request.Locale.getDefault()}" th:utext="#{label.enter}">Войти</a></li>
         <li class="left-item"> <a th:if="${#request.userPrincipal != null and #request.userPrincipal.getAuthorities().iterator().next().getAuthority() == 'admin'}" th:href="@{/online?lang=} + ${#request.Locale.getDefault()}" th:utext="#{label.main}">Главная</a></li>
-        <li class="left-item"><a th:if="${#request.userPrincipal != null and #request.userPrincipal.getAuthorities().iterator().next().getAuthority() == 'admin'}" th:href="@{/edit?lang=} + ${#request.Locale.getDefault()}" th:utext="#{label.member}">Участники</a></li>
+        <li class="left-item"><a th:if="${#request.userPrincipal != null and #request.userPrincipal.getAuthorities().iterator().next().getAuthority() == 'admin'}" th:href="@{/members?lang=} + ${#request.Locale.getDefault()}" th:utext="#{label.member}">Участники</a></li>
         <li class="right-item"> <a th:if="${#request.userPrincipal != null}" th:href="@{/logout?lang=} + ${#request.Locale.getDefault()}" th:utext="#{label.exit}">Выйти</a></li>
         <li class="right-item"><a th:if="${#request.userPrincipal != null and #request.userPrincipal.getAuthorities().iterator().next().getAuthority() == 'admin'}" th:href="@{/jury?lang=} + ${#request.Locale.getDefault()}" th:utext="#{label.jury}">Жюри</a></li>
-
+        <li class="right-item"><a th:if="${#request.userPrincipal != null and #request.userPrincipal.getAuthorities().iterator().next().getAuthority() == 'admin'}" th:href="@{/categories?lang=} + ${#request.Locale.getDefault()}" th:utext="#{label.category}">Категории</a></li>
     </ul>
     <a class="navbar-logo" href=""><img src="https://html5book.ru/wp-content/uploads/2017/04/lily-logo.png"></a>
 </nav>
