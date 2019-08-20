@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Data
@@ -26,5 +28,7 @@ public class Criterion {
 
     @OneToMany(mappedBy = "criterion",fetch = FetchType.LAZY)
     private Collection<Mark> marks;
+
+
 
 }

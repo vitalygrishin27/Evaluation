@@ -3,8 +3,10 @@ package app.repository;
 import app.model.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,8 +27,10 @@ List<User> findAllAdmins();
 
 
  //   public static final String SQL_UPDATE = "UPDATE " + Item.TABLE_NAME + " SET " + Item.NAME_COLUMN + " = ?" + COMMA + Item.WAREHOUSE_ID_COLUMN + " = ?" + " WHERE " + Item.ID_COLUMN + " = ?"
-//@Query("update users set login = :login, password = :password, role = :role where id = :id")
-//void update(@Param("login") String login, @Param("password") String password, @Param("role") String role, @Param("id") long id);
+    @Transactional
+    @Modifying
+    @Query("update User set login = :login, password = :password, role = :role where id = :id")
+void update(@Param("login") String login, @Param("password") String password, @Param("role") String role, @Param("id") long id);
 
 //@Query("delete from users u where u.id= :id")
  ///   void delete(@Param("id") long id);

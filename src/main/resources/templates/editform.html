@@ -29,7 +29,7 @@
             </tr>
             <tr>
                 <th><label for="uname" th:utext="#{label.username}"><b>Username</b></label></th>
-                <td> <input type="text"  id="uname"  name='login' th:value="${jury.login}" required disabled></td>
+                <td> <input type="text"  id="uname"  name='login' th:value="${jury.login}" required></td>
             </tr>
             <tr>
                 <th><label for="psw"><b th:utext="#{label.password}">Password</b></label></th>
@@ -68,6 +68,9 @@
             </tr>
             <tr>
                 <td colspan="2"><input type="hidden" name='userId' th:value="${jury.userId}" required></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="hidden" name='id' th:value="${jury.userContact.id}" required></td>
             </tr>
             <tr>
                 <td colspan="2"> <a class="cancelHref" href="/" th:href="@{/jury?lang=} + ${#request.Locale.getDefault()}" th:utext="#{label.cancel}">Назад</a></td>

@@ -1,6 +1,7 @@
 package app.controller;
 
 import app.model.Criterion;
+import app.service.impl.CategoryServiceImpl;
 import app.service.impl.CriterionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
@@ -19,6 +20,9 @@ public class CriterionController {
 
     @Autowired
     CriterionServiceImpl criterionService;
+
+    @Autowired
+    CategoryServiceImpl categoryService;
 
     @Autowired
     ReloadableResourceBundleMessageSource messageSource;
@@ -53,6 +57,7 @@ public class CriterionController {
             errorMessage = messageSource.getMessage("error.addCriterionWithExistsName", null, Locale.getDefault());
             return "redirect:/criterion/criterionForm?lang=" + Locale.getDefault();
         } else {
+        //    criterion.setCategories(categoryService.findAllCategories());
             criterionService.save(criterion);
             return "redirect:/criterions?lang=" + Locale.getDefault();
         }
@@ -69,4 +74,20 @@ public class CriterionController {
         return "redirect:/criterions?lang=" + Locale.getDefault();
     }
 
+    @RequestMapping(value = "/criterion/edit/{id}")
+    public String edit(@PathVariable Long id, Model model) {
+        Criterion criterion = criterionService.findCriterionById(id);
+        model.addAttribute("criterion", criterion);
+        return "criterion/editform";
+    }
+
+    @RequestMapping(value = "/criterion/editsave", method = RequestMethod.POST)
+    public String editsave(@ModelAttribute("criterion") Criterion criterion) {
+        if(criterionService.findCriterionByName(criterion.getName())!=null){
+            errorMessage = messageSource.getMessage("error.addCriterionWithSameName", null, Locale.getDefault());
+        }else{
+            criterionService.update(criterion);
+        }
+        return "redirect:/criterions?lang=" + Locale.getDefault();
+    }
 }

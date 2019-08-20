@@ -12,7 +12,7 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
-    CategoryRepository repository;
+    private CategoryRepository repository;
 
     @Override
     public List<Category> findAllCategories() {
@@ -20,8 +20,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category findCategoryByName(String name) {
-        return repository.findCategoryByName(name);
+    public Category findCategoryByName(String categoryName) {
+        return repository.findCategoryByName(categoryName);
     }
 
     @Override
@@ -37,5 +37,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category findCategoryById(long id) {
         return repository.findCategoryById(id);
+    }
+
+    @Override
+    public void update(Category category) {
+        repository.update(category.getId(), category.getCategoryName());
     }
 }

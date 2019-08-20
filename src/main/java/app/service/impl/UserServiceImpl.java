@@ -12,7 +12,11 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    UserRepository repository;
+    private UserRepository repository;
+
+    @Autowired
+    private UserContactServiceImpl userContactService;
+
 
     @Override
     public void save(User user) {
@@ -41,7 +45,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User user) {
-        repository.saveAndFlush(user);
+        userContactService.update(user.getUserContact());
+        repository.update(user.getLogin(), user.getEncrytedPassword(), user.getRole(), user.getUserId());
     }
 
     @Override

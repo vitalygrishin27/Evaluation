@@ -7,6 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,9 +22,17 @@ public class Category {
     @Column(name = "id",nullable = false,unique = true)
     private Long id;
 
-    @Column(name = "name",nullable = false,unique = true)
-    private String name;
+    @Column(name = "category_name",nullable = false,unique = true)
+    private String categoryName;
 
     @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
     private Collection<Member> members;
+
+    @ManyToMany
+    @JoinTable (name="category_criterion",
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name="criterion_id"))
+    private List<Criterion> criterions;
+
+
 }

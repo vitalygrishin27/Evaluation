@@ -12,7 +12,7 @@ import java.util.List;
 public class CriterionServiceImpl implements CriterionService {
 
     @Autowired
-    CriterionRepository repository;
+    private CriterionRepository repository;
 
     @Override
     public List<Criterion> findAllCriterions() {
@@ -31,11 +31,18 @@ public class CriterionServiceImpl implements CriterionService {
 
     @Override
     public void save(Criterion criterion) {
-
+        repository.saveAndFlush(criterion);
     }
 
     @Override
     public void delete(Criterion criterion) {
-
+        repository.delete(criterion);
     }
+
+    @Override
+    public void update(Criterion criterion) {
+        repository.update(criterion.getId(),criterion.getName());
+    }
+
+
 }

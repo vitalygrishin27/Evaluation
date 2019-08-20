@@ -15,4 +15,5 @@ public interface CriterionService {
 
     void delete(Criterion criterion);
 
+    void update(Criterion criterion);
 }

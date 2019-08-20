@@ -24,7 +24,7 @@
 
 <div class="container">
     <div class="error_message"> <h2><span th:utext="${errorMessage}"></span></h2></div>
-    <div th:if="${not #lists.isEmpty(members)}">
+ <!--   <div th:if="${not #lists.isEmpty(members)}">  -->
         <table>
             <tr>
                 <th colspan="7" th:utext="#{member.label.tableTitle}">Jury List</th>
@@ -42,12 +42,12 @@
                 <td th:text="${member.lastName} + '  ' + ${member.name} + '  ' + ${member.secondName}"></td>
                 <td th:text="${member.office}"></td>
                 <td th:text="${member.boss}"></td>
-                <td th:text="${member.category.name}"></td>
+                <td th:text="${member.category.categoryName}"></td>
                 <td >
                     <div th:each="performance : ${member.performances}">
-                        <div th:text="${performance.name}">Performance</div>
+                        <div th:text="${performance.performanceName}">Performance</div><br>
                     </div>
-                    <a th:href="${'/performance/edit/' + member.id}+'?lang=' + ${#request.Locale.getDefault()}" th:utext="#{member.label.edit.performance}">Edit</a>
+                    <a th:href="${'/performance/' + member.id}+'?lang=' + ${#request.Locale.getDefault()}" th:utext="#{member.label.edit.performance}">Edit</a>
 
                 </td>
                 <td><a th:href="${'/member/edit/' + member.id}+'?lang=' + ${#request.Locale.getDefault()}" th:utext="#{member.label.edit}">Edit</a></td>
@@ -60,7 +60,7 @@
                 </th>
             </tr>
         </table>
-    </div>
+   <!-- </div>  -->
 
 </div>
 </body>

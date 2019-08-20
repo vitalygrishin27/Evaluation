@@ -37,7 +37,7 @@ public class Member {
     private String boss;
 
     //связь с категорией
-    @ManyToOne (optional = false,cascade = CascadeType.ALL)
+    @ManyToOne (optional = false)
     @JoinColumn(name = "category_id")
     private Category category;
 

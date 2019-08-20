@@ -21,36 +21,26 @@
 <th:block th:include="/_menu"></th:block>
 
 
-<form name='f' th:action="@{/category/save}" method='POST'>
+<form name='f' th:action="@{/criterion/save}" method='POST'>
     <table>
         <div class="error_message"> <h2><span th:utext="${errorMessage}"></span></h2></div>
         <tr>
-            <th colspan="2" th:utext="#{category.label.tableTitleCreate}">Creating User</th>
+            <th colspan="2" th:utext="#{criterion.label.tableTitleCreate}">Creating User</th>
         </tr>
         <tr>
-            <th><label for="categoryName"><b th:utext="#{category.label.name}">Name</b></label></th>
-            <td><input type="text" id="categoryName" name='categoryName' required></td>
-        </tr>
-        <tr>
-            <th><label><b th:utext="#{criterions.label.name}">Name</b></label></th>
-            <td th:object="${criterionWrapper}">
-                <div th:each="criterion : ${criterionWrapper.listCriterion}">
-                    <input type="checkbox" id="${criterion.name}" th:utext="${criterion.name}"  th:field="*{listCriterion}" th:value="${criterion.id}"></input><br>
-                </div>
-                <!--  <a th:href="${'/performance/' + member.id}+'?lang=' + ${#request.Locale.getDefault()}" th:utext="#{member.label.edit.performance}">Edit</a>  -->
-
-            </td>
-
+            <th><label for="criterionName"><b th:utext="#{criterion.label.name}">Name</b></label></th>
+            <td><input type="text" id="criterionName" name='name' required></td>
         </tr>
 
         <tr>
             <td colspan="2"> <button type="submit" th:utext="#{label.save}">Save</button></td>
         </tr>
         <tr>
-            <td colspan="2"> <a class="cancelHref" href="/" th:href="@{/categories?lang=} + ${#request.Locale.getDefault()}" th:utext="#{label.cancel}">Назад</a></td>
+            <td colspan="2"> <a class="cancelHref" href="/" th:href="@{/criterions?lang=} + ${#request.Locale.getDefault()}" th:utext="#{label.cancel}">Назад</a></td>
         </tr>
 
     </table>
+    </div>
 
 </form>
 

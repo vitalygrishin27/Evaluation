@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" />
+    <link href="../static/css/performance/performance.css" th:href="@{/css/performance/performance.css}" rel="stylesheet" />
+    <link href="../static/css/href.css" th:href="@{/css/href.css}" rel="stylesheet"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+    <link href="../../static/css/spring-core.css"
+          th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
+    <title th:utext="${title}"></title>
+</head>
+<body>
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"></th:block>
+
+
+
+
+<form name='f' th:action="@{/performance/editsave}" method='POST'>
+        <table >
+            <tr>
+                <th th:utext="#{performance.label.tableTitleEdit}">Performance List Edit</th>
+            </tr>
+              <tr>
+                  <th><label for="performanceName" th:utext="#{performance.label.title}"><b>Title</b></label></th>
+              </tr>
+              <tr>
+                <td><input type="text" id="performanceName" name='performanceName' th:value="${performance.performanceName}" required></td>
+              </tr>
+            <tr>
+                <td><input type="hidden" id="performanceId" name='performanceId' th:value="${performance.performanceId}" required></td>
+            </tr>
+
+            <tr>
+                <td>
+                    <button type="submit" th:utext="#{label.save}">Save</button>
+                </td>
+            </tr>
+             <tr>
+                <td ><a class="cancelHref" href="/"
+                                    th:href="${'/performance/' + memberId}+'?lang=' + ${#request.Locale.getDefault()}"
+                                   th:utext="#{label.cancel}">Назад</a></td>
+            </tr>
+        </table>
+    </div>
+
+</form>
+</body>
+
+</html>

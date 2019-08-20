@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet"/>
-    <link href="../static/css/category/categories.css" th:href="@{/css/category/categories.css}" rel="stylesheet"/>
+    <link href="../static/css/criterion/criterions.css" th:href="@{/css/criterion/criterions.css}" rel="stylesheet"/>
     <link href="../static/css/href.css" th:href="@{/css/href.css}" rel="stylesheet"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
@@ -24,40 +24,31 @@
 
 <div class="container">
     <div class="error_message"> <h2><span th:utext="${errorMessage}"></span></h2></div>
-    </div>
-  <!--  <div th:if="${not #lists.isEmpty(categories)}"> -->
+ <!--   <div th:if="${not #lists.isEmpty(categories)}">  -->
         <table>
             <tr>
-                <th colspan="4" th:utext="#{category.label.tableTitle}">Category List</th>
+                <th colspan="3" th:utext="#{criterion.label.tableTitle}">Criterion List</th>
             </tr>
             <tr>
-                <th th:utext="#{category.label.name}">Name</th>
-                <th th:utext="#{criterions.label.name}">Criterions</th>
+                <th th:utext="#{criterion.label.name}">Name</th>
                 <th th:utext="#{label.edit}">Edit</th>
                 <th th:utext="#{label.delete}">Delete</th>
             </tr>
-            <tr th:each="category : ${categories}">
-                <td th:text="${category.categoryName}"></td>
-                <td >
-                    <div th:each="criterion : ${category.criterions}">
-                        <div th:text="${criterion.name}">Criterion name</div><br>
-                    </div>
-                  <!--  <a th:href="${'/performance/' + member.id}+'?lang=' + ${#request.Locale.getDefault()}" th:utext="#{member.label.edit.performance}">Edit</a>  -->
-
-                </td>
-                <td><a th:href="${'/category/edit/' + category.id}+'?lang=' + ${#request.Locale.getDefault()}" th:utext="#{label.edit}">Edit</a></td>
-                <td><a th:href="${'/category/delete/' + category.id}" th:utext="#{label.delete}"
+            <tr th:each="criterion : ${criterions}">
+                <td th:text="${criterion.name}"></td>
+                <td><a th:href="${'/criterion/edit/' + criterion.id}+'?lang=' + ${#request.Locale.getDefault()}" th:utext="#{label.edit}">Edit</a></td>
+                <td><a th:href="${'/criterion/delete/' + criterion.id}" th:utext="#{label.delete}"
                        onclick="return confirm('#{delete.label.confirm}')">Delete</a></td>
             </tr>
-
             <tr>
-                <th colspan="4" href="/jury/form">
-                    <a class="addButton" th:utext="#{label.add}" href="/category/form" th:href="@{/category/form?lang=} + ${#request.Locale.getDefault()}">New Category</a>
+                <th colspan="3" href="/criterion/form">
+                    <a class="addButton" th:utext="#{label.add}" href="/criterion/form" th:href="@{/criterion/form?lang=} + ${#request.Locale.getDefault()}">New Criterion</a>
                 </th>
             </tr>
         </table>
+  <!--  </div> -->
 
-   <!-- </div>  -->
+</div>
 </body>
 
 </html>

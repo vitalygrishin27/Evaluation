@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" />
+    <link href="../static/css/category/categories.css" th:href="@{/css/category/categories.css}" rel="stylesheet" />
+    <link href="../static/css/href.css" th:href="@{/css/href.css}" rel="stylesheet"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+    <link href="../../static/css/spring-core.css"
+          th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
+    <title th:utext="${title}"></title>
+</head>
+<body>
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"></th:block>
+
+
+<form name='f' th:action="@{/category/editsave}" method='POST'>
+        <table>
+            <tr>
+                <th colspan="2" th:utext="#{category.label.tableTitleEdit}">Category List Edit</th>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="hidden" id="id" name='id' th:value="${category.id}" required></td>
+            </tr>
+            <tr>
+                <th><label for="categoryName" th:utext="#{category.label.title}"><b>Name</b></label></th>
+                <td><input type="text" id="categoryName" name='categoryName' th:value="${category.categoryName}" required></td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <button type="submit" th:utext="#{label.save}">Save</button>
+                </td>
+            </tr>
+             <tr>
+                <td colspan="2"><a class="cancelHref" href="/"
+                                   th:href="@{/categories?lang=} + ${#request.Locale.getDefault()}"
+                                   th:utext="#{label.cancel}">Назад</a></td>
+            </tr>
+        </table>
+    </div>
+
+</form>
+</body>
+
+</html>

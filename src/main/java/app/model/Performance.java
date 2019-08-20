@@ -18,16 +18,16 @@ public class Performance {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO, generator="native")
     @GenericGenerator(name = "native", strategy = "native")
-    @Column(name = "id",nullable = false,unique = true)
-    private Long id;
+    @Column(name = "performance_id",nullable = false,unique = true)
+    private Long performanceId;
 
-    @Column(name = "name",nullable = false)
-    private String name;
+    @Column(name = "performance_name",nullable = false)
+    private String performanceName;
 
     @Column(name = "turn_number")
     private int turnNumber;
 
-    @ManyToOne(optional = false,cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "member_id")
     private Member member;
 

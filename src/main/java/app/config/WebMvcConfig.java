@@ -37,10 +37,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
          registry.addInterceptor(localeChangeInterceptor).addPathPatterns("/*")
                  .addPathPatterns("/jury/form")
                  .addPathPatterns("/jury/edit/*")
-                 .addPathPatterns("member/form")
-                .addPathPatterns("member/edit/*")
-                .addPathPatterns("category/edit/*")
-                .addPathPatterns("category/edit/*");
+                 .addPathPatterns("/member/form")
+                .addPathPatterns("/member/edit/*")
+                .addPathPatterns("/category/edit/*")
+                .addPathPatterns("/category/*")
+                .addPathPatterns("/criterion/*/*")
+                .addPathPatterns("/criterion/*");
 
     }
 }
