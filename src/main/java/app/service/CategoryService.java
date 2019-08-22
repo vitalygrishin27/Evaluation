@@ -15,4 +15,5 @@ public interface CategoryService {
     Category findCategoryById(long id);
 
     void update(Category category);
+
 }

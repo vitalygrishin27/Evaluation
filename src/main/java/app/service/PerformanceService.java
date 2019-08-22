@@ -1,7 +1,6 @@
 package app.service;
 
 import app.model.Performance;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

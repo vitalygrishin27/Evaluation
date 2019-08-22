@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" />
-    <link href="../static/css/jury.css" th:href="@{/css/jury.css}" rel="stylesheet" />
+    <link href="../static/css/jury/jury.css" th:href="@{/css/jury/jury.css}" rel="stylesheet" />
     <link href="../static/css/href.css" th:href="@{/css/href.css}" rel="stylesheet"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
@@ -40,7 +40,7 @@
                 <td>
                     <select id="role" th:field="${jury.role}">
                         <option th:value="${jury.role}"
-                                th:text="${jury.role}">Wireframe</option>
+                                th:text="${jury.role}">Role</option>
                     </select>
 
                 </td>

@@ -34,7 +34,17 @@
                 <th><label for="categoryName" th:utext="#{category.label.title}"><b>Name</b></label></th>
                 <td><input type="text" id="categoryName" name='categoryName' th:value="${category.categoryName}" required></td>
             </tr>
+            <tr>
+                <th><label><b th:utext="#{criterions.label.name}">Name</b></label></th>
+                <td th:object="${criterionWrapper}">
+                    <div th:each="criterion : ${criterionWrapper.listCriterion}">
+                        <input type="checkbox" th:id="${criterion.name}" name = "listCriterion" th:utext="${criterion.name}"  th:field="*{listCriterion}" th:value="${criterion.id}" ></input><br>
+                    </div>
+                    <!--  <a th:href="${'/performance/' + member.id}+'?lang=' + ${#request.Locale.getDefault()}" th:utext="#{member.label.edit.performance}">Edit</a>  -->
 
+                </td>
+
+            </tr>
             <tr>
                 <td colspan="2">
                     <button type="submit" th:utext="#{label.save}">Save</button>
@@ -49,6 +59,22 @@
     </div>
 
 </form>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+ window.onload = function() {
+    var criterionList = /*[[${category.criterions}]]*/;
+    var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
+    for (var i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked=false;
+        for (var j = 0; j < criterionList.length; j++) {
+            if(criterionList[j].name == checkboxes[i].id) {
+                checkboxes[i].checked=true;
+            }
+        }
+    }
+};
+/*]]>*/
+</script>
 </body>
 
 </html>

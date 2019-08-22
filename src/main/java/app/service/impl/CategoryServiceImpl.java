@@ -43,4 +43,5 @@ public class CategoryServiceImpl implements CategoryService {
     public void update(Category category) {
         repository.update(category.getId(), category.getCategoryName());
     }
+
 }

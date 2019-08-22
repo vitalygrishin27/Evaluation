@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet"/>
+    <link href="../static/css/jury/jury.css" th:href="@{/css/jury/jury.css}" rel="stylesheet"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+    <link href="../../static/css/spring-core.css"
+          th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
+    <title th:utext="${title}"></title>
+</head>
+<body>
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"></th:block>
+
+
+<form name='f' th:action="@{/jury/save}" method='POST'>
+    <table>
+        <div class="error_message"> <h2><span th:utext="${errorMessage}"></span></h2></div>
+        <tr>
+            <th colspan="2" th:utext="#{jury.label.tableTitleCreate}">Creating User</th>
+        </tr>
+        <tr>
+            <th><label for="uname" th:utext="#{label.username}"><b>Username</b></label></th>
+            <td> <input type="text"  id="uname"  name='login' required></td>
+        </tr>
+        <tr>
+            <th><label for="psw"><b th:utext="#{label.password}">Password</b></label></th>
+            <td> <input type="password" id="psw" name='encrytedPassword' required></td>
+        </tr>
+        <tr>
+            <th><label for="role"><b th:utext="#{label.role}">Role</b></label></th>
+            <td>
+                <select id="role" name='role'>
+                    <option value="admin" text="admin">admin</option>
+                    <option value="user" text="user" selected="true">user</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="lastName"><b th:utext="#{label.lastName}">LastName</b></label></th>
+            <td><input type="text" id="lastName" name='lastName'  required></td>
+        </tr>
+        <tr>
+            <th><label for="firstName"><b th:utext="#{label.firstName}">FirstName</b></label></th>
+            <td><input type="text" id="firstName" name='firstName'  required></td>
+        </tr>
+        <tr>
+            <th><label for="secondName"><b th:utext="#{label.secondName}">SecondName</b></label></th>
+            <td><input type="text" id="secondName" name='secondName'></td>
+        </tr>
+        <tr>
+            <th><label for="office"><b th:utext="#{label.office}">Office</b></label></th>
+            <td><input type="text" id="office" name='office' ></td>
+        </tr>
+
+        <tr>
+            <td colspan="2"> <button type="submit" th:utext="#{jury.label.save}">Save</button></td>
+        </tr>
+        <tr>
+            <td colspan="2"> <a class="cancelHref" href="/" th:href="@{/jury?lang=} + ${#request.Locale.getDefault()}" th:utext="#{label.cancel}">Назад</a></td>
+        </tr>
+
+    </table>
+    </div>
+
+</form>
+
+
+</body>
+
+</html>

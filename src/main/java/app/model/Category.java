@@ -3,9 +3,12 @@ package app.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -28,11 +31,12 @@ public class Category {
     @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
     private Collection<Member> members;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable (name="category_criterion",
             joinColumns = @JoinColumn(name = "category_id"),
             inverseJoinColumns = @JoinColumn(name="criterion_id"))
-    private List<Criterion> criterions;
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Criterion> criterions =new ArrayList<>();
 
 
 }

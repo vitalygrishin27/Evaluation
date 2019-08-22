@@ -3,10 +3,13 @@ package app.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -28,7 +31,6 @@ public class Criterion {
 
     @OneToMany(mappedBy = "criterion",fetch = FetchType.LAZY)
     private Collection<Mark> marks;
-
 
 
 }

@@ -43,6 +43,4 @@ public class CriterionServiceImpl implements CriterionService {
     public void update(Criterion criterion) {
         repository.update(criterion.getId(),criterion.getName());
     }
-
-
 }

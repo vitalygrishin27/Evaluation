@@ -1,7 +1,6 @@
 package app.controller;
 
 import app.model.Criterion;
-import app.service.impl.CategoryServiceImpl;
 import app.service.impl.CriterionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
@@ -22,9 +21,6 @@ public class CriterionController {
     CriterionServiceImpl criterionService;
 
     @Autowired
-    CategoryServiceImpl categoryService;
-
-    @Autowired
     ReloadableResourceBundleMessageSource messageSource;
 
     private String errorMessage = null;
@@ -33,6 +29,7 @@ public class CriterionController {
     public String criterionsList(Model model) {
         List<Criterion> criterions = criterionService.findAllCriterions();
         model.addAttribute("criterions", criterions);
+        model.addAttribute("title", messageSource.getMessage("pageTitle.criterion", null, Locale.getDefault()));
         if (errorMessage != null) {
             model.addAttribute("errorMessage", errorMessage);
             errorMessage = null;
@@ -43,6 +40,7 @@ public class CriterionController {
     @RequestMapping(value = "/criterion/form")
     public String criterionForm(Model model) {
         model.addAttribute("command", new Criterion());
+        model.addAttribute("title", messageSource.getMessage("pageTitle.criterion.new", null, Locale.getDefault()));
         if (errorMessage != null) {
             model.addAttribute("errorMessage", errorMessage);
             errorMessage = null;
@@ -57,7 +55,6 @@ public class CriterionController {
             errorMessage = messageSource.getMessage("error.addCriterionWithExistsName", null, Locale.getDefault());
             return "redirect:/criterion/criterionForm?lang=" + Locale.getDefault();
         } else {
-        //    criterion.setCategories(categoryService.findAllCategories());
             criterionService.save(criterion);
             return "redirect:/criterions?lang=" + Locale.getDefault();
         }
@@ -78,14 +75,15 @@ public class CriterionController {
     public String edit(@PathVariable Long id, Model model) {
         Criterion criterion = criterionService.findCriterionById(id);
         model.addAttribute("criterion", criterion);
-        return "criterion/editform";
+        model.addAttribute("title", messageSource.getMessage("pageTitle.criterion.edit", null, Locale.getDefault()));
+        return "criterion/criterionEditForm";
     }
 
     @RequestMapping(value = "/criterion/editsave", method = RequestMethod.POST)
-    public String editsave(@ModelAttribute("criterion") Criterion criterion) {
-        if(criterionService.findCriterionByName(criterion.getName())!=null){
+    public String saveAfterEdit(@ModelAttribute("criterion") Criterion criterion) {
+        if (criterionService.findCriterionByName(criterion.getName()) != null) {
             errorMessage = messageSource.getMessage("error.addCriterionWithSameName", null, Locale.getDefault());
-        }else{
+        } else {
             criterionService.update(criterion);
         }
         return "redirect:/criterions?lang=" + Locale.getDefault();

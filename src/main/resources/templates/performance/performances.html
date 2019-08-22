@@ -38,7 +38,7 @@
                 <td th:text="${performance.performanceName}"></td>
                 <td><a th:href="${'/performance/edit/' + performance.performanceId}+'?lang=' + ${#request.Locale.getDefault()}" th:utext="#{label.edit}">Edit</a></td>
                 <td><a th:href="${'/performance/delete/' + performance.performanceId}" th:utext="#{label.delete}"
-                       onclick="return confirm('#{delete.label.confirm}')">Delete</a></td>
+                       onclick="return confirm('Вы уверены в удалении?')">Delete</a></td>
             </tr>
             <tr>
                 <th colspan="3" href="/performance/form">

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet"/>
-    <link href="../static/css/jury.css" th:href="@{/css/members.css}" rel="stylesheet"/>
+    <link href="../static/css/member/member.css" th:href="@{/css/member/members.css}" rel="stylesheet"/>
     <link href="../static/css/href.css" th:href="@{/css/href.css}" rel="stylesheet"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
@@ -52,7 +52,7 @@
                 </td>
                 <td><a th:href="${'/member/edit/' + member.id}+'?lang=' + ${#request.Locale.getDefault()}" th:utext="#{member.label.edit}">Edit</a></td>
                 <td><a th:href="${'/member/delete/' + member.id}" th:utext="#{member.label.delete}"
-                       onclick="return confirm('#{delete.label.confirm}')">Delete</a></td>
+                       onclick="return confirm('Вы уверены в удалении?')">Delete</a></td>
             </tr>
             <tr>
                 <th colspan="7" href="/member/form">

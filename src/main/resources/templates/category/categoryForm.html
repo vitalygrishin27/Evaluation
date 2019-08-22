@@ -35,7 +35,7 @@
             <th><label><b th:utext="#{criterions.label.name}">Name</b></label></th>
             <td th:object="${criterionWrapper}">
                 <div th:each="criterion : ${criterionWrapper.listCriterion}">
-                    <input type="checkbox" id="${criterion.name}" th:utext="${criterion.name}"  th:field="*{listCriterion}" th:value="${criterion.id}"></input><br>
+                    <input type="checkbox" id="${criterion.name}" th:utext="${criterion.name}"  th:field="*{listCriterion}" th:value="${criterion.id}" th:checked="${false}"></input><br>
                 </div>
                 <!--  <a th:href="${'/performance/' + member.id}+'?lang=' + ${#request.Locale.getDefault()}" th:utext="#{member.label.edit.performance}">Edit</a>  -->
 

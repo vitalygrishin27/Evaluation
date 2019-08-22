@@ -40,14 +40,14 @@
                 <td th:text="${category.categoryName}"></td>
                 <td >
                     <div th:each="criterion : ${category.criterions}">
-                        <div th:text="${criterion.name}">Criterion name</div><br>
+                        <div th:text="${criterion.name}">Criterion name</div>
                     </div>
                   <!--  <a th:href="${'/performance/' + member.id}+'?lang=' + ${#request.Locale.getDefault()}" th:utext="#{member.label.edit.performance}">Edit</a>  -->
 
                 </td>
                 <td><a th:href="${'/category/edit/' + category.id}+'?lang=' + ${#request.Locale.getDefault()}" th:utext="#{label.edit}">Edit</a></td>
                 <td><a th:href="${'/category/delete/' + category.id}" th:utext="#{label.delete}"
-                       onclick="return confirm('#{delete.label.confirm}')">Delete</a></td>
+                       onclick="return confirm('Вы уверены в удалении?')">Delete</a></td>
             </tr>
 
             <tr>

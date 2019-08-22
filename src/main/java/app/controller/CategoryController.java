@@ -5,15 +5,20 @@ import app.model.Criterion;
 import app.model.CriterionWrapper;
 import app.service.impl.CategoryServiceImpl;
 import app.service.impl.CriterionServiceImpl;
+
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Locale;
 
@@ -29,12 +34,16 @@ public class CategoryController {
     @Autowired
     ReloadableResourceBundleMessageSource messageSource;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     private String errorMessage = null;
 
     @RequestMapping(value = "/categories", method = RequestMethod.GET)
     public String categoryList(Model model) {
         List<Category> categories = categoryService.findAllCategories();
         model.addAttribute("categories", categories);
+        model.addAttribute("title", messageSource.getMessage("pageTitle.category", null, Locale.getDefault()));
         if (errorMessage != null) {
             model.addAttribute("errorMessage", errorMessage);
             errorMessage = null;
@@ -45,11 +54,11 @@ public class CategoryController {
     @RequestMapping(value = "/category/form")
     public String categoryForm(Model model) {
         model.addAttribute("command", new Category());
-      //  model.addAttribute("criterions",criterionService.findAllCriterions());
-        CriterionWrapper criterionWrapper=new CriterionWrapper();
-        List<Criterion> allCriterions =criterionService.findAllCriterions();
+        CriterionWrapper criterionWrapper = new CriterionWrapper();
+        List<Criterion> allCriterions = criterionService.findAllCriterions();
         criterionWrapper.setListCriterion(allCriterions);
-        model.addAttribute("criterionWrapper",criterionWrapper);
+        model.addAttribute("criterionWrapper", criterionWrapper);
+        model.addAttribute("title", messageSource.getMessage("pageTitle.category.new", null, Locale.getDefault()));
         if (errorMessage != null) {
             model.addAttribute("errorMessage", errorMessage);
             errorMessage = null;
@@ -85,17 +94,25 @@ public class CategoryController {
     public String edit(@PathVariable long id, Model model) {
         Category category = categoryService.findCategoryById(id);
         model.addAttribute("category", category);
-        return "category/editform";
+        CriterionWrapper criterionWrapper = new CriterionWrapper();
+        List<Criterion> allCriterions = criterionService.findAllCriterions();
+        criterionWrapper.setListCriterion(allCriterions);
+        model.addAttribute("criterionWrapper", criterionWrapper);
+        model.addAttribute("title", messageSource.getMessage("pageTitle.category.edit", null, Locale.getDefault()));
+        return "category/categoryEditForm";
     }
 
+    @Transactional
     @RequestMapping(value = "/category/editsave", method = RequestMethod.POST)
-    public String editsave(@ModelAttribute("category") Category category) {
-        if(categoryService.findCategoryByName(category.getCategoryName())!=null){
-            errorMessage = messageSource.getMessage("error.addCategoryWithSameName", null, Locale.getDefault());
-        }else{
-            categoryService.update(category);
+    public String editsave(@ModelAttribute("category") Category category, @ModelAttribute("criterionWrapper") CriterionWrapper criterionWrapper) {
+        category.setCriterions(criterionWrapper.getListCriterion());
+        try {
+            entityManager.unwrap(Session.class).update(category);
+        } catch (Exception e) {
+            errorMessage = e.getMessage();
+            return "redirect:/category/categoryForm?lang=" + Locale.getDefault();
         }
-       return "redirect:/categories?lang=" + Locale.getDefault();
-    }
+        return "redirect:/categories?lang=" + Locale.getDefault();
 
+    }
 }

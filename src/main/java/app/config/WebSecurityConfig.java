@@ -23,7 +23,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
 
-
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -39,7 +38,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.authorizeRequests().antMatchers("/", "/login", "/logout", "/start").permitAll();
-        http.authorizeRequests().antMatchers("/online","/edit", "/jury", "/jury/form","/jury/save","/jury/edit/*","/jury/delete", "/editsave", "/categories","/category/*", "/category/edit/*","/members", "/member/*","/criterion/*","/criterion/*/*").hasAuthority("admin");
+        http.authorizeRequests().antMatchers("/online",
+                "/members",
+                "/member/*",
+                "/member/*",
+                "/jury",
+                "/jury/*",
+                "/jury/*/*",
+                "/categories",
+                "/category/*",
+                "/category/*/*",
+                "/criterions",
+                "/criterion/*",
+                "/criterion/*/*",
+                "/performances",
+                "/performance/*",
+                "/performance/*/*"
+        ).hasAuthority("admin");
         http.authorizeRequests().antMatchers("/main").hasAnyAuthority("user");
         http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
         http.authorizeRequests().and().formLogin()//

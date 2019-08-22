@@ -38,7 +38,7 @@
                 <td th:text="${criterion.name}"></td>
                 <td><a th:href="${'/criterion/edit/' + criterion.id}+'?lang=' + ${#request.Locale.getDefault()}" th:utext="#{label.edit}">Edit</a></td>
                 <td><a th:href="${'/criterion/delete/' + criterion.id}" th:utext="#{label.delete}"
-                       onclick="return confirm('#{delete.label.confirm}')">Delete</a></td>
+                       onclick="return confirm('Вы уверены в удалении?')">Delete</a></td>
             </tr>
             <tr>
                 <th colspan="3" href="/criterion/form">
