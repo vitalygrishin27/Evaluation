@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet"/>
-    <link href="../static/css/performance/performance.css" th:href="@{/css/performance/performance.css}" rel="stylesheet"/>
+    <link href="../static/css/performance/performance.css" th:href="@{/css/performance/performance.css}"
+          rel="stylesheet"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
     <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
@@ -22,8 +23,8 @@
 
 
 <form name='f' th:action="@{/performance/save}" method='POST'>
+    <div th:if="${errorMessage} != null" class="error"><span th:utext="${errorMessage}"></span></div>
     <table>
-        <div class="error_message"> <h2><span th:utext="${errorMessage}"></span></h2></div>
         <tr>
             <th colspan="2" th:utext="#{performance.label.tableTitleCreate}">Creating Performance</th>
         </tr>
@@ -36,12 +37,14 @@
             <td><input type="hidden" id="memberId" name='memberId' th:value="${memberId}" required></td>
         </tr>
         <tr>
-            <td colspan="2"> <button type="submit" th:utext="#{label.save}">Save</button></td>
+            <td colspan="2">
+                <button type="submit" th:utext="#{label.save}">Save</button>
+            </td>
         </tr>
         <tr>
-            <td colspan="2"> <a class="cancelHref" href="/"
-                                th:href="${'/performance/' + memberId}+'?lang=' + ${#request.Locale.getDefault()}"
-                                th:utext="#{label.cancel}">Назад</a></td>
+            <td colspan="2"><a class="cancelHref" href="/"
+                               th:href="${'/performance/' + memberId}+'?lang=' + ${#request.Locale.getDefault()}"
+                               th:utext="#{label.cancel}">Назад</a></td>
         </tr>
 
     </table>

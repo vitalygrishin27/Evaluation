@@ -44,7 +44,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/category/edit/*")
                 .addPathPatterns("/category/*")
                 .addPathPatterns("/criterion/*/*")
-                .addPathPatterns("/criterion/*");
+                .addPathPatterns("/criterion/*")
+                .addPathPatterns("/online");
 
     }
 }

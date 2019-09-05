@@ -1,5 +1,9 @@
 package app.controller;
 
+import app.model.Performance;
+import app.model.PerformancesWrapper;
+import app.model.PerformancesWrapperList;
+import app.service.impl.PerformanceServiceImpl;
 import app.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
@@ -11,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 @Controller
@@ -18,6 +24,9 @@ public class MainController {
 
     @Autowired
     ReloadableResourceBundleMessageSource messageSource;
+
+    @Autowired
+    PerformanceServiceImpl performanceService;
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String welcomePage(WebRequest webRequest, Model model) {
@@ -55,6 +64,24 @@ public class MainController {
 
         return "main";
     }
+
+    //Убрать, когда будет страница для жюри
+    @RequestMapping(value = "/online", method = RequestMethod.GET)
+    public String online(Model model, Principal principal) {
+        List<PerformancesWrapper> list=new ArrayList<>();
+        for (Performance performance:performanceService.findAllPerformances()
+             ) {
+           list.add(new PerformancesWrapper(performance.getPerformanceId(),
+                    performance.getPerformanceName(),
+                    performance.getMember().getLastName()+" "+performance.getMember().getName()+" "+performance.getMember().getSecondName(),
+                    performance.getMember().getCategory().getCategoryName(),
+                    performance.getTurnNumber()
+                    ));
+        }
+        model.addAttribute("performancesWrapperList", new PerformancesWrapperList(list));
+        return "online/online";
+    }
+
 
     @RequestMapping(value = "/403", method = RequestMethod.GET)
     public String accessDenied(Model model, Principal principal) {

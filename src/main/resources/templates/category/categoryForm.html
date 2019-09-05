@@ -22,8 +22,8 @@
 
 
 <form name='f' th:action="@{/category/save}" method='POST'>
+    <div th:if="${errorMessage} != null" class="error"><span th:utext="${errorMessage}"></span></div>
     <table>
-        <div class="error_message"> <h2><span th:utext="${errorMessage}"></span></h2></div>
         <tr>
             <th colspan="2" th:utext="#{category.label.tableTitleCreate}">Creating User</th>
         </tr>
@@ -35,7 +35,8 @@
             <th><label><b th:utext="#{criterions.label.name}">Name</b></label></th>
             <td th:object="${criterionWrapper}">
                 <div th:each="criterion : ${criterionWrapper.listCriterion}">
-                    <input type="checkbox" id="${criterion.name}" th:utext="${criterion.name}"  th:field="*{listCriterion}" th:value="${criterion.id}" th:checked="${false}"></input><br>
+                    <input type="checkbox" id="${criterion.name}" th:utext="${criterion.name}"
+                           th:field="*{listCriterion}" th:value="${criterion.id}" th:checked="${false}"></input><br>
                 </div>
                 <!--  <a th:href="${'/performance/' + member.id}+'?lang=' + ${#request.Locale.getDefault()}" th:utext="#{member.label.edit.performance}">Edit</a>  -->
 
@@ -44,10 +45,14 @@
         </tr>
 
         <tr>
-            <td colspan="2"> <button type="submit" th:utext="#{label.save}">Save</button></td>
+            <td colspan="2">
+                <button type="submit" th:utext="#{label.save}">Save</button>
+            </td>
         </tr>
         <tr>
-            <td colspan="2"> <a class="cancelHref" href="/" th:href="@{/categories?lang=} + ${#request.Locale.getDefault()}" th:utext="#{label.cancel}">Назад</a></td>
+            <td colspan="2"><a class="cancelHref" href="/"
+                               th:href="@{/categories?lang=} + ${#request.Locale.getDefault()}"
+                               th:utext="#{label.cancel}">Назад</a></td>
         </tr>
 
     </table>
