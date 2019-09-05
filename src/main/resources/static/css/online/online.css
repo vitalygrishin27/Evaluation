@@ -1,3 +1,12 @@
+ul{
+padding-left: 0;
+}
+
+li{
+list-style-type: none;
+}
+
+
 
 table {
 font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
@@ -91,6 +100,11 @@ img.avatar {
 span.psw {
     float: right;
     padding-top: 16px;
+}
+
+.nameCategory{
+background: #AA06B2 !important;
+color: #FFFFFF !important;
 }
 
 /* Change styles for span and cancel button on extra small screens */

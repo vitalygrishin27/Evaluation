@@ -12,7 +12,6 @@ public class PerformancesWrapper {
     private long idPerformance;
     private String namePerformance;
     private String nameMember;
-    private String nameCategory;
     private int turnNumber;
 
 }

@@ -10,5 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PerformancesWrapperList {
+    private String nameCategory;
     private List<PerformancesWrapper> performancesWrapperList;
 }

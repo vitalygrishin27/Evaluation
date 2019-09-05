@@ -1,8 +1,7 @@
 package app.controller;
 
-import app.model.Performance;
-import app.model.PerformancesWrapper;
-import app.model.PerformancesWrapperList;
+import app.model.*;
+import app.service.impl.CategoryServiceImpl;
 import app.service.impl.PerformanceServiceImpl;
 import app.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +26,9 @@ public class MainController {
 
     @Autowired
     PerformanceServiceImpl performanceService;
+
+    @Autowired
+    CategoryServiceImpl categoryService;
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String welcomePage(WebRequest webRequest, Model model) {
@@ -65,20 +67,25 @@ public class MainController {
         return "main";
     }
 
-    //Убрать, когда будет страница для жюри
     @RequestMapping(value = "/online", method = RequestMethod.GET)
     public String online(Model model, Principal principal) {
-        List<PerformancesWrapper> list=new ArrayList<>();
-        for (Performance performance:performanceService.findAllPerformances()
-             ) {
-           list.add(new PerformancesWrapper(performance.getPerformanceId(),
-                    performance.getPerformanceName(),
-                    performance.getMember().getLastName()+" "+performance.getMember().getName()+" "+performance.getMember().getSecondName(),
-                    performance.getMember().getCategory().getCategoryName(),
-                    performance.getTurnNumber()
-                    ));
+        PerformanceWrapperListByCategory performanceWrapperListByCategory = new PerformanceWrapperListByCategory(new ArrayList<PerformancesWrapperList>());
+        for (Category category : categoryService.findAllCategories()
+        ) {
+            List<PerformancesWrapper> list = new ArrayList<>();
+            for (Performance performance : performanceService.findPerformancesByCategory(category)
+            ) {
+                list.add(new PerformancesWrapper(performance.getPerformanceId(),
+                        performance.getPerformanceName(),
+                        performance.getMember().getLastName() + " " + performance.getMember().getName() + " " + performance.getMember().getSecondName(),
+                        performance.getTurnNumber()
+                ));
+            }
+            PerformancesWrapperList performancesWrapperList = new PerformancesWrapperList(category.getCategoryName(), list);
+            performanceWrapperListByCategory.addToPWLBC(performancesWrapperList);
         }
-        model.addAttribute("performancesWrapperList", new PerformancesWrapperList(list));
+
+        model.addAttribute("performancesWrapperListByCategory", performanceWrapperListByCategory);
         return "online/online";
     }
 

@@ -1,5 +1,6 @@
 package app.service;
 
+import app.model.Category;
 import app.model.Performance;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface PerformanceService {
     void delete(Performance performance);
 
     List<Performance> findAllPerformances();
+
+    List<Performance> findPerformancesByCategory(Category category);
 }

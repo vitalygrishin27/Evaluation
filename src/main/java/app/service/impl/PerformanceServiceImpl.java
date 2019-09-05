@@ -1,11 +1,15 @@
 package app.service.impl;
 
+import app.model.Category;
+import app.model.Member;
 import app.model.Performance;
+import app.repository.CategoryRepository;
 import app.repository.PerformanceRepository;
 import app.service.PerformanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -42,5 +46,15 @@ public class PerformanceServiceImpl implements PerformanceService {
     @Override
     public List<Performance> findAllPerformances() {
         return repository.findAll();
+    }
+
+    @Override
+    public List<Performance> findPerformancesByCategory(Category category) {
+        List<Performance> result = new ArrayList<>();
+        for (Member member : category.getMembers()
+        ) {
+            result.addAll(member.getPerformances());
+        }
+        return result;
     }
 }
