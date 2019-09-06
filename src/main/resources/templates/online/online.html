@@ -39,16 +39,21 @@
    //         		$('.sortable-ul').append($('.sortable-ul li[data-id=' + row + ']'));
     //            	});
 
-    $("#submitBtn").click(function(){
+                    var sort = [];
+		            $('.sortable-ul li').each(function(){
+			            sort.push($(this).data('id'));
+		            });
+                    $.cookie('sort', JSON.stringify(sort));
 
-                    var lock = document.getElementById('skm_LockPane');
-                  lock.className = 'LockOn';
 
-         var formSentCount = $.cookie('sort');
-      //  alert(formSentCount);
-        var element = document.getElementById("json");
-         element.value = formSentCount;
-     //    alert(element.value)
+                $("#submitBtn").click(function(){
+                     var lock = document.getElementById('skm_LockPane');
+                     lock.className = 'LockOn';
+                     var formSentCount = $.cookie('sort');
+                        //  alert(formSentCount);
+                     var element = document.getElementById("json");
+                    element.value = formSentCount;
+                    //    alert(element.value)
         $("#myForm").submit($.cookie('sort')); // Submit the form
     });
  });
