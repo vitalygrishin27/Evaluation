@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @Controller
 public class MainController {
@@ -87,6 +85,30 @@ public class MainController {
 
         model.addAttribute("performancesWrapperListByCategory", performanceWrapperListByCategory);
         return "online/online";
+    }
+
+
+    @RequestMapping(value = "/online/saveTurnNumber", method = RequestMethod.POST)
+    public String saveTurnNumber(String json) {
+        List<String> splitList = Arrays.asList(json.split("\\s*,\\s*"));
+        List<Integer> queue = new LinkedList<>();
+        for (String element : splitList
+        ) {
+            try {
+                queue.add(Integer.valueOf(element));
+            } finally {
+                continue;
+            }
+        }
+        int turn = 1;
+        for (int element : queue
+        ) {
+            Performance performance = performanceService.findPerformanceById(element);
+            performance.setTurnNumber(turn++);
+            performanceService.update(performance);
+        }
+        System.out.println(json);
+        return "redirect:/online?lang=" + Locale.getDefault();
     }
 
 
