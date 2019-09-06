@@ -1,6 +1,7 @@
 package app.controller;
 
 import app.model.*;
+import app.service.PerformanceService;
 import app.service.impl.CategoryServiceImpl;
 import app.service.impl.PerformanceServiceImpl;
 import app.utils.WebUtils;
@@ -68,7 +69,17 @@ public class MainController {
     @RequestMapping(value = "/online", method = RequestMethod.GET)
     public String online(Model model, Principal principal) {
         PerformanceWrapperListByCategory performanceWrapperListByCategory = new PerformanceWrapperListByCategory(new ArrayList<PerformancesWrapperList>());
-        for (Category category : categoryService.findAllCategories()
+        List<Performance> sortedListPerformanceByTurnNumber=performanceService.findAllPerformances();
+        List<Category> sortedListCategory = new LinkedList<>();
+        for (Performance perfomance: sortedListPerformanceByTurnNumber
+             ) {
+            if(!sortedListCategory.contains(perfomance.getMember().getCategory())){
+                sortedListCategory.add(perfomance.getMember().getCategory());
+            }
+        }
+
+        //сделать запрос минимальный turnNumber в категории и по этому выставить очередность категорий
+        for (Category category : sortedListCategory
         ) {
             List<PerformancesWrapper> list = new ArrayList<>();
             for (Performance performance : performanceService.findPerformancesByCategory(category)

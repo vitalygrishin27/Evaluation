@@ -7,6 +7,7 @@ import app.repository.CategoryRepository;
 import app.repository.PerformanceRepository;
 import app.service.PerformanceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class PerformanceServiceImpl implements PerformanceService {
         return repository.findLastTurnNumber();
     }
 
+
     @Override
     public void delete(Performance performance) {
         repository.delete(performance);
@@ -45,7 +47,7 @@ public class PerformanceServiceImpl implements PerformanceService {
 
     @Override
     public List<Performance> findAllPerformances() {
-        return repository.findAll();
+        return repository.findAll(new Sort(Sort.Direction.ASC,"turnNumber"));
     }
 
     @Override
@@ -55,6 +57,7 @@ public class PerformanceServiceImpl implements PerformanceService {
         ) {
             result.addAll(member.getPerformances());
         }
+        result.sort(Performance.COMPARE_BY_TURN);
         return result;
     }
 }

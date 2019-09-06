@@ -7,6 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Comparator;
 
 @Entity
 @Data
@@ -33,4 +34,11 @@ public class Performance {
 
     @OneToMany(mappedBy = "performance",fetch = FetchType.LAZY)
     private Collection<Mark> marks;
+
+    public static final Comparator<Performance> COMPARE_BY_TURN = new Comparator<Performance>() {
+        @Override
+        public int compare(Performance lhs, Performance rhs) {
+            return lhs.getTurnNumber() - rhs.getTurnNumber();
+        }
+    };
 }

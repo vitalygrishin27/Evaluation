@@ -20,4 +20,5 @@ public interface PerformanceService {
     List<Performance> findAllPerformances();
 
     List<Performance> findPerformancesByCategory(Category category);
+
 }
