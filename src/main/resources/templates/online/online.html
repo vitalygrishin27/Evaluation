@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>jQuery UI Sortable - Default functionality</title>
+    <title th:utext="#{pageTitle.online}">ONLINE</title>
     <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet"/>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/resources/demos/style.css">
@@ -59,6 +59,22 @@
  });
 
 
+function send(ids){
+$.ajax({
+    type: 'POST',
+    url:'/online/send',
+    data:({performanceID:ids}),
+    success: function(msg){
+        alert('wow' + msg);
+    }
+});
+
+alert(ids);
+}
+
+
+
+
 
 
     </script>
@@ -104,10 +120,24 @@
                                         <li
                                                 th:data-id="${performancesWrapper.idPerformance}">
                                             <table>
-                                                <tr width="600">
-                                                    <td width="150"
+                                                <tr width="1000">
+                                                    <td width="30" th:text="${performancesWrapper.turnNumber}"></td>
+                                                    <td width="250"
                                                         th:text="${performancesWrapper.namePerformance}"></td>
-                                                    <td width="150" th:text="${performancesWrapper.nameMember}"></td>
+                                                    <td width="250" th:text="${performancesWrapper.nameMember}"></td>
+                                                    <td>
+                                                        <button type="button" class="addButton"
+                                                                th:utext="#{label.sendToEvaluation}"
+                                                                th:onclick="'send(\'' + ${performancesWrapper.idPerformance} + '\');'">
+                                                            Send to evaluation
+                                                        </button>
+                                                    </td>
+                                                    <!-- MARKS BY USER -->
+                                                    <div th:each="mark : ${performancesWrapper.marks}">
+                                                      <!--  <td th:text="${mark.key}">key</td>  -->
+                                                        <td th:text="${mark.value}">value</td>
+
+                                                    </div>
                                                     <!--    <td width="150" th:text="${performancesWrapper.turnNumber}"></td>  -->
                                                 </tr>
                                             </table>

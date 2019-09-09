@@ -6,6 +6,8 @@ import app.model.Performance;
 import app.repository.CategoryRepository;
 import app.repository.PerformanceRepository;
 import app.service.PerformanceService;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,10 @@ import java.util.List;
 
 @Service
 public class PerformanceServiceImpl implements PerformanceService {
+
+    @Setter
+    @Getter
+    static int CURRENT_ID_PERFORMANCE_IN_EVALUATION=0;
 
     @Autowired
     PerformanceRepository repository;

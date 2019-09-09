@@ -2,18 +2,25 @@ package app.controller;
 
 import app.model.*;
 import app.service.PerformanceService;
+import app.service.UserService;
 import app.service.impl.CategoryServiceImpl;
 import app.service.impl.PerformanceServiceImpl;
 import app.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
 
@@ -22,12 +29,6 @@ public class MainController {
 
     @Autowired
     ReloadableResourceBundleMessageSource messageSource;
-
-    @Autowired
-    PerformanceServiceImpl performanceService;
-
-    @Autowired
-    CategoryServiceImpl categoryService;
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String welcomePage(WebRequest webRequest, Model model) {
@@ -44,8 +45,18 @@ public class MainController {
     //default page after login (WebSecurityConfig)
     @RequestMapping(value = "/start", method = RequestMethod.GET)
     public String start(Model model, Principal principal) {
-
-        return "redirect:/?lang=" + Locale.getDefault();
+        try {
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            SimpleGrantedAuthority simpleGrantedAuthority = (SimpleGrantedAuthority) loginedUser.getAuthorities().toArray()[0];
+            if (simpleGrantedAuthority.getAuthority().equals("user")) {
+                return "redirect:/evaluation?lang=" + Locale.getDefault();
+            }else {
+                return "redirect:/?lang=" + Locale.getDefault();
+            }
+        } catch (Exception e){
+            System.out.println("Error with principal");
+            return "redirect:/?lang=" + Locale.getDefault();
+        }
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -64,62 +75,6 @@ public class MainController {
         model.addAttribute("userInfo", userInfo);
 
         return "main";
-    }
-
-    @RequestMapping(value = "/online", method = RequestMethod.GET)
-    public String online(Model model, Principal principal) {
-        PerformanceWrapperListByCategory performanceWrapperListByCategory = new PerformanceWrapperListByCategory(new ArrayList<PerformancesWrapperList>());
-        List<Performance> sortedListPerformanceByTurnNumber=performanceService.findAllPerformances();
-        List<Category> sortedListCategory = new LinkedList<>();
-        for (Performance perfomance: sortedListPerformanceByTurnNumber
-             ) {
-            if(!sortedListCategory.contains(perfomance.getMember().getCategory())){
-                sortedListCategory.add(perfomance.getMember().getCategory());
-            }
-        }
-
-        //сделать запрос минимальный turnNumber в категории и по этому выставить очередность категорий
-        for (Category category : sortedListCategory
-        ) {
-            List<PerformancesWrapper> list = new ArrayList<>();
-            for (Performance performance : performanceService.findPerformancesByCategory(category)
-            ) {
-                list.add(new PerformancesWrapper(performance.getPerformanceId(),
-                        performance.getPerformanceName(),
-                        performance.getMember().getLastName() + " " + performance.getMember().getName() + " " + performance.getMember().getSecondName(),
-                        performance.getTurnNumber()
-                ));
-            }
-            PerformancesWrapperList performancesWrapperList = new PerformancesWrapperList(category.getCategoryName(), list);
-            performanceWrapperListByCategory.addToPWLBC(performancesWrapperList);
-        }
-
-        model.addAttribute("performancesWrapperListByCategory", performanceWrapperListByCategory);
-        return "online/online";
-    }
-
-
-    @RequestMapping(value = "/online/saveTurnNumber", method = RequestMethod.POST)
-    public String saveTurnNumber(String json) {
-        List<String> splitList = Arrays.asList(json.split("\\s*,\\s*"));
-        List<Integer> queue = new LinkedList<>();
-        for (String element : splitList
-        ) {
-            try {
-                queue.add(Integer.valueOf(element));
-            } finally {
-                continue;
-            }
-        }
-        int turn = 1;
-        for (int element : queue
-        ) {
-            Performance performance = performanceService.findPerformanceById(element);
-            performance.setTurnNumber(turn++);
-            performanceService.update(performance);
-        }
-        System.out.println(json);
-        return "redirect:/online?lang=" + Locale.getDefault();
     }
 
 

@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:utext="${title}"></title>
+    <link href="../static/css/evaluation/evaluation.css" th:href="@{/css/evaluation/evaluation.css}" rel="stylesheet"/>
+    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet"/>
+</head>
+
+<body>
+<div class="container">
+    <div th:if="${errorMessage} != null" class="error"><span th:utext="${errorMessage}"></span></div>
+    <!--   <div th:if="${not #lists.isEmpty(members)}">  -->
+    <table>
+        <tr>
+            <th colspan="7" th:utext="#{member.label.tableTitle}">Jury List</th>
+        </tr>
+        <tr>
+            <th th:utext="${performance.performanceId}">Full name</th>
+
+        </tr>
+
+    </table>
+    <!-- </div>  -->
+
+</div>
+
+
+</body>
+</html>
