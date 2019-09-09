@@ -57,7 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/online",
                 "/online/send"
         ).hasAuthority("admin");
-        http.authorizeRequests().antMatchers("/main").hasAnyAuthority("user");
+        http.authorizeRequests().antMatchers("/main", "/evaluation").hasAuthority("user");
         http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
         http.authorizeRequests().and().formLogin()//
                 .loginProcessingUrl("/j_spring_security_check")
