@@ -45,4 +45,13 @@ public class Member {
     @OneToMany (mappedBy = "member",fetch = FetchType.EAGER)
     private Collection<Performance> performances;
 
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
+    }
 }

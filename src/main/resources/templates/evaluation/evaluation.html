@@ -27,35 +27,53 @@
             <th colspan="3" th:utext="${performance.performanceName}">Performance</th>
         </tr>
 
-<!--
-        </tr>
-        <tr th:each="performance : ${performances}">
-            <td th:text="${performance.performanceName}"></td>
-            <td>
-                <a th:href="${'/performance/edit/' + performance.performanceId}+'?lang=' + ${#request.Locale.getDefault()}"
-                   th:utext="#{label.edit}">Edit</a></td>
-            <td><a th:href="${'/performance/delete/' + performance.performanceId}" th:utext="#{label.delete}"
-                   onclick="return confirm('Вы уверены в удалении?')">Delete</a></td>
-        </tr>
-        <tr>
-            <th colspan="3" href="/performance/form">
-                <a class="addButton" th:utext="#{label.add}" href="/performance/form"
-                   th:href="${'/performance/form/'} + ${memberId}+'?lang=' + ${#request.Locale.getDefault()}">New
-                    Performance</a>
-            </th>
-        </tr>
-        <tr>
-            <td colspan="3"><a class="cancelHref" href="/"
-                               th:href="@{/members?lang=} + ${#request.Locale.getDefault()}"
-                               th:utext="#{label.cancel}">Назад</a></td>
-        </tr>  -->
+        <!--
+                </tr>
+                <tr th:each="performance : ${performances}">
+                    <td th:text="${performance.performanceName}"></td>
+                    <td>
+                        <a th:href="${'/performance/edit/' + performance.performanceId}+'?lang=' + ${#request.Locale.getDefault()}"
+                           th:utext="#{label.edit}">Edit</a></td>
+                    <td><a th:href="${'/performance/delete/' + performance.performanceId}" th:utext="#{label.delete}"
+                           onclick="return confirm('Вы уверены в удалении?')">Delete</a></td>
+                </tr>
+                <tr>
+                    <th colspan="3" href="/performance/form">
+                        <a class="addButton" th:utext="#{label.add}" href="/performance/form"
+                           th:href="${'/performance/form/'} + ${memberId}+'?lang=' + ${#request.Locale.getDefault()}">New
+                            Performance</a>
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="3"><a class="cancelHref" href="/"
+                                       th:href="@{/members?lang=} + ${#request.Locale.getDefault()}"
+                                       th:utext="#{label.cancel}">Назад</a></td>
+                </tr>  -->
     </table>
+    <form id="evaluateWrapper" name='f' th:action="@{/evaluation/evaluate}" method='POST' th:object="${evaluateWrapper}">
 
-    <table>
-        <tr></tr>
 
-    </table>
+        <table>
+                    <tr th:each="evaluate, stat : ${evaluateWrapper.evaluateList}">
+                       <td>
+                           <input th:name="${evaluate.id}"
+                                  th:id="${evaluate.id}"
+                                  th:value="${evaluate.id}" th:field="*{evaluateList[__${stat.index}__].id}"/>
+                       </td>
+                        <td>
+                            <input th:name="${evaluate.value}"
+                                   th:id="${evaluate.value}"
+                                   th:value="${evaluate.value}" th:field="*{evaluateList[__${stat.index}__].value}"/>
+                        </td>
 
+                        <td><input type="hidden" id="performanceId" name='performanceId' th:value="${performance.performanceId}" required></td>
+
+                    </tr>
+
+
+        </table>
+        <button type="submit" th:utext="#{label.save}">Save</button>
+    </form>
     <!-- </div>  -->
 
 </div>

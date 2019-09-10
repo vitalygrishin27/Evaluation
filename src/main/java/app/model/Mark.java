@@ -40,4 +40,12 @@ public class Mark {
     @JoinColumn(name ="criterion_id")
     private Criterion criterion;
 
+    @Override
+    public String toString() {
+        return "Mark{" +
+                "id=" + id +
+                ", value=" + value +
+                ", user=" + user +
+                '}';
+    }
 }

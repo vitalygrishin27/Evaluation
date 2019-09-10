@@ -6,6 +6,7 @@ import app.model.CriterionWrapper;
 import app.service.impl.CategoryServiceImpl;
 import app.service.impl.CriterionServiceImpl;
 
+import app.utils.WebUtils;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
@@ -22,6 +23,8 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Locale;
 
+import static app.utils.WebUtils.*;
+
 @Controller
 public class CategoryController {
 
@@ -37,7 +40,6 @@ public class CategoryController {
     @PersistenceContext
     private EntityManager entityManager;
 
-    private String errorMessage = null;
 
     @RequestMapping(value = "/categories", method = RequestMethod.GET)
     public String categoryList(Model model) {

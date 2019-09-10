@@ -2,6 +2,7 @@ package app.controller;
 
 import app.model.Criterion;
 import app.service.impl.CriterionServiceImpl;
+import app.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.List;
 import java.util.Locale;
 
+import static app.utils.WebUtils.*;
+
 @Controller
 public class CriterionController {
 
@@ -23,7 +26,6 @@ public class CriterionController {
     @Autowired
     ReloadableResourceBundleMessageSource messageSource;
 
-    private String errorMessage = null;
 
     @RequestMapping(value = "/criterions", method = RequestMethod.GET)
     public String criterionsList(Model model) {

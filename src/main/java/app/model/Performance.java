@@ -41,4 +41,12 @@ public class Performance {
             return lhs.getTurnNumber() - rhs.getTurnNumber();
         }
     };
+
+    @Override
+    public String toString() {
+        return "Performance{" +
+                "performanceId=" + performanceId +
+                ", performanceName='" + performanceName + '\'' +
+                '}';
+    }
 }

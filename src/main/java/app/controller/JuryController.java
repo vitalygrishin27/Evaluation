@@ -19,6 +19,8 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Locale;
 
+import static app.utils.WebUtils.*;
+
 
 @Controller
 public class JuryController {
@@ -28,8 +30,6 @@ public class JuryController {
 
     @Autowired
     ReloadableResourceBundleMessageSource messageSource;
-
-    private String errorMessage = null;
 
     @RequestMapping(value = "/jury", method = RequestMethod.GET)
     public String juryList(Model model, Principal principal) {

@@ -4,6 +4,7 @@ import app.model.Category;
 import app.model.Member;
 import app.service.impl.CategoryServiceImpl;
 import app.service.impl.MemberServiceImpl;
+import app.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.List;
 import java.util.Locale;
 
+import static app.utils.WebUtils.*;
+
 @Controller
 public class MemberController {
     @Autowired
@@ -26,8 +29,6 @@ public class MemberController {
 
     @Autowired
     ReloadableResourceBundleMessageSource messageSource;
-
-    private String errorMessage = null;
 
     // Members
     @RequestMapping(value = "/members", method = RequestMethod.GET)

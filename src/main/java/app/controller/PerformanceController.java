@@ -4,6 +4,7 @@ import app.model.Member;
 import app.model.Performance;
 import app.service.impl.MemberServiceImpl;
 import app.service.impl.PerformanceServiceImpl;
+import app.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.Locale;
+
+import static app.utils.WebUtils.*;
 
 @Controller
 public class PerformanceController {
@@ -26,8 +29,6 @@ public class PerformanceController {
 
     @Autowired
     MemberServiceImpl memberService;
-
-    private String errorMessage = null;
 
     @RequestMapping(value = "/performance/{id}") //memberID
     public String performances(@PathVariable int id, Model model) {
