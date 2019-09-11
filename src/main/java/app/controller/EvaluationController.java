@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +51,7 @@ public class EvaluationController {
             List<Evaluate> evaluates = new ArrayList<>();
             for (Criterion element : criteria
             ) {
-                Evaluate evaluate = new Evaluate(element.getId(), 0);
+                Evaluate evaluate = new Evaluate(element.getId(),element.getName(), 0);
                 evaluates.add(evaluate);
             }
             EvaluateWrapper evaluateWrapper=new EvaluateWrapper(evaluates);
@@ -83,12 +87,19 @@ public class EvaluationController {
         }else{
             errorMessage = messageSource.getMessage("error.marksAlreadyExists", null, Locale.getDefault());
         }
-
-
-
-
-
-        return "redirect:/evaluation?lang=" + Locale.getDefault();
+  return "redirect:/evaluation?lang=" + Locale.getDefault();
 
     }
+
+
+    @RequestMapping(value = "/evaluation/isPerformanceNew", method = RequestMethod.POST)
+    public void isPerformanceNew(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+       if(Integer.valueOf(req.getParameter("performanceId")).equals(PerformanceServiceImpl.getCURRENT_ID_PERFORMANCE_IN_EVALUATION())){
+           resp.getWriter().write("false");
+       }else{
+           resp.getWriter().write("true");
+       }
+        resp.flushBuffer();
+    }
+
 }

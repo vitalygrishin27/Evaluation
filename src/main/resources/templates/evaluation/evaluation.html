@@ -4,6 +4,10 @@
     <title th:utext="${title}"></title>
     <link href="../static/css/evaluation/evaluation.css" th:href="@{/css/evaluation/evaluation.css}" rel="stylesheet"/>
     <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
 </head>
 
 <body>
@@ -11,9 +15,6 @@
     <div th:if="${errorMessage} != null" class="error"><span th:utext="${errorMessage}"></span></div>
     <!--   <div th:if="${not #lists.isEmpty(members)}">  -->
     <table th:if="${performance} != null">
-        <tr>
-            <th colspan="3" th:utext="#{evaluation.tableTitle}">Evaluation</th>
-        </tr>
         <tr>
             <th colspan="3"
                 th:utext="${performance.member.lastName}+ '  ' + ${performance.member.name} + '  ' + ${performance.member.secondName}">
@@ -27,57 +28,104 @@
             <th colspan="3" th:utext="${performance.performanceName}">Performance</th>
         </tr>
 
-        <!--
-                </tr>
-                <tr th:each="performance : ${performances}">
-                    <td th:text="${performance.performanceName}"></td>
-                    <td>
-                        <a th:href="${'/performance/edit/' + performance.performanceId}+'?lang=' + ${#request.Locale.getDefault()}"
-                           th:utext="#{label.edit}">Edit</a></td>
-                    <td><a th:href="${'/performance/delete/' + performance.performanceId}" th:utext="#{label.delete}"
-                           onclick="return confirm('Вы уверены в удалении?')">Delete</a></td>
-                </tr>
-                <tr>
-                    <th colspan="3" href="/performance/form">
-                        <a class="addButton" th:utext="#{label.add}" href="/performance/form"
-                           th:href="${'/performance/form/'} + ${memberId}+'?lang=' + ${#request.Locale.getDefault()}">New
-                            Performance</a>
-                    </th>
-                </tr>
-                <tr>
-                    <td colspan="3"><a class="cancelHref" href="/"
-                                       th:href="@{/members?lang=} + ${#request.Locale.getDefault()}"
-                                       th:utext="#{label.cancel}">Назад</a></td>
-                </tr>  -->
+        <form id="evaluateWrapper" name='f' th:action="@{/evaluation/evaluate}" method='POST'
+              th:object="${evaluateWrapper}">
+            <tr>
+                <td colspan="3"><input type="hidden" id="performanceId" name='performanceId'
+                                       th:value="${performance.performanceId}"
+                                       required></td>
+            </tr>
+
+
+            <tr th:each="evaluate, stat : ${evaluateWrapper.evaluateList}">
+                <td hidden>
+                    <input hidden th:name="${evaluate.id}"
+
+                           th:value="${evaluate.id}" th:field="*{evaluateList[__${stat.index}__].id}"/>
+                </td>
+                <th th:utext="${evaluate.name}"></th>
+                <td>
+                    <button type="button"
+                            th:utext="#{label.one}"
+                            th:onclick="'setMark(\'' + ${evaluate.id} + '\',1);'">
+                       1
+                    </button>
+                    <button type="button"
+                            th:utext="#{label.two}"
+                            th:onclick="'setMark(\'' + ${evaluate.id} + '\',2);'">
+                        2
+                    </button>
+                    <button type="button"
+                            th:utext="#{label.three}"
+                            th:onclick="'setMark(\'' + ${evaluate.id} + '\',3);'">
+                        3
+                    </button>
+                    <button type="button"
+                            th:utext="#{label.four}"
+                            th:onclick="'setMark(\'' + ${evaluate.id} + '\',4);'">
+                        4
+                    </button>
+                    <button type="button"
+                            th:utext="#{label.five}"
+                            th:onclick="'setMark(\'' + ${evaluate.id} + '\',5);'">
+                        5
+                    </button>
+
+
+                    <input hidden th:name="${evaluate.value}"
+                           th:id="${evaluate.id}"
+                           th:value="${evaluate.value}" th:field="*{evaluateList[__${stat.index}__].value}"/>
+                </td>
+
+
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <button type="submit" th:utext="#{label.evaluate}">Save</button>
+                </td>
+            </tr>
+
+        </form>
     </table>
-    <form id="evaluateWrapper" name='f' th:action="@{/evaluation/evaluate}" method='POST' th:object="${evaluateWrapper}">
-
-
-        <table>
-                    <tr th:each="evaluate, stat : ${evaluateWrapper.evaluateList}">
-                       <td>
-                           <input th:name="${evaluate.id}"
-                                  th:id="${evaluate.id}"
-                                  th:value="${evaluate.id}" th:field="*{evaluateList[__${stat.index}__].id}"/>
-                       </td>
-                        <td>
-                            <input th:name="${evaluate.value}"
-                                   th:id="${evaluate.value}"
-                                   th:value="${evaluate.value}" th:field="*{evaluateList[__${stat.index}__].value}"/>
-                        </td>
-
-                        <td><input type="hidden" id="performanceId" name='performanceId' th:value="${performance.performanceId}" required></td>
-
-                    </tr>
-
-
-        </table>
-        <button type="submit" th:utext="#{label.save}">Save</button>
-    </form>
-    <!-- </div>  -->
-
 </div>
+<script th:inline="javascript">
+    function setMark(evaluateId, val){
+    var eval = document.getElementById(evaluateId);
+    eval.value=val;
+    }
 
+$(document).ready(function() {
+
+    online();
+});
+    function online(){
+	    setInterval(()=> isPerformanceNew(), 10000)
+	}
+
+
+     function isPerformanceNew(){
+     var performanceId = "${performance.performanceId}";
+		 /*<![CDATA[*/
+        var performanceId = /*[[${performance.performanceId}]]*/ 'Sebastian';
+          /*]]>*/
+
+
+		$.ajax({
+			type: 'POST',
+			url: "/evaluation/isPerformanceNew",
+			data: ({performanceId:performanceId}),
+			success: function(data){
+		    console.log(data);
+
+		        if(data=="true"){
+        		window.location.href = "/evaluate";
+        	    }
+        	}
+		});
+     }
+
+
+</script>
 
 </body>
 </html>

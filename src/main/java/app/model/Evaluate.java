@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Evaluate {
     private Long id;
+    private String name;
     private Integer value;
 }
