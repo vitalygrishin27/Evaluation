@@ -1,3 +1,6 @@
+
+.selected { border: solid blue 10px; !important }
+
 ul{
 padding-left: 0;
 }

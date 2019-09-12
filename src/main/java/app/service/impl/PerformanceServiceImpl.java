@@ -20,7 +20,7 @@ public class PerformanceServiceImpl implements PerformanceService {
 
     @Setter
     @Getter
-    static int CURRENT_ID_PERFORMANCE_IN_EVALUATION=0;
+    public static int CURRENT_ID_PERFORMANCE_IN_EVALUATION=0;
 
     @Autowired
     PerformanceRepository repository;
