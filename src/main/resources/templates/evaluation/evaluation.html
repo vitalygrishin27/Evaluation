@@ -43,36 +43,36 @@
 
                            th:value="${evaluate.id}" th:field="*{evaluateList[__${stat.index}__].id}"/>
                 </td>
-                <th th:utext="${evaluate.name}"></th>
+                <th th:utext="${evaluate.name}" th:id="${evaluate.name}"></th>
                 <td>
-                    <button type="button"
+                    <button type="button" th:class="button + ${evaluate.id}"
                             th:utext="#{label.one}"
                             th:onclick="'setMark(\'' + ${evaluate.id} + '\',1);'">
                        1
                     </button>
-                    <button type="button"
+                    <button type="button" th:class="button + ${evaluate.id}"
                             th:utext="#{label.two}"
                             th:onclick="'setMark(\'' + ${evaluate.id} + '\',2);'">
                         2
                     </button>
-                    <button type="button"
+                    <button type="button" th:class="button + ${evaluate.id}"
                             th:utext="#{label.three}"
                             th:onclick="'setMark(\'' + ${evaluate.id} + '\',3);'">
                         3
                     </button>
-                    <button type="button"
+                    <button type="button" th:class="button + ${evaluate.id}"
                             th:utext="#{label.four}"
                             th:onclick="'setMark(\'' + ${evaluate.id} + '\',4);'">
                         4
                     </button>
-                    <button type="button"
+                    <button type="button" th:class="button + ${evaluate.id}"
                             th:utext="#{label.five}"
                             th:onclick="'setMark(\'' + ${evaluate.id} + '\',5);'">
                         5
                     </button>
 
 
-                    <input hidden th:name="${evaluate.value}"
+                    <input hidden th:name="${evaluate.value}" class="mark"
                            th:id="${evaluate.id}"
                            th:value="${evaluate.value}" th:field="*{evaluateList[__${stat.index}__].value}"/>
                 </td>
@@ -80,8 +80,12 @@
 
             </tr>
             <tr>
+                <td hidden colspan="3" class="summaryValue"
+                    th:id="summaryValue">0</td>
+            </tr>
+            <tr>
                 <td colspan="3">
-                    <button type="submit" th:utext="#{label.evaluate}">Save</button>
+                    <button type="submit" th:id="buttonSummaryValue" th:utext="0" class="btn btn-default orange-circle-button">Save</button>
                 </td>
             </tr>
 
@@ -90,12 +94,35 @@
 </div>
 <script th:inline="javascript">
     function setMark(evaluateId, val){
+
+   //Делаем стиль всех 5 кнопок категории, которой выставлена оценка, обычным
+   var elements = document.getElementsByClassName(this.event.srcElement.className);
+    for(var i=0; i<elements.length; i++) {
+            elements[i].style.background = "#4CAF50";
+        }
+   //Выделяем нажатую кнопку
+    var element = this.event.srcElement;
+     element.style.background = "#FFAAAA";
+
+    //Устанавливаем оценку по выбранному критерю в скрытое поле
     var eval = document.getElementById(evaluateId);
     eval.value=val;
+
+    //Обновление общей оценки
+    var elements = document.getElementsByClassName("mark");
+    var summary = document.getElementById("summaryValue");
+    summary.innerHTML="0";
+        for(var i=0; i<elements.length; i++) {
+         summary.innerHTML= parseInt(summary.innerHTML) + parseInt(elements[i].value);
+        }
+        document.getElementById("buttonSummaryValue").innerHTML=summary.innerHTML;
     }
 
 $(document).ready(function() {
-
+    var errorMessage = /*[[${errorMessage}]]*/ 'Sebastian';
+    if(errorMessage!=null){
+        document.getElementById("buttonSummaryValue").disabled=true;
+    }
     online();
 });
     function online(){
@@ -118,11 +145,31 @@ $(document).ready(function() {
 		    console.log(data);
 
 		        if(data=="true"){
-        		window.location.href = "/evaluate";
+        		window.location.href = "/evaluation";
         	    }
         	}
 		});
      }
+
+//Проверка на заполненность оценок перед отправкой формы
+jQuery("#evaluateWrapper").submit(function(e) {
+         var elements = document.getElementsByClassName("mark");
+    var count = 0;
+    for(var i=0; i<elements.length; i++) {
+            var tcell = elements[i].parentNode;
+            tcell.style.background = "#AFCDE7";
+            if(elements[i].value == "0"){
+              tcell.style.background="#FF0000";
+              count+=1;
+            }
+        }
+if(count>0){
+return false;
+}else{
+document.getElementById("buttonSummaryValue").disabled=true;
+}
+
+});
 
 
 </script>
