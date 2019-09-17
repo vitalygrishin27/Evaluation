@@ -1,5 +1,7 @@
 //При загурузке страницы
 $(document).ready( function () {
+    // Окрашивание ячеек, которые ужюе заполнены оценками
+    coloringCells();
     //Запуск опроса сервера на наличие новых оценок активного performance
     getNewMarksForActivePerformance();   //единоразовый опрос сервера
     online(); //запустить переодический опрос сервера
@@ -85,4 +87,16 @@ function getNewMarksForActivePerformance(){
             });
         }
     });
+}
+
+//При загрузке страницы обновляем цвет ячеек (если заполнены, то выделяем)
+function coloringCells(){
+     var elements = document.getElementsByClassName("marks");
+        for(var i=0; i<elements.length; i++) {
+            var elem = elements[i];
+            if(elem.innerHTML!="0"){
+            elem.style.backgroundColor = '#8A2BE2';
+            elem.style.color = '#FFFFFF';
+            }
+        }
 }

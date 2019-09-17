@@ -50,8 +50,8 @@
                                         <li
                                                 th:data-id="${performancesWrapper.idPerformance}">
                                             <table>
-                                                <tr th:id="${performancesWrapper.idPerformance}" >
-                                                    <td width="20" th:text="${performancesWrapper.turnNumber}"></td>
+                                                <tr th:id="${performancesWrapper.idPerformance}" width="1000">
+                                                    <td width="30" th:text="${performancesWrapper.turnNumber}"></td>
                                                     <td width="250"
                                                         th:text="${performancesWrapper.namePerformance}"></td>
                                                     <td width="250" th:text="${performancesWrapper.nameMember}"></td>
@@ -64,7 +64,7 @@
                                                     </td>
                                                     <!-- MARKS BY USER -->
                                                     <div th:each="mark : ${performancesWrapper.marks}">
-                                                        <td class="marks" width="50"
+                                                        <td class="marks" style="width : 200px !important"
                                                             th:id="${mark.key.login}+${performancesWrapper.idPerformance}"
                                                             th:text="${mark.value}">value
                                                         </td>
