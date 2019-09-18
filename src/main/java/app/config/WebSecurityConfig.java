@@ -55,7 +55,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/performance/*",
                 "/performance/*/*",
                 "/online",
-                "/online/send"
+                "/online/send",
+                "/statement"
+
         ).hasAuthority("admin");
         http.authorizeRequests().antMatchers("/main", "/evaluation").hasAuthority("user");
         http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");

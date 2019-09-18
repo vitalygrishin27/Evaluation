@@ -2,7 +2,9 @@ package app.controller;
 
 import app.model.*;
 import app.service.UserService;
+import app.service.impl.POIServiceImpl;
 import app.service.impl.PerformanceServiceImpl;
+import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,11 @@ import java.util.*;
 
 @Controller
 public class OnlineController {
+
+    private static final Logger log = Logger.getLogger(OnlineController.class);
+
+    @Autowired
+    POIServiceImpl poiService;
 
     @Autowired
     PerformanceServiceImpl performanceService;
@@ -107,7 +114,7 @@ public class OnlineController {
 
     @RequestMapping(value = "/online/getNewMarksForActivePerformance", method = RequestMethod.POST)
     public void getNewMarksForActivePerformance(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        log.info("Вызов метода getNewMarksForActivePerformance");
         JSONObject jsonObjectResponse = new JSONObject();
         Performance activePerformance = performanceService.findPerformanceById(PerformanceServiceImpl.getCURRENT_ID_PERFORMANCE_IN_EVALUATION());
 
@@ -122,10 +129,17 @@ public class OnlineController {
 
         }
         jsonObjectResponse.put("activePerformanceId", activePerformance.getPerformanceId());
-
+        log.error("ошибка");
         resp.getWriter().write(String.valueOf(jsonObjectResponse));
         resp.flushBuffer();
     }
 
+    @RequestMapping(value = "/statement", method = RequestMethod.GET)
+    public void createStatement(){
+            poiService.createNewDocument("This application has no explicit mapping for /error, so you are seeing this as a fallback." +
+                    "Wed Sep 18 16:33:32 EEST 2019" +
+                    "There was an unexpected error (type=Internal Server Error, status=500)." +
+                    "Error resolving template [statement], template might not exist or might not be ac");
+    }
 
 }
