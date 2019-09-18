@@ -20,7 +20,10 @@ import java.util.Locale;
 public class POIServiceImpl implements POIService {
     private Workbook workbook;
     private Sheet activeSheet;
+    private int summaryColsInPage = 14;
     private Row activeRow;
+    private int activeRowIndex =0;
+    private int activeCellIndex =0;
     private Cell activeCell;
 
 
@@ -45,21 +48,6 @@ public class POIServiceImpl implements POIService {
 
     }
 
-    private void saveFile() {
-        try {
-            File file = new File("FullStatement.xls");
-            if (file.exists()) {
-                file.delete();
-            }
-
-            FileOutputStream outFile = new FileOutputStream("FullStatement.xls");
-            workbook.write(outFile);
-            outFile.close();
-            workbook.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void createSheetsByCategory() {
         for (Category category : categoryService.findAllCategories()
@@ -88,43 +76,44 @@ public class POIServiceImpl implements POIService {
             activeSheet = workbook.getSheet(category.getCategoryName());
             // Заполнение названия конкурса
             fillTitle(contestName);
+            // Заполнение подзаголовка (Ведомость)
             fillSubTitle(messageSource.getMessage("statement.subTitle", null, Locale.getDefault()));
+            // Заполение Категории
+            fillCategoryName(category.getCategoryName());
 
-
-            int currentRowCount = 0;
-            int currentCellCount = 0;
-
-
-            //  activeSheet.setColumnWidth(currentCellCount,1000);
-            //sheet.addMergedRegion(new CellRangeAddress(start-col,end-col,start-cell,end-cell));
-
-            //  activeRow.
-            //     activeCell.getRow().setHeight((short)0);
 
         }
 
     }
 
     private void fillTitle(String contestName) {
-        activeRow = activeSheet.createRow(0);
-        activeCell = activeRow.createCell(0, CellType.STRING);
+        activeRow = activeSheet.createRow(activeRowIndex);
+        activeCell = activeRow.createCell(activeCellIndex, CellType.STRING);
         activeCell.setCellValue(contestName);
         int countForIncreaseHeightRow = contestName.length() / 70;
         if (countForIncreaseHeightRow > 0) {
             activeRow.setHeightInPoints(30 * countForIncreaseHeightRow);
         }
-        activeSheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 14));
+        activeSheet.addMergedRegion(new CellRangeAddress(activeRowIndex, activeRowIndex, activeCellIndex, summaryColsInPage));
         activeCell.setCellStyle(createCellStyleForTitle());
+        nextRow();
     }
 
     private void fillSubTitle(String subTitle) {
-        activeRow = activeSheet.createRow(1);
+        activeRow = activeSheet.createRow(activeRowIndex);
         activeCell = activeRow.createCell(0, CellType.STRING);
         activeCell.setCellValue(subTitle);
-        activeSheet.addMergedRegion(new CellRangeAddress(1, 1, 0, 14));
+        activeSheet.addMergedRegion(new CellRangeAddress(activeRowIndex, activeRowIndex, activeCellIndex, summaryColsInPage));
         activeCell.setCellStyle(createCellStyleForSubTitle());
+        nextRow();
     }
 
+    private void fillCategoryName(String categoryName){
+        activeRow = activeSheet.createRow(activeRowIndex);
+        activeCell = activeRow.createCell(1, CellType.STRING);
+        activeCell.setCellValue(messageSource.getMessage("statement.label.category", null, Locale.getDefault()));
+        // TODO: 18.09.2019 Стиль для названия категории и лейбл 
+    }
 
     private CellStyle createCellStyleForTitle() {
         Font newFont = workbook.createFont();
@@ -157,5 +146,25 @@ public class POIServiceImpl implements POIService {
         return cellStyle;
     }
 
+    private void nextRow(){
+        activeRowIndex++;
+        activeCellIndex=0;
+    }
+
+    private void saveFile() {
+        try {
+            File file = new File("FullStatement.xls");
+            if (file.exists()) {
+                file.delete();
+            }
+
+            FileOutputStream outFile = new FileOutputStream("FullStatement.xls");
+            workbook.write(outFile);
+            outFile.close();
+            workbook.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
