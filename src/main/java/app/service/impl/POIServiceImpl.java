@@ -1,6 +1,6 @@
 package app.service.impl;
 
-import app.model.Category;
+import app.model.*;
 import app.service.POIService;
 import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 @Service
@@ -22,13 +25,19 @@ public class POIServiceImpl implements POIService {
     private Sheet activeSheet;
     private int summaryColsInPage = 14;
     private Row activeRow;
-    private int activeRowIndex =0;
-    private int activeCellIndex =0;
+    private int activeRowIndex = 0;
+    private int activeCellIndex = 0;
     private Cell activeCell;
 
 
     @Autowired
     CategoryServiceImpl categoryService;
+
+    @Autowired
+    UserServiceImpl userService;
+
+    @Autowired
+    MarkServiceImpl markService;
 
     @Autowired
     ReloadableResourceBundleMessageSource messageSource;
@@ -68,11 +77,14 @@ public class POIServiceImpl implements POIService {
     }
 
 
-
-
     private void fillSheets(String contestName) {
+        LinkedList<User> juries = new LinkedList<>(userService.findAllJuries());
+
         for (Category category : categoryService.findAllCategories()
         ) {
+            LinkedList<Criterion> criterions = new LinkedList<Criterion>(category.getCriterions());
+            activeRowIndex = 0;
+            activeCellIndex = 0;
             activeSheet = workbook.getSheet(category.getCategoryName());
             // Заполнение названия конкурса
             fillTitle(contestName);
@@ -80,8 +92,12 @@ public class POIServiceImpl implements POIService {
             fillSubTitle(messageSource.getMessage("statement.subTitle", null, Locale.getDefault()));
             // Заполение Категории
             fillCategoryName(category.getCategoryName());
-
-
+            // Заполнить общее количество участников в категории
+            fillSummaryCountMembersByCategory(category.getMembers().size());
+            // Заполнить заголовки таблицы
+            fillTableTitle(juries, category.getCriterions().size());
+            // Заполнить данные участника
+            fillMembers(new ArrayList<>(category.getMembers()), juries, criterions);
         }
 
     }
@@ -108,11 +124,113 @@ public class POIServiceImpl implements POIService {
         nextRow();
     }
 
-    private void fillCategoryName(String categoryName){
+    private void fillCategoryName(String categoryName) {
         activeRow = activeSheet.createRow(activeRowIndex);
         activeCell = activeRow.createCell(1, CellType.STRING);
         activeCell.setCellValue(messageSource.getMessage("statement.label.category", null, Locale.getDefault()));
-        // TODO: 18.09.2019 Стиль для названия категории и лейбл 
+        activeCell.setCellStyle(createCellStyleForLabelCategory());
+        activeCell = activeRow.createCell(2, CellType.STRING);
+        activeCell.setCellValue(categoryName);
+        activeCell.setCellStyle(createCellStyleForLabelCategory());
+    }
+
+    private void fillSummaryCountMembersByCategory(int count) {
+        activeCell = activeRow.createCell(10, CellType.STRING);
+        activeCell.setCellValue(messageSource.getMessage("statement.label.countOfMembers", null, Locale.getDefault()));
+        activeCell = activeRow.createCell(11, CellType.STRING);
+        activeCell.setCellValue(count);
+        nextRow();
+    }
+
+    private void fillTableTitle(LinkedList<User> juries, int countCriterions) {
+        activeRow = activeSheet.createRow(activeRowIndex);
+        activeCell = activeRow.createCell(0, CellType.STRING);
+        activeCell.setCellValue(messageSource.getMessage("statement.label.id", null, Locale.getDefault()));
+        activeCell = activeRow.createCell(1, CellType.STRING);
+        activeCell.setCellValue(messageSource.getMessage("statement.label.member", null, Locale.getDefault()));
+        activeCellIndex = 2;
+        for (User user : juries
+        ) {
+            activeCell = activeRow.createCell(activeCellIndex, CellType.STRING);
+            activeSheet.addMergedRegion(new CellRangeAddress(activeRowIndex, activeRowIndex, activeCellIndex, activeCellIndex + countCriterions - 1));
+            String juryFullName = user.getUserContact().getLastName() + " " + user.getUserContact().getFirstName() + user.getUserContact().getSecondName();
+            activeCell.setCellValue(juryFullName);
+            activeCellIndex += countCriterions;
+        }
+        activeCell = activeRow.createCell(activeCellIndex, CellType.STRING);
+        activeSheet.addMergedRegion(new CellRangeAddress(activeRowIndex, activeRowIndex, activeCellIndex, activeCellIndex + countCriterions - 1));
+        activeCell.setCellValue(messageSource.getMessage("statement.label.summaryMarks", null, Locale.getDefault()));
+        activeCellIndex += countCriterions;
+        activeCell = activeRow.createCell(activeCellIndex, CellType.STRING);
+        activeCell.setCellValue(messageSource.getMessage("statement.label.position", null, Locale.getDefault()));
+        nextRow();
+    }
+
+    private void fillMembers(List<Member> members, LinkedList<User> juries, LinkedList<Criterion> criterions) {
+        for (Member member : members
+        ) {
+            activeRow = activeSheet.createRow(activeRowIndex);
+            //ID
+            activeCell = activeRow.createCell(activeCellIndex, CellType.STRING);
+            activeSheet.addMergedRegion(new CellRangeAddress(activeRowIndex, activeRowIndex + member.getPerformances().size() + 1, activeCellIndex, activeCellIndex));
+            activeCell.setCellValue(member.getId());
+            activeCellIndex++;
+            //NAME
+            activeCell = activeRow.createCell(activeCellIndex, CellType.STRING);
+            activeSheet.addMergedRegion(new CellRangeAddress(activeRowIndex, activeRowIndex + member.getPerformances().size() + 1, activeCellIndex, activeCellIndex));
+            activeCell.setCellValue(member.getLastName() + " " + member.getName() + " " + member.getSecondName());
+            activeCellIndex++;
+
+            for (User jury : juries
+            ) {
+                int originalActiveCellIndex = activeCellIndex;
+                int originalActiveRowIndex = activeRowIndex;
+                for (Criterion criterion : criterions
+                ) {
+                    //Title of criterion
+                    activeCell = activeRow.createCell(activeCellIndex, CellType.STRING);
+                    activeCell.setCellValue(criterion.getName());
+                    activeCellIndex++;
+                    // TODO: 19.09.2019 сделать стиль для названий критерий маленький
+                }
+                activeCellIndex = originalActiveCellIndex;
+                activeRowIndex++;
+
+                for (Performance performance : member.getPerformances()
+                ) {
+                    ArrayList<Mark> currentMarks = new ArrayList<>();
+                    currentMarks.addAll(markService.findMarkByUserAndCriterion(performance, jury));
+
+                    activeRow = activeSheet.createRow(activeRowIndex);
+                    for (Criterion criterion : criterions
+                    ) {
+                        activeCell = activeRow.createCell(activeCellIndex, CellType.STRING);
+                        for (Mark mark : currentMarks
+                        ) {
+                            if (mark.getCriterion().equals(criterion)) {
+                                activeCell.setCellValue(mark.getValue());
+                            }
+
+                        }
+                        try {
+                            activeCell.getStringCellValue();
+                        } catch (Exception e) {
+                            activeCell.setCellValue("0");
+                        }
+
+                        activeCellIndex++;
+                    }
+                    activeCellIndex -= criterions.size();
+                    activeRowIndex++;
+                }
+                activeRowIndex = originalActiveRowIndex;
+                activeCellIndex += criterions.size();
+
+            }
+            activeCellIndex = 0;
+            activeRowIndex += (member.getPerformances().size() + 2);
+        }
+
     }
 
     private CellStyle createCellStyleForTitle() {
@@ -146,9 +264,25 @@ public class POIServiceImpl implements POIService {
         return cellStyle;
     }
 
-    private void nextRow(){
+    private CellStyle createCellStyleForLabelCategory() {
+        Font newFont = workbook.createFont();
+        newFont.setBold(true);
+        newFont.setColor(HSSFColor.HSSFColorPredefined.BLUE_GREY.getIndex());
+        newFont.setFontHeightInPoints((short) 10);
+        newFont.setItalic(false);
+
+        CellStyle cellStyle = workbook.createCellStyle();
+        cellStyle.setFont(newFont);
+        cellStyle.setWrapText(false);
+        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        cellStyle.setAlignment(HorizontalAlignment.LEFT);
+        return cellStyle;
+    }
+
+
+    private void nextRow() {
         activeRowIndex++;
-        activeCellIndex=0;
+        activeCellIndex = 0;
     }
 
     private void saveFile() {

@@ -1,7 +1,9 @@
 package app.controller;
 
 import app.model.Criterion;
+import app.model.Mark;
 import app.service.impl.CriterionServiceImpl;
+import app.service.impl.MarkServiceImpl;
 import app.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
@@ -22,6 +24,9 @@ public class CriterionController {
 
     @Autowired
     CriterionServiceImpl criterionService;
+
+    @Autowired
+    MarkServiceImpl markService;
 
     @Autowired
     ReloadableResourceBundleMessageSource messageSource;
@@ -65,7 +70,7 @@ public class CriterionController {
     @RequestMapping(value = "/criterion/delete/{id}", method = RequestMethod.GET)
     public String delete(@PathVariable long id) {
         Criterion criterion = criterionService.findCriterionById(id);
-        if (!criterion.getMarks().isEmpty()) {
+        if (!markService.findAllMarkByCriterion(criterion).isEmpty()) {
             errorMessage = messageSource.getMessage("error.deleteCriterionWithMarks", null, Locale.getDefault());
         } else {
             criterionService.delete(criterion);

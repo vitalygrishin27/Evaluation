@@ -12,6 +12,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -29,8 +30,21 @@ public class Criterion {
     @Column(name = "name",unique = true,nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "criterion",fetch = FetchType.LAZY)
-    private Collection<Mark> marks;
+ //   @OneToMany(mappedBy = "criterion",fetch = FetchType.LAZY)
+ //   private Collection<Mark> marks;
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Criterion criterion = (Criterion) o;
+        return id.equals(criterion.id) &&
+                name.equals(criterion.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
 }

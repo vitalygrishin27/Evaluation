@@ -135,11 +135,12 @@ public class OnlineController {
     }
 
     @RequestMapping(value = "/statement", method = RequestMethod.GET)
-    public void createStatement(){
+    public String createStatement(){
             poiService.createNewDocument("This application has no explicit mapping for /error, so you are seeing this as a fallback." +
                     "Wed Sep 18 16:33:32 EEST 2019" +
                     "There was an unexpected error (type=Internal Server Error, status=500)." +
                     "Error resolving template [statement], template might not exist or might not be ac");
+        return "redirect:/?lang=" + Locale.getDefault();
     }
 
 }

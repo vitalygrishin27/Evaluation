@@ -1,5 +1,6 @@
 package app.repository;
 
+import app.model.Criterion;
 import app.model.Mark;
 import app.model.Performance;
 import app.model.User;
@@ -12,5 +13,8 @@ import java.util.List;
 public interface MarkRepository extends JpaRepository<Mark,Long> {
 
     @Query("Select m from Mark m where m.user = :user and m.performance = :performance")
-    List<Mark> findMarkByUserAndCriterion(@Param("performance") Performance performance, @Param("user") User user);
+    List<Mark> findMarkByUserAndPerformance(@Param("performance") Performance performance, @Param("user") User user);
+
+    @Query("Select m from Mark m where m.criterion = :criterion")
+    List<Mark> findAllMarkByCriterion(@Param("criterion") Criterion criterion);
 }

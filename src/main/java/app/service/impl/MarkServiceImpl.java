@@ -1,5 +1,6 @@
 package app.service.impl;
 
+import app.model.Criterion;
 import app.model.Mark;
 import app.model.Performance;
 import app.model.User;
@@ -23,6 +24,11 @@ public class MarkServiceImpl implements MarkService {
 
     @Override
     public List<Mark> findMarkByUserAndCriterion(Performance performance, User user) {
-        return repository.findMarkByUserAndCriterion(performance,user);
+        return repository.findMarkByUserAndPerformance(performance,user);
+    }
+
+    @Override
+    public List<Mark> findAllMarkByCriterion(Criterion criterion) {
+        return repository.findAllMarkByCriterion(criterion);
     }
 }

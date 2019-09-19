@@ -1,5 +1,6 @@
 package app.service;
 
+import app.model.Criterion;
 import app.model.Mark;
 import app.model.Performance;
 import app.model.User;
@@ -10,4 +11,6 @@ public interface MarkService {
     void save(Mark mark);
 
     List<Mark> findMarkByUserAndCriterion(Performance performance, User user);
+
+    List<Mark> findAllMarkByCriterion(Criterion criterion);
 }
