@@ -31,6 +31,8 @@ public class POIServiceImpl implements POIService {
     private int MARK_COLUMN_WIDTH = 900;
     private int ID_COLUMN_WIDTH = 1000;
     private int MEMBER_NAME_COLUMN_WIDTH = 5000;
+    private Map<Member,Integer> summaryMarkByMember;
+    private Map<Member,Integer> placeMember;
 
 
     @Autowired
@@ -45,8 +47,16 @@ public class POIServiceImpl implements POIService {
     @Autowired
     MessageSource messageSource;
 
+    @Autowired
+    ConfigurationServiceImpl configurationService;
+
 
     public void createNewDocument(String contestName) {
+        // Подготовка данных
+        // Общие оценки всех участников
+        summaryMarkByMember=markService.getSummaryMarkByAllPerformances();
+        // Места участников
+        placeMember=markService.getPlaces(summaryMarkByMember);
 
         // Создать новый документ
         workbook = new HSSFWorkbook();
@@ -57,7 +67,7 @@ public class POIServiceImpl implements POIService {
         // Коррекция полей и ориентации документа
         editSizeAndBorder();
         // Заполнить старницы по категориям
-        fillSheets(contestName);
+        fillSheets(configurationService.getConfiguration().getContestName());
         // Сохранить файл
         saveFile();
 
@@ -123,7 +133,9 @@ public class POIServiceImpl implements POIService {
         activeCell.setCellValue(contestName);
         int countForIncreaseHeightRow = contestName.length() / 70;
         if (countForIncreaseHeightRow > 0) {
-            activeRow.setHeightInPoints(30 * countForIncreaseHeightRow);
+            activeRow.setHeightInPoints(25 * (countForIncreaseHeightRow+1));
+        }else{
+            activeRow.setHeightInPoints(30);
         }
         activeSheet.addMergedRegion(new CellRangeAddress(activeRowIndex, activeRowIndex, activeCellIndex, summaryColsInPage));
         activeCell.setCellStyle(cellStyleMap.get("title"));
@@ -135,6 +147,7 @@ public class POIServiceImpl implements POIService {
         activeCell = activeRow.createCell(0, CellType.STRING);
         activeCell.setCellValue(subTitle);
         activeSheet.addMergedRegion(new CellRangeAddress(activeRowIndex, activeRowIndex, activeCellIndex, summaryColsInPage));
+        activeRow.setHeightInPoints(20);
         activeCell.setCellStyle(cellStyleMap.get("subTitle"));
         nextRow();
     }
@@ -253,6 +266,12 @@ public class POIServiceImpl implements POIService {
                     activeCellIndex -= criterions.size();
                     activeRowIndex++;
                 }
+                //Заполнение общих оценок по каждому жюри
+                activeRow = activeSheet.getRow(activeRowIndex);
+                activeCell = activeRow.createCell(activeCellIndex, CellType.STRING);
+                activeSheet.addMergedRegion(new CellRangeAddress(activeRowIndex, activeRowIndex, activeCellIndex, activeCellIndex + criterions.size() - 1));
+                activeCell.setCellValue(markService.getSummaryMarkByAllPerformancesByConcreteJury(member, jury));
+                activeCell.setCellStyle(cellStyleMap.get("summaryMarkByConcreteJury"));
                 activeRowIndex = originalActiveRowIndex;
                 activeCellIndex += criterions.size();
 
@@ -274,9 +293,9 @@ public class POIServiceImpl implements POIService {
             activeRowIndex++;
 
             // Просчет суммарной оценки по каждому критерию
-            originalActiveRowIndex=activeRowIndex;
-            for (int j=0; j<member.getPerformances().size();j++){
-                activeRow=activeSheet.getRow(activeRowIndex+j);
+            originalActiveRowIndex = activeRowIndex;
+            for (int j = 0; j < member.getPerformances().size(); j++) {
+                activeRow = activeSheet.getRow(activeRowIndex + j);
                 originalActiveCellIndex = activeCellIndex;
 
                 for (int i = 0; i < criterions.size(); i++) {
@@ -289,28 +308,28 @@ public class POIServiceImpl implements POIService {
                         activeCellIndex -= criterions.size();
                     }
                     activeCellIndex = originalActiveCellIndex;
-                    activeCell = activeRow.createCell(activeCellIndex + i,CellType.STRING);
+                    activeCell = activeRow.createCell(activeCellIndex + i, CellType.STRING);
                     activeCell.setCellValue(summaryByConcreteCriterion);
                 }
             }
-            //Заполнение общих оценок по каждому жюри
-            activeRow=activeSheet.getRow(activeRow.getRowNum()+1);
-            originalActiveCellIndex=activeCellIndex;
-            activeCellIndex -= criterions.size();
-            while (activeCellIndex > 1) {
-                activeCell = activeRow.getCell(activeCellIndex);
-                activeSheet.addMergedRegion(new CellRangeAddress(activeRowIndex, activeRowIndex, activeCellIndex, activeCellIndex + criterions.size() - 1));
-                activeCell.setCellValue(markService.);
-                summaryByConcreteCriterion += activeCell.getNumericCellValue();
-                activeCellIndex -= criterions.size();
-            }
-
+            //Заполнение общей оценки за все Performances
+            activeRowIndex = activeRow.getRowNum() + 1;
+            activeRow = activeSheet.getRow(activeRowIndex);
+            activeCell = activeRow.createCell(activeCellIndex, CellType.STRING);
+            activeSheet.addMergedRegion(new CellRangeAddress(activeRowIndex, activeRowIndex, activeCellIndex, activeCellIndex + criterions.size() - 1));
+            activeCell.setCellValue(summaryMarkByMember.get(member));
+            activeCell.setCellStyle(cellStyleMap.get("summaryMarkByConcreteJury"));
+            activeRowIndex = originalActiveRowIndex;
+            activeCellIndex += criterions.size();
 
 
             //Заполняем место, которое занял участник
-            activeRowIndex=originalActiveRowIndex-1;
-            activeCellIndex+=criterions.size();
+            activeRowIndex = originalActiveRowIndex - 1;
+            activeRow=activeSheet.getRow(activeRowIndex);
+            activeCell = activeRow.createCell(activeCellIndex, CellType.STRING);
             activeSheet.addMergedRegion(new CellRangeAddress(activeRowIndex, activeRowIndex + member.getPerformances().size() + 1, activeCellIndex, activeCellIndex));
+            activeCell.setCellValue(placeMember.get(member));
+            activeCell.setCellStyle(cellStyleMap.get("summaryMark"));
 
             //Переход к следующему участнику
             activeCellIndex = 0;
@@ -327,6 +346,10 @@ public class POIServiceImpl implements POIService {
         cellStyleMap.put("criterionName", createCellStyleForCriterionName());
         cellStyleMap.put("mark", createCellStyleForMark());
         cellStyleMap.put("NoneMark", createCellStyleForNoneMark());
+        cellStyleMap.put("summaryMarkByConcreteJury", createCellStyleForSummaryMarkByConcreteJury());
+        cellStyleMap.put("summaryMark", createCellStyleForSummaryMark());
+
+
     }
 
     private CellStyle createCellStyleForTitle() {
@@ -427,6 +450,36 @@ public class POIServiceImpl implements POIService {
         newFont.setBold(false);
         newFont.setColor(HSSFColor.HSSFColorPredefined.DARK_RED.getIndex());
         newFont.setFontHeightInPoints((short) 8);
+        newFont.setItalic(false);
+
+        CellStyle cellStyle = workbook.createCellStyle();
+        cellStyle.setFont(newFont);
+        cellStyle.setWrapText(false);
+        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        return cellStyle;
+    }
+
+    private CellStyle createCellStyleForSummaryMarkByConcreteJury() {
+        Font newFont = workbook.createFont();
+        newFont.setBold(true);
+        newFont.setColor(HSSFColor.HSSFColorPredefined.DARK_BLUE.getIndex());
+        newFont.setFontHeightInPoints((short) 9);
+        newFont.setItalic(false);
+
+        CellStyle cellStyle = workbook.createCellStyle();
+        cellStyle.setFont(newFont);
+        cellStyle.setWrapText(false);
+        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        return cellStyle;
+    }
+
+    private CellStyle createCellStyleForSummaryMark() {
+        Font newFont = workbook.createFont();
+        newFont.setBold(true);
+        newFont.setColor(HSSFColor.HSSFColorPredefined.GREEN.getIndex());
+        newFont.setFontHeightInPoints((short) 12);
         newFont.setItalic(false);
 
         CellStyle cellStyle = workbook.createCellStyle();

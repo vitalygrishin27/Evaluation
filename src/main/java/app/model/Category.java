@@ -28,7 +28,7 @@ public class Category {
     @Column(name = "category_name",nullable = false,unique = true)
     private String categoryName;
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private Collection<Member> members;
 
     @ManyToMany(fetch = FetchType.LAZY)

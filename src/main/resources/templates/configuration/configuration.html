@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet"/>
+    <link href="../static/css/configuration/configuration.css" th:href="@{/css/configuration/configuration.css}"
+          rel="stylesheet"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+    <link href="../../static/css/spring-core.css"
+          th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
+    <title th:utext="${title}"></title>
+</head>
+<body>
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"></th:block>
+
+
+<form name='f' th:action="@{/configuration}" method='POST'>
+    <div th:if="${errorMessage} != null" class="error"><span th:utext="${errorMessage}"></span></div>
+    <table>
+        <tr>
+            <th colspan="2" th:utext="#{configuration.label.tableTitleEdit}">Configuration</th>
+        </tr>
+        <tr>
+
+            <td colspan="2"><input type="hidden" id="id" name='id' th:value="${configuration.id}" required></td>
+        </tr>
+        <tr>
+            <th><label for="contestName"><b th:utext="#{label.contestName}">LastName</b></label></th>
+            <td><input type="text" id="contestName" name='contestName' th:value="${configuration.contestName}"></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button type="submit" th:utext="#{member.label.save}">Save</button>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><a class="cancelHref" href="/" th:href="@{/?lang=} + ${#request.Locale.getDefault()}"
+                               th:utext="#{label.cancel}">Назад</a></td>
+        </tr>
+
+    </table>
+
+</form>
+
+</body>
+
+</html>

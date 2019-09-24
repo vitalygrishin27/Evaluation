@@ -4,6 +4,7 @@ import app.model.*;
 import app.service.PerformanceService;
 import app.service.UserService;
 import app.service.impl.CategoryServiceImpl;
+import app.service.impl.ConfigurationServiceImpl;
 import app.service.impl.PerformanceServiceImpl;
 import app.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class MainController {
 
     @Autowired
     ReloadableResourceBundleMessageSource messageSource;
+
+    @Autowired
+    ConfigurationServiceImpl configurationService;
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String welcomePage(WebRequest webRequest, Model model) {
@@ -91,4 +95,19 @@ public class MainController {
         }
         return "403Page";
     }
+
+
+    @RequestMapping(value = "/configuration", method = RequestMethod.GET)
+    public String configure(Model model) {
+        model.addAttribute("title", messageSource.getMessage("pageTitle.configuration", null, Locale.getDefault()));
+        model.addAttribute("configuration",configurationService.getConfiguration());
+        return "configuration/configuration";
+    }
+    @RequestMapping(value = "/configuration", method = RequestMethod.POST)
+    public String configureSet(@ModelAttribute("configuration") Configuration configuration) {
+        System.out.println(configuration.getContestName());
+        configurationService.update(configuration);
+        return "redirect:/?lang=" + Locale.getDefault();
+    }
+
 }
