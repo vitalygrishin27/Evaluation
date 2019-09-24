@@ -107,6 +107,7 @@ public class CategoryController {
     @Transactional
     @RequestMapping(value = "/category/editsave", method = RequestMethod.POST)
     public String editsave(@ModelAttribute("category") Category category, @ModelAttribute("criterionWrapper") CriterionWrapper criterionWrapper) {
+        // TODO: 24.09.2019 реализовать проверку нет ли оценок по данному критерию в данной категории 
         category.setCriterions(criterionWrapper.getListCriterion());
         try {
             entityManager.unwrap(Session.class).update(category);

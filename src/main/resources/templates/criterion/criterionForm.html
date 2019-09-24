@@ -2,10 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet"/>
-    <link href="../static/css/category/categories.css" th:href="@{/css/category/categories.css}" rel="stylesheet"/>
+    <link href="../static/css/criterion/criterions.css" th:href="@{/css/criterion/criterions.css}" rel="stylesheet"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+  <!--  <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
           th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
           rel="stylesheet" media="screen"/>
 
@@ -13,7 +13,7 @@
             th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
 
     <link href="../../static/css/spring-core.css"
-          th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
+          th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>  -->
     <title th:utext="${title}"></title>
 </head>
 <body>
@@ -25,11 +25,11 @@
     <div th:if="${errorMessage} != null" class="error"><span th:utext="${errorMessage}"></span></div>
     <table>
         <tr>
-            <th colspan="2" th:utext="#{criterion.label.tableTitleCreate}">Creating User</th>
+            <th colspan="2" th:utext="#{criterion.label.tableTitleCreate}">Creating Criterion</th>
         </tr>
         <tr>
             <th><label for="criterionName"><b th:utext="#{criterion.label.name}">Name</b></label></th>
-            <td><input type="text" id="criterionName" name='name' required></td>
+            <td><input type="text" id="criterionName" name='name' maxlength="29" required></td>
         </tr>
 
         <tr>

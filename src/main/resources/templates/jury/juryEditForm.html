@@ -6,7 +6,7 @@
     <link href="../static/css/href.css" th:href="@{/css/href.css}" rel="stylesheet"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+   <!-- <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
           th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
           rel="stylesheet" media="screen"/>
 
@@ -14,7 +14,7 @@
             th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
 
     <link href="../../static/css/spring-core.css"
-          th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
+          th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>  -->
     <title th:utext="${title}"></title>
 </head>
 <body>
@@ -29,11 +29,11 @@
             </tr>
             <tr>
                 <th><label for="uname" th:utext="#{label.username}"><b>Username</b></label></th>
-                <td> <input type="text"  id="uname"  name='login' th:value="${jury.login}" required></td>
+                <td> <input type="text"  id="uname"  name='login' th:value="${jury.login}" maxlength="29" required></td>
             </tr>
             <tr>
                 <th><label for="psw"><b th:utext="#{label.password}">Password</b></label></th>
-                <td> <input type="password" id="psw" name='encrytedPassword' th:value="${jury.encrytedPassword}" required></td>
+                <td> <input type="password" id="psw" name='encrytedPassword' th:value="${jury.encrytedPassword}" maxlength="119" required></td>
             </tr>
             <tr>
                 <th><label for="role"><b th:utext="#{label.role}">Role</b></label></th>
@@ -48,19 +48,19 @@
             </tr>
             <tr>
                 <th><label for="lastName"><b th:utext="#{label.lastName}">LastName</b></label></th>
-                <td><input type="text" id="lastName" name='lastName' th:value="${jury.userContact.lastName}" required></td>
+                <td><input type="text" id="lastName" name='lastName' th:value="${jury.userContact.lastName}" maxlength="19"></td>
             </tr>
             <tr>
                 <th><label for="firstName"><b th:utext="#{label.firstName}">FirstName</b></label></th>
-                <td><input type="text" id="firstName" name='firstName' th:value="${jury.userContact.firstName}" required></td>
+                <td><input type="text" id="firstName" name='firstName' th:value="${jury.userContact.firstName}" maxlength="119" required></td>
             </tr>
             <tr>
                 <th><label for="secondName"><b th:utext="#{label.secondName}">SecondName</b></label></th>
-                <td><input type="text" id="secondName" name='secondName' th:value="${jury.userContact.secondName}"></td>
+                <td><input type="text" id="secondName" name='secondName' th:value="${jury.userContact.secondName}" maxlength="19"></td>
             </tr>
             <tr>
                 <th><label for="office"><b th:utext="#{label.office}">Office</b></label></th>
-                <td><input type="text" id="office" name='office' th:value="${jury.userContact.office}"></td>
+                <td><input type="text" id="office" name='office' th:value="${jury.userContact.office}" maxlength="499"></td>
             </tr>
 
             <tr>

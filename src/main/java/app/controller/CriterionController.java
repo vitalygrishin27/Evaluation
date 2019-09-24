@@ -2,6 +2,7 @@ package app.controller;
 
 import app.model.Criterion;
 import app.model.Mark;
+import app.service.impl.CategoryServiceImpl;
 import app.service.impl.CriterionServiceImpl;
 import app.service.impl.MarkServiceImpl;
 import app.utils.WebUtils;
@@ -72,6 +73,8 @@ public class CriterionController {
         Criterion criterion = criterionService.findCriterionById(id);
         if (!markService.findAllMarkByCriterion(criterion).isEmpty()) {
             errorMessage = messageSource.getMessage("error.deleteCriterionWithMarks", null, Locale.getDefault());
+        } else if (!criterionService.findAllCategoryWithCriterion(criterion).isEmpty()) {
+            errorMessage = messageSource.getMessage("error.deleteCriterionWithCategory", null, Locale.getDefault());
         } else {
             criterionService.delete(criterion);
         }

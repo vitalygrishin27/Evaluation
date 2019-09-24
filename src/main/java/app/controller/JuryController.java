@@ -74,6 +74,7 @@ public class JuryController {
     @RequestMapping(value = "/jury/edit/{id}")
     public String edit(@PathVariable int id, Model model) {
         app.model.User user = userService.findUserById(id);
+
         model.addAttribute("jury", user);
         model.addAttribute("title", messageSource.getMessage("pageTitle.jury.edit", null, Locale.getDefault()));
         return "jury/juryEditForm";
@@ -92,6 +93,11 @@ public class JuryController {
         } else {
             user.setUserContact(contact);
             //Проверка, если изменилась роль с админа на юзера, а этот админ последний, тогда ошибка
+            if (user.getRole().equals(messageSource.getMessage("option.admin", null, Locale.getDefault()))) {
+                user.setRole("admin");
+            } else {
+                user.setRole("user");
+            }
             if (userService.findUserById(user.getUserId()).getRole().equals("admin") &&
                     !user.getRole().equals("admin") &&
                     userService.findAllAdmins().size() == 1) {

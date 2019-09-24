@@ -26,7 +26,7 @@ public class UserContact {
     @Column(name = "second_name",nullable = true)
     private String secondName;
 
-    @Column(name = "last_name",nullable = false)
+    @Column(name = "last_name",nullable = true)
     private String lastName;
 
     @Column(name = "office",nullable = true)

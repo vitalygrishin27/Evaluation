@@ -19,3 +19,11 @@ border-color: white;
 td {
 background: #D8E6F3;
 }
+
+input:invalid {
+  border: 1px dashed red;
+}
+
+input:valid {
+  border: 1px solid black;
+}

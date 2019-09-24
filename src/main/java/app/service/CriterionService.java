@@ -1,5 +1,6 @@
 package app.service;
 
+import app.model.Category;
 import app.model.Criterion;
 
 import java.util.List;
@@ -16,4 +17,6 @@ public interface CriterionService {
     void delete(Criterion criterion);
 
     void update(Criterion criterion);
+
+    List<Category> findAllCategoryWithCriterion(Criterion criterion);
 }

@@ -6,7 +6,7 @@
     <link href="../static/css/href.css" th:href="@{/css/href.css}" rel="stylesheet"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+   <!-- <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
           th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
           rel="stylesheet" media="screen"/>
 
@@ -14,7 +14,7 @@
             th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
 
     <link href="../../static/css/spring-core.css"
-          th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
+          th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>  -->
     <title th:utext="${title}"></title>
 </head>
 <body>
@@ -25,14 +25,14 @@
 <form name='f' th:action="@{/criterion/editsave}" method='POST'>
         <table>
             <tr>
-                <th colspan="2" th:utext="#{criterion.label.tableTitleEdit}">Criterion List Edit</th>
+                <th colspan="2" th:utext="#{criterion.label.tableTitleEdit}">Criterion Edit</th>
             </tr>
             <tr>
                 <td colspan="2"><input type="hidden" id="id" name='id' th:value="${criterion.id}" required></td>
             </tr>
             <tr>
                 <th><label for="criterionName" th:utext="#{criterion.label.title}"><b>Name</b></label></th>
-                <td><input type="text" id="criterionName" name='name' th:value="${criterion.name}" required></td>
+                <td><input type="text" id="criterionName" name='name' th:value="${criterion.name}"  maxlength="29" required></td>
             </tr>
 
             <tr>
