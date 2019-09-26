@@ -19,7 +19,7 @@
 </head>
 <body>
 <!-- Include _menu.html -->
-<th:block th:include="/_menu"></th:block>
+<th:block th:include="_menu"></th:block>
 
 <div class="container">
     <div th:if="${errorMessage} != null" class="error"><span th:utext="${errorMessage}"></span></div>

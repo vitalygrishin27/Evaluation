@@ -16,7 +16,7 @@
 </head>
 <body>
 <!-- Include _menu.html -->
-<th:block th:include="/_menu"></th:block>
+<th:block th:include="_menu"></th:block>
 
 <form id="myForm" th:action="@{/online/saveTurnNumber}" name='f' method='POST'>
     <label hidden for="json"><b th:utext="#{member.label.id}">MemberId</b></label>

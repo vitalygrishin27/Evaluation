@@ -18,7 +18,7 @@
 </head>
 <body>
 <!-- Include _menu.html -->
-<th:block th:include="/_menu"></th:block>
+<th:block th:include="_menu"></th:block>
 
 <div class="error_message"><h2><span th:utext="${errorMessage}"></span></h2></div>
 <form name='f' th:action="@{/member/save}" method='POST'>
