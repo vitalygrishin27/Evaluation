@@ -47,7 +47,7 @@ public class MainController {
             Locale.setDefault(Locale.forLanguageTag("ru"));
         }
         model.addAttribute("title", messageSource.getMessage("pageTitle.welcome", null, Locale.getDefault()));
-        return "/welcomePage";
+        return "/templates/welcomePage.html";
     }
 
     //default page after login (WebSecurityConfig)
