@@ -25,18 +25,18 @@ public class Mark {
     private int value;
 
     //связь с членом жюри User
-    @ManyToOne(optional = false,cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
     @JoinColumn(name ="user_id")
     private User user;
 
     // связь с Performance
-    @ManyToOne(optional = false,cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
     @JoinColumn(name ="performance_id")
     private Performance performance;
 
 
     //Связь с критерией
-    @ManyToOne(optional = false,cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
     @JoinColumn(name ="criterion_id")
     private Criterion criterion;
 

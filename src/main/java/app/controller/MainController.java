@@ -5,6 +5,7 @@ import app.service.PerformanceService;
 import app.service.UserService;
 import app.service.impl.CategoryServiceImpl;
 import app.service.impl.ConfigurationServiceImpl;
+import app.service.impl.MarkServiceImpl;
 import app.service.impl.PerformanceServiceImpl;
 import app.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class MainController {
 
     @Autowired
     ConfigurationServiceImpl configurationService;
+
+    @Autowired
+    MarkServiceImpl markService;
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String welcomePage(WebRequest webRequest, Model model) {
@@ -103,11 +107,20 @@ public class MainController {
         model.addAttribute("configuration",configurationService.getConfiguration());
         return "configuration/configuration";
     }
+
     @RequestMapping(value = "/configuration", method = RequestMethod.POST)
     public String configureSet(@ModelAttribute("configuration") Configuration configuration) {
         System.out.println(configuration.getContestName());
         configurationService.update(configuration);
         return "redirect:/?lang=" + Locale.getDefault();
     }
+
+    @RequestMapping(value = "/configuration/deleteAllMarks", method = RequestMethod.GET)
+    public String deleteAllMarks() {
+       markService.deleteAllMarks();
+
+        return "redirect:/?lang=" + Locale.getDefault();
+    }
+
 
 }

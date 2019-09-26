@@ -3,9 +3,11 @@ package app.controller;
 import app.model.Category;
 import app.model.Criterion;
 import app.model.CriterionWrapper;
+import app.model.Mark;
 import app.service.impl.CategoryServiceImpl;
 import app.service.impl.CriterionServiceImpl;
 
+import app.service.impl.MarkServiceImpl;
 import app.utils.WebUtils;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,9 @@ public class CategoryController {
 
     @Autowired
     ReloadableResourceBundleMessageSource messageSource;
+
+    @Autowired
+    MarkServiceImpl markService;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -107,10 +112,30 @@ public class CategoryController {
     @Transactional
     @RequestMapping(value = "/category/editsave", method = RequestMethod.POST)
     public String editsave(@ModelAttribute("category") Category category, @ModelAttribute("criterionWrapper") CriterionWrapper criterionWrapper) {
-        // TODO: 24.09.2019 реализовать проверку нет ли оценок по данному критерию в данной категории 
-        category.setCriterions(criterionWrapper.getListCriterion());
+        // /Проверка нет ли оценок по данному критерию в данной категории, если есть, то удалить критерий из категории нельзя
+        Category originalCategory = categoryService.findCategoryById(category.getId());
+        List<Criterion> originalListOfCriterion = originalCategory.getCriterions();
+        originalListOfCriterion.removeAll(criterionWrapper.getListCriterion());
+
+        if (!originalListOfCriterion.isEmpty()) {
+            for (Criterion criterion : originalListOfCriterion
+            ) {
+                for (Mark mark : markService.findAllMarkByCriterion(criterion)
+                ) {
+                    if (mark.getPerformance().getMember().getCategory().equals(category)) {
+                        originalListOfCriterion.addAll(criterionWrapper.getListCriterion());
+                        errorMessage = messageSource.getMessage("error.deleteCriterionFromCategoryWithMarks", null, Locale.getDefault());
+                        return "redirect:/categories?lang=" + Locale.getDefault();
+                    }
+                }
+            }
+        }
+
+        originalCategory.setCriterions(criterionWrapper.getListCriterion());
+        originalCategory.setCategoryName(category.getCategoryName());
+     //   category.setCriterions(criterionWrapper.getListCriterion());
         try {
-            entityManager.unwrap(Session.class).update(category);
+            entityManager.unwrap(Session.class).update(originalCategory);
         } catch (Exception e) {
             errorMessage = e.getMessage();
             return "redirect:/category/categoryForm?lang=" + Locale.getDefault();

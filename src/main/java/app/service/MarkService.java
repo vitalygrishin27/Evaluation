@@ -17,4 +17,7 @@ public interface MarkService {
     Map<Member, Integer> getSummaryMarkByAllPerformances();
 
     Map<Member, Integer> getPlaces(Map<Member, Integer> summaryMark);
+
+    void deleteAllMarks();
 }
+

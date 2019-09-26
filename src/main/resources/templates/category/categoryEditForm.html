@@ -32,7 +32,7 @@
             </tr>
             <tr>
                 <th><label for="categoryName" th:utext="#{category.label.title}"><b>Name</b></label></th>
-                <td><input type="text" id="categoryName" name='categoryName' th:value="${category.categoryName}" required></td>
+                <td><input type="text" id="categoryName" name='categoryName' th:value="${category.categoryName}" maxlength="39" required></td>
             </tr>
             <tr>
                 <th><label><b th:utext="#{criterions.label.name}">Name</b></label></th>

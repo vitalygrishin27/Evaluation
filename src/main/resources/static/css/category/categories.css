@@ -92,6 +92,14 @@ span.psw {
     padding-top: 16px;
 }
 
+input:invalid {
+  border: 1px dashed red;
+}
+
+input:valid {
+  border: 1px solid black;
+}
+
 /* Change styles for span and cancel button on extra small screens */
 @media screen and (max-width: 300px) {
     span.psw {
