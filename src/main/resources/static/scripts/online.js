@@ -6,6 +6,12 @@ $(document).ready( function () {
     getNewMarksForActivePerformance();   //единоразовый опрос сервера
     online(); //запустить переодический опрос сервера
 
+
+$(".marks").click(function(){
+  alert(this.title);
+});
+
+
  });
 
 
@@ -72,3 +78,4 @@ function coloringCells(){
             }
         }
 }
+
