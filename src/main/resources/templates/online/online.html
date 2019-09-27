@@ -97,6 +97,7 @@
  window.onload = function() {
     var isSortable = /*[[${isSortable}]]*/;
 
+
     if(isSortable){
             //Сортировка списка
     var sort = [];
@@ -114,6 +115,8 @@
         $("#myForm").submit($.cookie('sort')); // Submit the form
     });
 
+    }else{
+    document.getElementById('submitBtn').style.visibility = 'hidden';
     }
 
 

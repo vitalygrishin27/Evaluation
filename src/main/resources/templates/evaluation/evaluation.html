@@ -16,16 +16,16 @@
     <!--   <div th:if="${not #lists.isEmpty(members)}">  -->
     <table th:if="${performance} != null">
         <tr>
-            <th colspan="3"
+            <th class="memberName" colspan="3"
                 th:utext="${performance.member.lastName}+ '  ' + ${performance.member.name} + '  ' + ${performance.member.secondName}">
                 Member
             </th>
         </tr>
         <tr>
-            <th colspan="3" th:utext="${performance.member.office}">Office</th>
+            <th class="officeName" colspan="3" th:utext="${performance.member.office}">Office</th>
         </tr>
         <tr>
-            <th colspan="3" th:utext="${performance.performanceName}">Performance</th>
+            <th class="performanceName" colspan="3" th:utext="${performance.performanceName}">Performance</th>
         </tr>
 
         <form id="evaluateWrapper" name='f' th:action="@{/evaluation/evaluate}" method='POST'
