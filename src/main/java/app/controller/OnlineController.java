@@ -2,6 +2,7 @@ package app.controller;
 
 import app.model.*;
 import app.service.UserService;
+import app.service.impl.ConfigurationServiceImpl;
 import app.service.impl.POIServiceImpl;
 import app.service.impl.PerformanceServiceImpl;
 import org.apache.log4j.Logger;
@@ -31,6 +32,9 @@ public class OnlineController {
 
     @Autowired
     PerformanceServiceImpl performanceService;
+
+    @Autowired
+    ConfigurationServiceImpl configurationService;
 
     @Autowired
     UserService userService;
@@ -64,6 +68,7 @@ public class OnlineController {
         }
 
         model.addAttribute("performancesWrapperListByCategory", performanceWrapperListByCategory);
+        model.addAttribute("isSortable", configurationService.getConfiguration().getIsSortable());
         return "online/online";
     }
 

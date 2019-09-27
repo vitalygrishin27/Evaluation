@@ -10,6 +10,6 @@ public interface ConfigurationRepository extends JpaRepository<Configuration,Lon
 
     @Transactional
     @Modifying
-    @Query("UPDATE Configuration c SET c.contestName = ?2 WHERE c.id = ?1")
-    void update(Long id, String configurationName);
+    @Query("UPDATE Configuration c SET c.contestName = ?2, c.isSortable = ?3 WHERE c.id = ?1")
+    void update(Long id, String configurationName,Boolean isSortable);
 }

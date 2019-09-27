@@ -6,15 +6,15 @@
           rel="stylesheet"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-  <!--  <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
-          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
-          rel="stylesheet" media="screen"/>
+    <!--  <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+            th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
+            rel="stylesheet" media="screen"/>
 
-    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
-            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+      <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+              th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
 
-    <link href="../../static/css/spring-core.css"
-          th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>  -->
+      <link href="../../static/css/spring-core.css"
+            th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>  -->
     <title th:utext="${title}"></title>
 </head>
 <body>
@@ -36,9 +36,20 @@
             <th><label for="contestName"><b th:utext="#{label.contestName}">ContestName</b></label></th>
             <td><input type="text" id="contestName" name='contestName' th:value="${configuration.contestName}"></td>
         </tr>
+
+
         <tr>
-            <td colspan="2"><a th:href="@{/configuration/deleteAllMarks?lang=} + ${#request.Locale.getDefault()}" th:utext="#{configuration.label.deleteAllMarks}"
-                   onclick="return confirm('Вы уверены в удалении?')">Delete</a></td>
+            <td colspan="2">
+                <input type="checkbox" id="${configuration.isSortable}" th:utext="#{label.isSortable}"
+                       th:field="*{configuration.isSortable}" th:value="${configuration.isSortable}" th:checked="${configuration.isSortable}"></input><br>
+
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2"><a th:href="@{/configuration/deleteAllMarks?lang=} + ${#request.Locale.getDefault()}"
+                               th:utext="#{configuration.label.deleteAllMarks}"
+                               onclick="return confirm('Вы уверены в удалении?')">Delete</a></td>
         </tr>
         <tr>
             <td colspan="2">

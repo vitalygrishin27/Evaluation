@@ -5,38 +5,10 @@ $(document).ready( function () {
     //Запуск опроса сервера на наличие новых оценок активного performance
     getNewMarksForActivePerformance();   //единоразовый опрос сервера
     online(); //запустить переодический опрос сервера
-        //Сортировка списка
-    var sort = [];
-    $('.sortable-ul li').each(function(){
-        sort.push($(this).data('id'));
-    });
-    $.cookie('sort', JSON.stringify(sort));
-        //Сохранить сортировку из cookie в DB при нажатии кнопки сохранить
-    $("#submitBtn").click(function(){
-        var lock = document.getElementById('skm_LockPane');
-        lock.className = 'LockOn';
-        var formSentCount = $.cookie('sort');
-        var element = document.getElementById("json");
-        element.value = formSentCount;
-        $("#myForm").submit($.cookie('sort')); // Submit the form
-    });
+
  });
 
-//Реализация сортировки
-$( function() {
-    $('.sortable-ul, .sortable-ul li > ul').sortable({
-        stop: function(event, ui) {
-        // Собираем все data-id в массив.
-            var sort = [];
-            $('.sortable-ul li').each(function(){
-                sort.push($(this).data('id'));
-            });
-		    // И сохраняем его в cookie в виде строки JSON.
-        $.cookie('sort', JSON.stringify(sort));
-		     //  alert($.cookie('sort'));
-	    }
-    });
-});
+
 
 //Отправка на сервер активного id Performance
 function send(ids){

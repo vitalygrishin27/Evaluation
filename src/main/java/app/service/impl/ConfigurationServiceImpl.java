@@ -19,6 +19,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
     @Override
     public void update(Configuration configuration) {
-        repository.update(configuration.getId(),configuration.getContestName());
+        repository.update(configuration.getId(),configuration.getContestName(),configuration.getIsSortable());
     }
 }

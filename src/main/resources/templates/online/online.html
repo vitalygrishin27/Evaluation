@@ -91,5 +91,59 @@
     <button id="submitBtn" th:utext="#{label.saveTurnNumber}">Save turn</button>
 </form>
 <div id="skm_LockPane" class="LockOff"></div>
+
+<script th:inline="javascript">
+  /*<![CDATA[*/
+ window.onload = function() {
+    var isSortable = /*[[${isSortable}]]*/;
+
+    if(isSortable){
+            //Сортировка списка
+    var sort = [];
+    $('.sortable-ul li').each(function(){
+        sort.push($(this).data('id'));
+    });
+    $.cookie('sort', JSON.stringify(sort));
+        //Сохранить сортировку из cookie в DB при нажатии кнопки сохранить
+    $("#submitBtn").click(function(){
+        var lock = document.getElementById('skm_LockPane');
+        lock.className = 'LockOn';
+        var formSentCount = $.cookie('sort');
+        var element = document.getElementById("json");
+        element.value = formSentCount;
+        $("#myForm").submit($.cookie('sort')); // Submit the form
+    });
+
+    }
+
+
+};
+
+//Реализация сортировки
+$( function() {
+var isSortable = /*[[${isSortable}]]*/;
+if(isSortable){
+    $('.sortable-ul, .sortable-ul li > ul').sortable({
+        stop: function(event, ui) {
+        // Собираем все data-id в массив.
+            var sort = [];
+            $('.sortable-ul li').each(function(){
+                sort.push($(this).data('id'));
+            });
+		    // И сохраняем его в cookie в виде строки JSON.
+        $.cookie('sort', JSON.stringify(sort));
+		     //  alert($.cookie('sort'));
+	    }
+    });
+    }
+});
+
+
+
+/*]]>*/
+</script>
+
 </body>
+
+
 </html>

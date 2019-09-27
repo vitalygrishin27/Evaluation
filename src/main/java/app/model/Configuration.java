@@ -20,4 +20,7 @@ public class Configuration {
 
     @Column(name = "contest_name",nullable = false)
     private String contestName;
+
+    @Column(name = "is_sortable",nullable = false)
+    private Boolean isSortable;
 }
