@@ -5,7 +5,10 @@ import app.service.UserService;
 import app.service.impl.ConfigurationServiceImpl;
 import app.service.impl.POIServiceImpl;
 import app.service.impl.PerformanceServiceImpl;
+import com.ibm.icu.text.Transliterator;
+import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeUtility;
 import org.apache.log4j.Logger;
+import org.apache.poi.util.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +16,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import sun.nio.ch.IOUtil;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.*;
 
@@ -139,13 +147,29 @@ public class OnlineController {
         resp.flushBuffer();
     }
 
+
     @RequestMapping(value = "/statement", method = RequestMethod.GET)
-    public String createStatement(){
-            poiService.createNewDocument("This application has no explicit mapping for /error, so you are seeing this as a fallback." +
-                    "Wed Sep 18 16:33:32 EEST 2019" +
-                    "There was an unexpected error (type=Internal Server Error, status=500)." +
-                    "Error resolving template [statement], template might not exist or might not be ac");
-        return "redirect:/?lang=" + Locale.getDefault();
+    public void createStatement(HttpServletResponse response) {
+
+        poiService.createNewDocument(configurationService.getConfiguration().getContestName());
+
+
+        try {
+            ServletOutputStream out = response.getOutputStream();
+            byte[] byteArray = Files.readAllBytes(Paths.get("FullStatement.xls"));
+            response.setContentType("application/vnd.ms-excel");
+            String filename = Transliterator.getInstance("Russian-Latin/BGN").transliterate(configurationService.getConfiguration().getContestName());
+            response.setHeader("Content-Disposition", "attachment; filename=" + filename + ".xls");
+            out.write(byteArray);
+            out.flush();
+            out.close();
+            //response.flushBuffer();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        //    return "redirect:/?lang=" + Locale.getDefault();
     }
 
 }

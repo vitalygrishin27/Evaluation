@@ -67,7 +67,7 @@ public class POIServiceImpl implements POIService {
         // Коррекция полей и ориентации документа
         editSizeAndBorder();
         // Заполнить старницы по категориям
-        fillSheets(configurationService.getConfiguration().getContestName());
+        fillSheets(contestName);
         // Сохранить файл
         saveFile();
 
@@ -507,6 +507,12 @@ public class POIServiceImpl implements POIService {
             workbook.write(outFile);
             outFile.close();
             workbook.close();
+
+
+
+
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }

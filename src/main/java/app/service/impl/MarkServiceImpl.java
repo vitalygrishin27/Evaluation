@@ -89,16 +89,15 @@ public class MarkServiceImpl implements MarkService {
                 }
             });
 
-            int place = 1;
-            int lastSummaryMark=0;
+            int place = 0;
+            int lastSummaryMark = -1;
             for (int i = 0; i < list.size(); i++) {
-                result.put(((Map.Entry<Member, Integer>) list.get(i)).getKey(), place);
-                if(((Map.Entry<Member, Integer>) list.get(i)).getValue()!=lastSummaryMark){
-                    lastSummaryMark=((Map.Entry<Member, Integer>) list.get(i)).getValue();
+                if (((Map.Entry<Member, Integer>) list.get(i)).getValue() != lastSummaryMark) {
+                    lastSummaryMark = ((Map.Entry<Member, Integer>) list.get(i)).getValue();
                     place++;
                 }
+                result.put(((Map.Entry<Member, Integer>) list.get(i)).getKey(), place);
             }
-
         }
 
         return result;
