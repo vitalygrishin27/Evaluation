@@ -57,7 +57,6 @@ public class POIServiceImpl implements POIService {
         summaryMarkByMember=markService.getSummaryMarkByAllPerformances();
         // Места участников
         placeMember=markService.getPlaces(summaryMarkByMember);
-
         // Создать новый документ
         workbook = new HSSFWorkbook();
         // Создание стилей

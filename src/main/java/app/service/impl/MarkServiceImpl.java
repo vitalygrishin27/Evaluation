@@ -3,7 +3,6 @@ package app.service.impl;
 import app.model.*;
 import app.repository.MarkRepository;
 import app.service.MarkService;
-import org.aspectj.util.SoftHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -85,6 +84,7 @@ public class MarkServiceImpl implements MarkService {
             Collections.sort(list, new Comparator<Map.Entry<Integer, Integer>>() {
                 @Override
                 public int compare(Map.Entry<Integer, Integer> a, Map.Entry<Integer, Integer> b) {
+                    if(b.getValue()==0) return -1;
                     return a.getValue() + b.getValue();
                 }
             });

@@ -1,3 +1,9 @@
+body{
+background: #c7b39b url(/img/blue.jpg);
+background-size: 100% 100%;
+
+}
+
 table {
 font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
 font-size: 14px;
@@ -8,7 +14,8 @@ margin: auto;
 
 }
 th, td:first-child {
-background: #AFCDE7;
+background:transparent;
+border:0px;
 color: white;
 padding: 10px 20px;
 }
@@ -103,19 +110,59 @@ span.psw {
 }
 
 
+
+@media screen and (max-device-width: 800px) {
+
+table {
+font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+font-size: 14px;
+width: 100%;
+border-collapse: collapse;
+text-align: center;
+margin: auto;
+opacity: 0.97;
+    background: transparent;
+}
+
+
+.memberName{
+font-size: 45px;
+border:0px;
+}
+.performanceName{
+font-size: 40px;
+
+border:0px;
+}
+.officeName{
+font-size: 30px;
+border:0px;
+}
+
+.submitButton{
+font-size: 15px;
+}
+
+.withoutBackground{
+           border:0px;
+           }
+
+.buttonContainer{
+                font-size: 20px;
+                background:transparent;
+                border:0px;
+                }
+
 .orange-circle-button {
-	box-shadow: 2px 4px 0 2px rgba(0,0,0,0.1);
-	border: .5em solid #E84D0E;
-	font-size: 2em;
-	line-height: 1.1em;
-	color: #ffffff;
-	background-color: #e84d0e;
-	margin: auto;
-	border-radius: 50%;
-	height: 3em;
-	width: 3em;
-	position: relative;
-	outline:none;
+	border: none;
+        color: white;
+            background-color: #e84d0e;
+        padding: 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 106px;
+        margin: 4px 2px;
 }
 .orange-circle-button:hover {
 	color:#ffffff;
@@ -134,52 +181,23 @@ span.psw {
     font-size: 1em;
 
 }
-
-
-
-
-.memberName{
-font-size: 36px;
-    background-color: #0404B4;
-}
-.officeName{
-font-size: 26px;
-    background-color: #2E2EFE;
-}
-.performanceName{
-font-size: 22px;
-    background-color: #A9A9F5;
-}
-
-
-
-@media screen and (max-device-width: 800px) {
-
-table {
-font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
-font-size: 14px;
-width: 100%;
-border-collapse: collapse;
-text-align: center;
-margin: auto;
+button {
+   box-shadow: 2px 4px 0 2px rgba(0,0,0,0.1);
+   	border: 5px solid #49914c;
+   	font-size: 2em;
+   	color: #ffffff;
+   	background-color: #4CAF50;
+   	margin: auto;
+   	border-radius: 50%;
+   	height: 3em;
+   	width: 3em;
+   	position: relative;
+   	outline:none;
 
 }
-
-
-.memberName{
-font-size: 36px;
-    background-color: #0404B4;
+button:hover {
+    opacity: 0.8;
 }
-.officeName{
-font-size: 26px;
-    background-color: #2E2EFE;
-}
-.performanceName{
-font-size: 22px;
-    background-color: #A9A9F5;
-}
-
-
 
 }
 

@@ -21,30 +21,32 @@
                 Member
             </th>
         </tr>
-        <tr>
-            <th class="officeName" colspan="3" th:utext="${performance.member.office}">Office</th>
-        </tr>
+
         <tr>
             <th class="performanceName" colspan="3" th:utext="${performance.performanceName}">Performance</th>
+        </tr>
+        <tr>
+            <th class="officeName" colspan="3" th:utext="${performance.member.office}">Office</th>
         </tr>
 
         <form id="evaluateWrapper" name='f' th:action="@{/evaluation/evaluate}" method='POST'
               th:object="${evaluateWrapper}">
             <tr>
-                <td colspan="3"><input type="hidden" id="performanceId" name='performanceId'
+                <td class="withoutBackground" colspan="3"><input type="hidden" id="performanceId" name='performanceId'
                                        th:value="${performance.performanceId}"
                                        required></td>
             </tr>
 
 
             <tr th:each="evaluate, stat : ${evaluateWrapper.evaluateList}">
-                <td hidden>
+
+                <td class="withoutBackground" hidden>
                     <input hidden th:name="${evaluate.id}"
 
                            th:value="${evaluate.id}" th:field="*{evaluateList[__${stat.index}__].id}"/>
                 </td>
-                <th th:utext="${evaluate.name}" th:id="${evaluate.name}"></th>
-                <td>
+                <th class="withoutBackground" th:utext="${evaluate.name}" th:id="${evaluate.name}"></th>
+                <td class="buttonContainer">
                     <button type="button" th:class="button + ${evaluate.id}"
                             th:utext="#{label.one}"
                             th:onclick="'setMark(\'' + ${evaluate.id} + '\',1);'">
@@ -84,7 +86,7 @@
                     th:id="summaryValue">0</td>
             </tr>
             <tr>
-                <td colspan="3">
+                <td class="submitButton" colspan="3">
                     <button type="submit" th:id="buttonSummaryValue" th:utext="0" class="btn btn-default orange-circle-button">Save</button>
                 </td>
             </tr>
