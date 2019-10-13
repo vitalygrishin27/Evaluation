@@ -26,7 +26,7 @@ public class MarkServiceImpl implements MarkService {
     }
 
     @Override
-    public List<Mark> findMarkByUserAndCriterion(Performance performance, User user) {
+    public List<Mark> findMarkByJuryAndPerformance(Performance performance, User user) {
         return repository.findMarkByUserAndPerformance(performance, user);
     }
 

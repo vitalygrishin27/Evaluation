@@ -9,7 +9,6 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -241,7 +240,7 @@ public class POIServiceImpl implements POIService {
                 for (Performance performance : member.getPerformances()
                 ) {
                     ArrayList<Mark> currentMarks = new ArrayList<>();
-                    currentMarks.addAll(markService.findMarkByUserAndCriterion(performance, jury));
+                    currentMarks.addAll(markService.findMarkByJuryAndPerformance(performance, jury));
                     activeRow = activeSheet.getRow(activeRowIndex);
                     for (Criterion criterion : criterions
                     ) {

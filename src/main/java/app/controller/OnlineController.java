@@ -124,20 +124,23 @@ public class OnlineController {
     public void getNewMarksForActivePerformance(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.info("Вызов метода getNewMarksForActivePerformance");
         JSONObject jsonObjectResponse = new JSONObject();
-        Performance activePerformance = performanceService.findPerformanceById(PerformanceServiceImpl.getCURRENT_ID_PERFORMANCE_IN_EVALUATION());
+        if(PerformanceServiceImpl.getCURRENT_ID_PERFORMANCE_IN_EVALUATION()!=-1) {
+            Performance activePerformance = performanceService.findPerformanceById(PerformanceServiceImpl.getCURRENT_ID_PERFORMANCE_IN_EVALUATION());
 
-        for (Map.Entry<User, Integer> entry : getSummaryMarks(activePerformance).entrySet()
-        ) {
-            try {
-                jsonObjectResponse.put(entry.getKey().getLogin() + activePerformance.getPerformanceId(), entry.getValue());
-            } catch (JSONException e) {
-                System.out.println("ERROR with JSON");
-                e.printStackTrace();
+            for (Map.Entry<User, Integer> entry : getSummaryMarks(activePerformance).entrySet()
+            ) {
+                try {
+                    jsonObjectResponse.put(entry.getKey().getLogin() + activePerformance.getPerformanceId(), entry.getValue());
+                } catch (JSONException e) {
+                    System.out.println("ERROR with JSON");
+                    e.printStackTrace();
+                }
+
             }
-
+            jsonObjectResponse.put("activePerformanceId", activePerformance.getPerformanceId());
+            //  log.error("ошибка");
         }
-        jsonObjectResponse.put("activePerformanceId", activePerformance.getPerformanceId());
-        log.error("ошибка");
+
         resp.getWriter().write(String.valueOf(jsonObjectResponse));
         resp.flushBuffer();
     }

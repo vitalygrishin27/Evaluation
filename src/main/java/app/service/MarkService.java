@@ -8,7 +8,7 @@ import java.util.Map;
 public interface MarkService {
     void save(Mark mark);
 
-    List<Mark> findMarkByUserAndCriterion(Performance performance, User user);
+    List<Mark> findMarkByJuryAndPerformance(Performance performance, User user);
 
     List<Mark> findAllMarkByCriterion(Criterion criterion);
 

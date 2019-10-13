@@ -11,7 +11,10 @@
 </head>
 
 <body>
-<div class="container">
+<div id="logo">
+    <image src='/img/logo.jpg' width="100%" height="100%"/>
+</div>
+<div id="container" class="container" display = 'none'>
     <div th:if="${errorMessage} != null" class="error"><span th:utext="${errorMessage}"></span></div>
     <!--   <div th:if="${not #lists.isEmpty(members)}">  -->
     <table th:if="${performance} != null">
@@ -33,8 +36,8 @@
               th:object="${evaluateWrapper}">
             <tr>
                 <td class="withoutBackground" colspan="3"><input type="hidden" id="performanceId" name='performanceId'
-                                       th:value="${performance.performanceId}"
-                                       required></td>
+                                                                 th:value="${performance.performanceId}"
+                                                                 required></td>
             </tr>
 
 
@@ -50,7 +53,7 @@
                     <button type="button" th:class="button + ${evaluate.id}"
                             th:utext="#{label.one}"
                             th:onclick="'setMark(\'' + ${evaluate.id} + '\',1);'">
-                       1
+                        1
                     </button>
                     <button type="button" th:class="button + ${evaluate.id}"
                             th:utext="#{label.two}"
@@ -83,11 +86,14 @@
             </tr>
             <tr>
                 <td hidden colspan="3" class="summaryValue"
-                    th:id="summaryValue">0</td>
+                    th:id="summaryValue">0
+                </td>
             </tr>
             <tr>
                 <td class="submitButton" colspan="3">
-                    <button type="submit" th:id="buttonSummaryValue" th:utext="0" class="btn btn-default orange-circle-button">Save</button>
+                    <button type="submit" th:id="buttonSummaryValue" th:utext="0"
+                            class="btn btn-default orange-circle-button">Save
+                    </button>
                 </td>
             </tr>
 
@@ -121,6 +127,8 @@
     }
 
 $(document).ready(function() {
+    document.getElementById("logo").style.display = 'block';
+    document.getElementById("container").style.display = 'none';
     var errorMessage = /*[[${errorMessage}]]*/ 'Sebastian';
     if(errorMessage!=null){
         document.getElementById("buttonSummaryValue").disabled=true;
@@ -145,10 +153,19 @@ $(document).ready(function() {
 			data: ({performanceId:performanceId}),
 			success: function(data){
 		    console.log(data);
-
-		        if(data=="true"){
+                var obj = jQuery.parseJSON(data);
+		        if(obj.needToLoadNewPerformance==true){
         		window.location.href = "/evaluation";
         	    }
+        	     if(obj.isNeedLogo==true){
+        	     document.getElementById("logo").style.display = 'block';
+                 document.getElementById("container").style.display = 'none';
+        	    }
+        	    if(obj.isNeedLogo==false){
+        	     document.getElementById("logo").style.display = 'none';
+                 document.getElementById("container").style.display = 'block';
+        	    }
+
         	}
 		});
      }
@@ -172,6 +189,9 @@ document.getElementById("buttonSummaryValue").disabled=true;
 }
 
 });
+
+
+
 
 
 </script>
