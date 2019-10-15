@@ -18,7 +18,7 @@
             document.getElementById("container").webkitRequestFullscreen();
  }
 </script>
-<center><button id="butToFullScreen" onclick="fullScreenOn()">FS</button></center>
+<!-- <center><button id="butToFullScreen" onclick="fullScreenOn()">FS</button></center>  -->
 
 <div id="logo">
     <image src='/img/logo.jpg' width="100%" height="100%"/>
@@ -91,6 +91,7 @@
                     <input hidden th:name="${evaluate.value}" class="mark"
                            th:id="${evaluate.id}"
                            th:value="${evaluate.value}" th:field="*{evaluateList[__${stat.index}__].value}"/>
+                    <div class="criteriaTitle">------------------------------------------------------------</div>
                 </td>
 
 
@@ -182,10 +183,12 @@ $(document).ready(function() {
         	     if(obj.isNeedLogo==true){
         	     document.getElementById("logo").style.display = 'block';
                  document.getElementById("container").style.display = 'none';
+                             document.getElementById("container").webkitRequestFullscreen();
         	    }
         	    if(obj.isNeedLogo==false){
         	     document.getElementById("logo").style.display = 'none';
                  document.getElementById("container").style.display = 'block';
+                             document.getElementById("container").webkitRequestFullscreen();
         	    }
 
         	}

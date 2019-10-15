@@ -1,12 +1,8 @@
 body{
 background: #c7b39b url(/img/blue.jpg);
-background-size: 100% 100%;
-background-attachment: fixed;
+background-size: 100% 120%;
 }
 
-#bod:-ms-fullscreen { background: #6088a5; }
-   #bod:-webkit-full-screen { background: #6088a5; }
-   #bod:-moz-full-screen { background: #6088a5; }
 
 logo{
 background: #c7b39b url(/img/logo.jpg);
@@ -33,14 +29,10 @@ th, td {
 border-style: solid;
 border-width: 0 1px 1px 0;
 border-color: white;
-padding: 30px 0px; //регулировка высоты таблицы
+padding: 5px 0px 15px 0px; //регулировка высоты таблицы
 }
 td {
 background: #D8E6F3;
-}
-
-tr {
-
 }
 
 /* Bordered form */
@@ -123,9 +115,7 @@ span.psw {
 
 @media screen and (max-device-width: 800px) {
 
-#bod:-ms-fullscreen { background: #6088a5; }
-   #bod:-webkit-full-screen { background: #6088a5; }
-   #bod:-moz-full-screen { background: #6088a5; }
+
 
 table {
 font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
@@ -138,9 +128,10 @@ opacity: 0.97;
     background: transparent;
 }
 
-.container {
-background: #c7b39b url(/img/blue.jpg);
-background-size: 100% 100%;
+
+//.container {  //для полноекранного режима
+//background: #c7b39b url(/img/blue.jpg);
+//background-size: 100% 100%;
 }
 
 .memberName{
@@ -224,7 +215,7 @@ color: #DFBF84;
 text-transform: uppercase;
 text-shadow: 1px 1px 0 #000, margin: 10px 0 24px;
 text-align: center;
-line-height: 50px;
+line-height: 30px;
 
 }
 
