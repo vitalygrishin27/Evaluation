@@ -14,7 +14,8 @@
 <script>
     function fullScreenOn(){
            document.getElementById("butToFullScreen").style.display="none";
-            document.getElementById("bod").webkitRequestFullscreen();
+          //  document.body.webkitRequestFullscreen()
+            document.getElementById("container").webkitRequestFullscreen();
  }
 </script>
 <center><button id="butToFullScreen" onclick="fullScreenOn()">FS</button></center>
@@ -52,12 +53,14 @@
             <tr th:each="evaluate, stat : ${evaluateWrapper.evaluateList}">
 
                 <td class="withoutBackground" hidden>
+
                     <input hidden th:name="${evaluate.id}"
 
                            th:value="${evaluate.id}" th:field="*{evaluateList[__${stat.index}__].id}"/>
                 </td>
-                <th class="withoutBackground" th:utext="${evaluate.name}" th:id="${evaluate.name}"></th>
+                <th class="withoutBackground" th:utext="${evaluate.name}" th:id="${evaluate.name}" hidden></th>
                 <td class="buttonContainer">
+                    <div class="criteriaTitle" th:utext="${evaluate.name}">565656567</div>
                     <button type="button" th:class="button + ${evaluate.id}"
                             th:utext="#{label.one}"
                             th:onclick="'setMark(\'' + ${evaluate.id} + '\',1);'">

@@ -1,8 +1,12 @@
 body{
 background: #c7b39b url(/img/blue.jpg);
 background-size: 100% 100%;
-
+background-attachment: fixed;
 }
+
+#bod:-ms-fullscreen { background: #6088a5; }
+   #bod:-webkit-full-screen { background: #6088a5; }
+   #bod:-moz-full-screen { background: #6088a5; }
 
 logo{
 background: #c7b39b url(/img/logo.jpg);
@@ -119,6 +123,10 @@ span.psw {
 
 @media screen and (max-device-width: 800px) {
 
+#bod:-ms-fullscreen { background: #6088a5; }
+   #bod:-webkit-full-screen { background: #6088a5; }
+   #bod:-moz-full-screen { background: #6088a5; }
+
 table {
 font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
 font-size: 14px;
@@ -130,6 +138,10 @@ opacity: 0.97;
     background: transparent;
 }
 
+.container {
+background: #c7b39b url(/img/blue.jpg);
+background-size: 100% 100%;
+}
 
 .memberName{
 font-size: 45px;
@@ -204,6 +216,19 @@ button {
 button:hover {
     opacity: 0.8;
 }
+
+.criteriaTitle{
+font-size: 20pt;
+letter-spacing: -1px;
+color: #DFBF84;
+text-transform: uppercase;
+text-shadow: 1px 1px 0 #000, margin: 10px 0 24px;
+text-align: center;
+line-height: 50px;
+
+}
+
+
 
 }
 
