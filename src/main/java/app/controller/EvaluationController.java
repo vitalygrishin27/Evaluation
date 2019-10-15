@@ -64,8 +64,8 @@ public class EvaluationController {
 
             model.addAttribute("performance", performance);
             model.addAttribute("evaluateWrapper", evaluateWrapper);
-
-
+        }else{
+            model.addAttribute("performance",new Performance());
         }
         return "evaluation/evaluation";
 

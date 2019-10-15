@@ -15,7 +15,6 @@
     function fullScreenOn(){
            document.getElementById("butToFullScreen").style.display="none";
             document.getElementById("bod").webkitRequestFullscreen();
-         //   document.getElementById("push").style.display="block";
  }
 </script>
 <center><button id="butToFullScreen" onclick="fullScreenOn()">FS</button></center>
@@ -26,7 +25,7 @@
 <div id="container" class="container" display = 'none'>
     <div th:if="${errorMessage} != null" class="error"><span th:utext="${errorMessage}"></span></div>
     <!--   <div th:if="${not #lists.isEmpty(members)}">  -->
-    <table th:if="${performance} != null">
+    <table th:if="${performance.performanceId} != null">
         <tr>
             <th class="memberName" colspan="3"
                 th:utext="${performance.member.lastName}+ '  ' + ${performance.member.name} + '  ' + ${performance.member.secondName}">
@@ -152,9 +151,18 @@ $(document).ready(function() {
 
 
      function isPerformanceNew(){
-     var performanceId = "${performance.performanceId}";
+
+
+
 		 /*<![CDATA[*/
-        var performanceId = /*[[${performance.performanceId}]]*/ 'Sebastian';
+
+		 try {
+		var performanceId = /*[[${performance.performanceId}]]*/ 'Sebastian';
+		 }
+		 catch(e){
+		 var performanceId = -1;
+		 }
+
           /*]]>*/
 
 
