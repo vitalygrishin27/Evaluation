@@ -129,9 +129,9 @@ opacity: 0.97;
 }
 
 
-//.container {  //для полноекранного режима
-//background: #c7b39b url(/img/blue.jpg);
-//background-size: 100% 100%;
+.container {  //для полноекранного режима
+background: #c7b39b url(/img/blue.jpg);
+background-size: 100% 100%;
 }
 
 .memberName{
@@ -192,15 +192,16 @@ font-size: 15px;
 }
 button {
    box-shadow: 2px 4px 0 2px rgba(0,0,0,0.1);
-   	border: 5px solid #49914c;
+   	border: 5px solid #182f73;
    	font-size: 2em;
    	color: #ffffff;
-   	background-color: #4CAF50;
+   	background-color: #52bffa;
    	margin: auto;
    	border-radius: 50%;
-   	height: 3em;
-   	width: 3em;
+   	height: 2em;
+   	width: 2em;
    	position: relative;
+   	        margin: 0px 20px;
    	outline:none;
 
 }

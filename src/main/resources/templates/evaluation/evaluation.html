@@ -120,11 +120,11 @@
    //Делаем стиль всех 5 кнопок категории, которой выставлена оценка, обычным
    var elements = document.getElementsByClassName(this.event.srcElement.className);
     for(var i=0; i<elements.length; i++) {
-            elements[i].style.background = "#4CAF50";
+            elements[i].style.background = "#52bffa";
         }
    //Выделяем нажатую кнопку
     var element = this.event.srcElement;
-     element.style.background = "#FFAAAA";
+     element.style.background = "#850b64";
 
     //Устанавливаем оценку по выбранному критерю в скрытое поле
     var eval = document.getElementById(evaluateId);
@@ -141,6 +141,7 @@
     }
 
 $(document).ready(function() {
+   // document.getElementById("bod").webkitRequestFullscreen();
     document.getElementById("logo").style.display = 'block';
     document.getElementById("container").style.display = 'none';
     var errorMessage = /*[[${errorMessage}]]*/ 'Sebastian';
@@ -183,12 +184,12 @@ $(document).ready(function() {
         	     if(obj.isNeedLogo==true){
         	     document.getElementById("logo").style.display = 'block';
                  document.getElementById("container").style.display = 'none';
-                             document.getElementById("container").webkitRequestFullscreen();
+                    //         document.getElementById("bod").webkitRequestFullscreen();
         	    }
         	    if(obj.isNeedLogo==false){
         	     document.getElementById("logo").style.display = 'none';
                  document.getElementById("container").style.display = 'block';
-                             document.getElementById("container").webkitRequestFullscreen();
+                       //      document.getElementById("bod").webkitRequestFullscreen();
         	    }
 
         	}
@@ -201,9 +202,9 @@ jQuery("#evaluateWrapper").submit(function(e) {
     var count = 0;
     for(var i=0; i<elements.length; i++) {
             var tcell = elements[i].parentNode;
-            tcell.style.background = "#AFCDE7";
+            tcell.style.background = 'transparent';
             if(elements[i].value == "0"){
-              tcell.style.background="#FF0000";
+              tcell.style.background="#a83188";
               count+=1;
             }
         }
