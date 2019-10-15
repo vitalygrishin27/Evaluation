@@ -10,7 +10,16 @@
 
 </head>
 
-<body>
+<body id="bod">
+<script>
+    function fullScreenOn(){
+           document.getElementById("butToFullScreen").style.display="none";
+            document.getElementById("bod").webkitRequestFullscreen();
+         //   document.getElementById("push").style.display="block";
+ }
+</script>
+<center><button id="butToFullScreen" onclick="fullScreenOn()">FULLSCREEN</button></center>
+
 <div id="logo">
     <image src='/img/logo.jpg' width="100%" height="100%"/>
 </div>
@@ -101,6 +110,8 @@
     </table>
 </div>
 <script th:inline="javascript">
+
+
     function setMark(evaluateId, val){
 
    //Делаем стиль всех 5 кнопок категории, которой выставлена оценка, обычным
