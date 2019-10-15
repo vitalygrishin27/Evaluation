@@ -61,7 +61,7 @@ public class EvaluationController {
                 model.addAttribute("errorMessage", errorMessage);
                 errorMessage = null;
             }
-
+            model.addAttribute("title", messageSource.getMessage("pageTitle.evaluation", null, Locale.getDefault()));
             model.addAttribute("performance", performance);
             model.addAttribute("evaluateWrapper", evaluateWrapper);
         }else{
