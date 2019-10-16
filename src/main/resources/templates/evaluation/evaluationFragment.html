@@ -1,0 +1,92 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="updateFragment"  class="container">
+    <div th:if="${errorMessage} != null" class="error"><span th:utext="${errorMessage}"></span></div>
+    <!--   <div th:if="${not #lists.isEmpty(members)}">  -->
+    <form id="evaluateWrapper" name='f' th:action="@{/evaluation/evaluate}" method='POST' th:object="${evaluateWrapper}">
+    <table th:if="${performance.performanceId} != null">
+        <tr>
+            <th class="memberName" colspan="3"
+                th:utext="${performance.member.lastName}+ '  ' + ${performance.member.name} + '  ' + ${performance.member.secondName}">
+                Member
+            </th>
+        </tr>
+
+        <tr>
+            <th class="performanceName" colspan="3" th:utext="${performance.performanceName}">Performance</th>
+        </tr>
+        <tr>
+            <th class="officeName" colspan="3" th:utext="${performance.member.office}">Office</th>
+        </tr>
+
+
+            <tr>
+                <td class="withoutBackground" colspan="3"><input type="hidden" id="performanceId" name='performanceId'
+                                                                 th:value="${performance.performanceId}"
+                                                                 required></td>
+            </tr>
+
+
+            <tr th:each="evaluate, stat : ${evaluateWrapper.evaluateList}">
+
+                <td class="withoutBackground" hidden>
+
+                    <input hidden th:name="${evaluate.id}"
+
+                           th:value="${evaluate.id}" th:field="*{evaluateList[__${stat.index}__].id}"/>
+                </td>
+                <th class="withoutBackground" th:utext="${evaluate.name}" th:id="${evaluate.name}" hidden></th>
+                <td class="buttonContainer">
+                    <div class="criteriaTitle" th:utext="${evaluate.name}">565656567</div>
+                    <button type="button" th:class="button + ${evaluate.id}"
+                            th:utext="#{label.one}"
+                            th:onclick="'setMark(\'' + ${evaluate.id} + '\',1);'">
+                        1
+                    </button>
+                    <button type="button" th:class="button + ${evaluate.id}"
+                            th:utext="#{label.two}"
+                            th:onclick="'setMark(\'' + ${evaluate.id} + '\',2);'">
+                        2
+                    </button>
+                    <button type="button" th:class="button + ${evaluate.id}"
+                            th:utext="#{label.three}"
+                            th:onclick="'setMark(\'' + ${evaluate.id} + '\',3);'">
+                        3
+                    </button>
+                    <button type="button" th:class="button + ${evaluate.id}"
+                            th:utext="#{label.four}"
+                            th:onclick="'setMark(\'' + ${evaluate.id} + '\',4);'">
+                        4
+                    </button>
+                    <button type="button" th:class="button + ${evaluate.id}"
+                            th:utext="#{label.five}"
+                            th:onclick="'setMark(\'' + ${evaluate.id} + '\',5);'">
+                        5
+                    </button>
+
+
+                    <input hidden th:name="${evaluate.value}" class="mark"
+                           th:id="${evaluate.id}"
+                           th:value="${evaluate.value}" th:field="*{evaluateList[__${stat.index}__].value}"/>
+                    <div class="criteriaTitle">------------------------------------------------------------</div>
+                </td>
+
+
+            </tr>
+            <tr>
+                <td hidden colspan="3" class="summaryValue"
+                    th:id="summaryValue">0
+                </td>
+            </tr>
+            <tr>
+                <td class="submitButton" colspan="3">
+                    <button type="button" onclick="examForm()" th:id="buttonSummaryValue" th:utext="0"
+                            class="btn btn-default orange-circle-button">Save
+                    </button>
+                </td>
+            </tr>
+
+
+    </table>
+    </form>
+</div>
+</html>

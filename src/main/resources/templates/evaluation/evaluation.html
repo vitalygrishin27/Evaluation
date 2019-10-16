@@ -23,94 +23,8 @@
 <div id="logo">
     <image src='/img/logo.jpg' width="100%" height="100%"/>
 </div>
-<div id="container" class="container" display = 'none'>
-    <div th:if="${errorMessage} != null" class="error"><span th:utext="${errorMessage}"></span></div>
-    <!--   <div th:if="${not #lists.isEmpty(members)}">  -->
-    <table th:if="${performance.performanceId} != null">
-        <tr>
-            <th class="memberName" colspan="3"
-                th:utext="${performance.member.lastName}+ '  ' + ${performance.member.name} + '  ' + ${performance.member.secondName}">
-                Member
-            </th>
-        </tr>
+<div id="container" class="container">
 
-        <tr>
-            <th class="performanceName" colspan="3" th:utext="${performance.performanceName}">Performance</th>
-        </tr>
-        <tr>
-            <th class="officeName" colspan="3" th:utext="${performance.member.office}">Office</th>
-        </tr>
-
-        <form id="evaluateWrapper" name='f' th:action="@{/evaluation/evaluate}" method='POST'
-              th:object="${evaluateWrapper}">
-            <tr>
-                <td class="withoutBackground" colspan="3"><input type="hidden" id="performanceId" name='performanceId'
-                                                                 th:value="${performance.performanceId}"
-                                                                 required></td>
-            </tr>
-
-
-            <tr th:each="evaluate, stat : ${evaluateWrapper.evaluateList}">
-
-                <td class="withoutBackground" hidden>
-
-                    <input hidden th:name="${evaluate.id}"
-
-                           th:value="${evaluate.id}" th:field="*{evaluateList[__${stat.index}__].id}"/>
-                </td>
-                <th class="withoutBackground" th:utext="${evaluate.name}" th:id="${evaluate.name}" hidden></th>
-                <td class="buttonContainer">
-                    <div class="criteriaTitle" th:utext="${evaluate.name}">565656567</div>
-                    <button type="button" th:class="button + ${evaluate.id}"
-                            th:utext="#{label.one}"
-                            th:onclick="'setMark(\'' + ${evaluate.id} + '\',1);'">
-                        1
-                    </button>
-                    <button type="button" th:class="button + ${evaluate.id}"
-                            th:utext="#{label.two}"
-                            th:onclick="'setMark(\'' + ${evaluate.id} + '\',2);'">
-                        2
-                    </button>
-                    <button type="button" th:class="button + ${evaluate.id}"
-                            th:utext="#{label.three}"
-                            th:onclick="'setMark(\'' + ${evaluate.id} + '\',3);'">
-                        3
-                    </button>
-                    <button type="button" th:class="button + ${evaluate.id}"
-                            th:utext="#{label.four}"
-                            th:onclick="'setMark(\'' + ${evaluate.id} + '\',4);'">
-                        4
-                    </button>
-                    <button type="button" th:class="button + ${evaluate.id}"
-                            th:utext="#{label.five}"
-                            th:onclick="'setMark(\'' + ${evaluate.id} + '\',5);'">
-                        5
-                    </button>
-
-
-                    <input hidden th:name="${evaluate.value}" class="mark"
-                           th:id="${evaluate.id}"
-                           th:value="${evaluate.value}" th:field="*{evaluateList[__${stat.index}__].value}"/>
-                    <div class="criteriaTitle">------------------------------------------------------------</div>
-                </td>
-
-
-            </tr>
-            <tr>
-                <td hidden colspan="3" class="summaryValue"
-                    th:id="summaryValue">0
-                </td>
-            </tr>
-            <tr>
-                <td class="submitButton" colspan="3">
-                    <button type="submit" th:id="buttonSummaryValue" th:utext="0"
-                            class="btn btn-default orange-circle-button">Save
-                    </button>
-                </td>
-            </tr>
-
-        </form>
-    </table>
 </div>
 <script th:inline="javascript">
 
@@ -162,7 +76,9 @@ $(document).ready(function() {
 		 /*<![CDATA[*/
 
 		 try {
-		var performanceId = /*[[${performance.performanceId}]]*/ 'Sebastian';
+		var performanceId = document.getElementById("performanceId").value;
+
+		//var performanceId = /*[[${performance.performanceId}]]*/ 'Sebastian';
 		 }
 		 catch(e){
 		 var performanceId = -1;
@@ -179,7 +95,10 @@ $(document).ready(function() {
 		    console.log(data);
                 var obj = jQuery.parseJSON(data);
 		        if(obj.needToLoadNewPerformance==true){
-        		window.location.href = "/evaluation";
+        		loadFragment();
+        		document.getElementById("logo").style.display = 'none';
+        		document.getElementById("container").style.display = 'block';
+        		//window.location.href = "/evaluation";
         	    }
         	     if(obj.isNeedLogo==true){
         	     document.getElementById("logo").style.display = 'block';
@@ -196,8 +115,20 @@ $(document).ready(function() {
 		});
      }
 
+     function loadFragment(){
+     $.ajax({
+                url: "/evaluation/fragment",
+                cache: false,
+                success: function(html){
+                    console.log("---------");
+                  //  console.log(html);
+                    $("#container").html(html);
+                }
+            });
+     }
+
 //Проверка на заполненность оценок перед отправкой формы)
-jQuery("#evaluateWrapper").submit(function(e) {
+function examForm(){
          var elements = document.getElementsByClassName("mark");
     var count = 0;
     for(var i=0; i<elements.length; i++) {
@@ -211,13 +142,30 @@ jQuery("#evaluateWrapper").submit(function(e) {
 if(count>0){
 return false;
 }else{
-document.getElementById("buttonSummaryValue").disabled=true;
+var evaluateMap = new Map();
+evaluateMap.set("performanceId",document.getElementById("performanceId").value);
+var elements = document.getElementsByClassName("mark");
+for(var i=0; i<elements.length; i++) {
+evaluateMap.set(elements[i].id, elements[i].value);
+}
+console.log(evaluateMap);
+sendToServer(evaluateMap);
+
+
+//document.getElementById("evaluateWrapper").submit();
 }
 
-});
-
-
-
+}
+function sendToServer(evaluateMap){
+$.ajax({
+			type: 'POST',
+			url: "/evaluation/evaluate",
+			data: ({evaluateMap:evaluateMap}),
+			success: function(data){
+		    console.log(data);
+                }
+		});
+}
 
 
 </script>

@@ -71,8 +71,35 @@ public class EvaluationController {
 
     }
 
+    @RequestMapping(value = "/evaluation/fragment", method = RequestMethod.GET)
+    public String getCurrentPerformanceFragment(Model model) {
+        if (PerformanceServiceImpl.getCURRENT_ID_PERFORMANCE_IN_EVALUATION() != -1) {
+            Performance performance = performanceService.findPerformanceById(PerformanceServiceImpl.getCURRENT_ID_PERFORMANCE_IN_EVALUATION());
+            List<Criterion> criteria = performance.getMember().getCategory().getCriterions();
+            List<Evaluate> evaluates = new ArrayList<>();
+            for (Criterion element : criteria
+            ) {
+                Evaluate evaluate = new Evaluate(element.getId(), element.getName(), 0);
+                evaluates.add(evaluate);
+            }
+            EvaluateWrapper evaluateWrapper = new EvaluateWrapper(evaluates);
+            if (errorMessage != null) {
+                model.addAttribute("errorMessage", errorMessage);
+                errorMessage = null;
+            }
+            model.addAttribute("title", messageSource.getMessage("pageTitle.evaluation", null, Locale.getDefault()));
+            model.addAttribute("performance", performance);
+            model.addAttribute("evaluateWrapper", evaluateWrapper);
+        }else{
+            model.addAttribute("performance",new Performance());
+        }
+        return "evaluation/evaluationFragment :: updateFragment";
+
+    }
+
+
     @RequestMapping(value = "/evaluation/evaluate", method = RequestMethod.POST)
-    public String setMarks(@ModelAttribute("evaluateWrapper") EvaluateWrapper evaluateWrapper, Model model, Principal principal, long performanceId) {
+    public void setMarks(@ModelAttribute("evaluateWrapper") EvaluateWrapper evaluateWrapper, Model model, Principal principal, long performanceId) {
 
         Performance performance = performanceService.findPerformanceById(performanceId);
         User user = userService.findUserByLogin(principal.getName());
@@ -92,7 +119,7 @@ public class EvaluationController {
         } else {
             errorMessage = messageSource.getMessage("error.marksAlreadyExists", null, Locale.getDefault());
         }
-        return "redirect:/evaluation?lang=" + Locale.getDefault();
+       // return "evaluation/evaluation";
 
     }
 
@@ -107,7 +134,7 @@ public class EvaluationController {
             org.springframework.security.core.userdetails.User loginedUser = (org.springframework.security.core.userdetails.User) ((Authentication) principal).getPrincipal();
             User currentUser = userService.findUserByLogin(loginedUser.getUsername());
             List<Mark> alreadyEvaluated = markService.findMarkByJuryAndPerformance(performanceService.findPerformanceById(PerformanceServiceImpl.getCURRENT_ID_PERFORMANCE_IN_EVALUATION()), currentUser);
-            Integer performanceIDInitilizer = req.getParameter("performanceId") == null ? -1 : Integer.valueOf(req.getParameter("performanceId"));
+            Integer performanceIDInitilizer = req.getParameter("performanceId") == null || req.getParameter("performanceId").equals("")  ? -1 : Integer.valueOf(req.getParameter("performanceId"));
             if (alreadyEvaluated.isEmpty() && PerformanceServiceImpl.getCURRENT_ID_PERFORMANCE_IN_EVALUATION() != performanceIDInitilizer) {
                 jsonObjectResponse.put("isNeedLogo", false);
                 jsonObjectResponse.put("needToLoadNewPerformance", true);
