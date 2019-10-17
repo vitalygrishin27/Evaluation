@@ -11,18 +11,18 @@ import org.springframework.context.MessageSource;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static app.utils.WebUtils.*;
 
@@ -99,6 +99,31 @@ public class EvaluationController {
 
 
     @RequestMapping(value = "/evaluation/evaluate", method = RequestMethod.POST)
+    @ResponseBody
+    public void setMarks(Principal principal, @RequestBody Map<String,Integer> evaluateMap) {
+        Performance performance = performanceService.findPerformanceById(evaluateMap.get("performanceId"));
+        evaluateMap.remove("performanceId");
+        User user = userService.findUserByLogin(principal.getName());
+
+        List<Mark> alreadyEvaluated = markService.findMarkByJuryAndPerformance(performance, user);
+        if (alreadyEvaluated.isEmpty()) {
+            for (Map.Entry<String,Integer> element : evaluateMap.entrySet()
+            ) {
+                Mark mark = new Mark();
+                mark.setValue(element.getValue());
+                mark.setUser(user);
+                mark.setPerformance(performance);
+                mark.setCriterion(criterionService.findCriterionById(Long.valueOf(element.getKey())));
+                markService.save(mark);
+            }
+        } else {
+            errorMessage = messageSource.getMessage("error.marksAlreadyExists", null, Locale.getDefault());
+        }
+     //   Integer performanceIDInitilizer = req.getParameter("performanceId") == null || req.getParameter("performanceId").equals("")  ? -1 : Integer.valueOf(req.getParameter("performanceId"));
+
+    }
+
+  /*  @RequestMapping(value = "/evaluation/evaluate", method = RequestMethod.POST)
     public void setMarks(@ModelAttribute("evaluateWrapper") EvaluateWrapper evaluateWrapper, Model model, Principal principal, long performanceId) {
 
         Performance performance = performanceService.findPerformanceById(performanceId);
@@ -119,11 +144,9 @@ public class EvaluationController {
         } else {
             errorMessage = messageSource.getMessage("error.marksAlreadyExists", null, Locale.getDefault());
         }
-       // return "evaluation/evaluation";
+        // return "evaluation/evaluation";
 
-    }
-
-
+    }*/
     @RequestMapping(value = "/evaluation/isPerformanceNew", method = RequestMethod.POST)
     public void isPerformanceNew(Principal principal, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         JSONObject jsonObjectResponse = new JSONObject();

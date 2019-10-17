@@ -18,10 +18,10 @@
             document.getElementById("container").webkitRequestFullscreen();
  }
 </script>
-<!-- <center><button id="butToFullScreen" onclick="fullScreenOn()">FS</button></center>  -->
+<center><button id="butToFullScreen" onclick="fullScreenOn()">FS</button></center>
 
 <div id="logo">
-    <image src='/img/logo.jpg' width="100%" height="100%"/>
+    <image id="imgLogo" src='/img/logo.jpg' width="105%" height="105%"/>
 </div>
 <div id="container" class="container">
 
@@ -129,6 +129,7 @@ $(document).ready(function() {
 
 //Проверка на заполненность оценок перед отправкой формы)
 function examForm(){
+document.getElementById("buttonSummaryValue").disabled=true;
          var elements = document.getElementsByClassName("mark");
     var count = 0;
     for(var i=0; i<elements.length; i++) {
@@ -140,6 +141,7 @@ function examForm(){
             }
         }
 if(count>0){
+        document.getElementById("buttonSummaryValue").disabled=false;
 return false;
 }else{
 var evaluateMap = new Map();
@@ -157,12 +159,28 @@ sendToServer(evaluateMap);
 
 }
 function sendToServer(evaluateMap){
+
+ const out = Object.create(null)
+         evaluateMap.forEach((value, key) => {
+          if (value instanceof Map) {
+            out[key] = map_to_object(value)
+
+          }
+          else {
+            out[key] = value
+          }
+        });
+
 $.ajax({
 			type: 'POST',
 			url: "/evaluation/evaluate",
-			data: ({evaluateMap:evaluateMap}),
+			contentType: 'application/json',
+			data: JSON.stringify(out),
 			success: function(data){
 		    console.log(data);
+		    document.getElementById("logo").style.display = 'block';
+             document.getElementById("container").style.display = 'none';
+             document.getElementById("buttonSummaryValue").disabled=false;
                 }
 		});
 }

@@ -1,5 +1,5 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<div th:fragment="updateFragment"  class="container">
+<div id="g1" th:fragment="updateFragment"  class="container">
     <div th:if="${errorMessage} != null" class="error"><span th:utext="${errorMessage}"></span></div>
     <!--   <div th:if="${not #lists.isEmpty(members)}">  -->
     <form id="evaluateWrapper" name='f' th:action="@{/evaluation/evaluate}" method='POST' th:object="${evaluateWrapper}">
@@ -67,7 +67,7 @@
                     <input hidden th:name="${evaluate.value}" class="mark"
                            th:id="${evaluate.id}"
                            th:value="${evaluate.value}" th:field="*{evaluateList[__${stat.index}__].value}"/>
-                    <div class="criteriaTitle">------------------------------------------------------------</div>
+
                 </td>
 
 

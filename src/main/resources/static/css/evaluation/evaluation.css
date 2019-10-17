@@ -2,14 +2,21 @@ body{
 background: #c7b39b url(/img/blue.jpg);
 background-size: 100% 120%;
 }
-
-
-logo{
-background: #c7b39b url(/img/logo.jpg);
-background-size: 100% 100%;
-
+#g1 {  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+background: #c7b39b;
 }
 
+#container:-ms-fullscreen { background: #c7b39b url(/img/blue.jpg);
+                            background-size: 100% 100%; }
+   #container:-webkit-full-screen { background: #c7b39b url(/img/blue.jpg);
+                                    background-size: 100% 100%; }
+   #container:-moz-full-screen { background: #c7b39b url(/img/blue.jpg);
+                                 background-size: 100% 100%; }
+#imgLogo{
+    position:absolute;
+    top: -10px;
+    left: -10px;
+}
 table {
 font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
 font-size: 14px;
@@ -129,7 +136,7 @@ opacity: 0.97;
 }
 
 
-.container {  //для полноекранного режима
+#mainTable {  //для полноекранного режима
 background: #c7b39b url(/img/blue.jpg);
 background-size: 100% 100%;
 }
@@ -170,7 +177,7 @@ font-size: 15px;
         text-align: center;
         text-decoration: none;
         display: inline-block;
-        font-size: 106px;
+        font-size: 87px;
         margin: 4px 2px;
 }
 .orange-circle-button:hover {
@@ -193,12 +200,12 @@ font-size: 15px;
 button {
   text-decoration:none;
    text-align:center;
-   padding:7px 0px;
+   padding:8px 0px;
    border:solid 4px #004F72;
    -webkit-border-radius:50px;
    -moz-border-radius:50px;
    border-radius: 50px;
-   font:63px Arial, Helvetica, sans-serif;
+   font:50px Arial, Helvetica, sans-serif;
    font-weight:bold;
    color:#E5FFFF;
    background-color:#3BA4C7;
@@ -228,7 +235,17 @@ line-height: 30px;
 
 }
 
+#butToFullScreen{
+z-index: 2;
+}
 
+#navbar-iframe {
+  opacity: 0;
+}
+
+#navbar-iframe:hover {
+  opacity: 0.5;
+}
 
 }
 
