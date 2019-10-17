@@ -66,6 +66,14 @@ public class POIServiceImpl implements POIService {
         editSizeAndBorder();
         // Заполнить старницы по категориям
         fillSheets(contestName);
+
+     /*   for (Row myrow : activeSheet) {
+            for (Cell mycell : myrow) {
+                mycell.setCellStyle(cellStyleMap.get("border"));
+            }
+        }*/
+
+
         // Сохранить файл
         saveFile();
 
@@ -337,6 +345,7 @@ public class POIServiceImpl implements POIService {
     }
 
     private void createAllCellStyle() {
+        cellStyleMap.put("border", createCellStyleWithBorder());
         cellStyleMap.put("title", createCellStyleForTitle());
         cellStyleMap.put("subTitle", createCellStyleForSubTitle());
         cellStyleMap.put("category", createCellStyleForLabelCategory());
@@ -348,6 +357,15 @@ public class POIServiceImpl implements POIService {
         cellStyleMap.put("summaryMark", createCellStyleForSummaryMark());
 
 
+    }
+
+    private CellStyle createCellStyleWithBorder(){
+        CellStyle cellStyle = workbook.createCellStyle();
+        cellStyle.setBorderTop(BorderStyle.MEDIUM);
+        cellStyle.setBorderRight(BorderStyle.MEDIUM);
+        cellStyle.setBorderBottom(BorderStyle.MEDIUM);
+        cellStyle.setBorderLeft(BorderStyle.MEDIUM);
+        return cellStyle;
     }
 
     private CellStyle createCellStyleForTitle() {

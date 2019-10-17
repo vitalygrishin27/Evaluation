@@ -75,33 +75,23 @@ public class MarkServiceImpl implements MarkService {
 
         for (Category category : categoryService.findAllCategories()
         ) {
+            Set<Integer> marksValues = new TreeSet<>();
             Map<Member, Integer> summaryMarkByCategory = new HashMap<>();
             for (Member member : category.getMembers()
             ) {
-                summaryMarkByCategory.put(member, summaryMark.get(member));
+                int currentSummaryMark = summaryMark.get(member);
+                summaryMarkByCategory.put(member, currentSummaryMark);
+                marksValues.add(currentSummaryMark);
             }
-            List list = new ArrayList(summaryMarkByCategory.entrySet());
-            Collections.sort(list, new Comparator<Map.Entry<Integer, Integer>>() {
-                @Override
-                public int compare(Map.Entry<Integer, Integer> a, Map.Entry<Integer, Integer> b) {
-                    if(b.getValue()==0) return -1;
-                    return a.getValue() - b.getValue();
-                }
-            });
+            List<Integer> sortedList = new ArrayList<>(marksValues);
 
-            int place = 0;
-            int lastSummaryMark = -1;
-            for (int i = 0; i < list.size(); i++) {
-                if (((Map.Entry<Member, Integer>) list.get(i)).getValue() != lastSummaryMark && ((Map.Entry<Member, Integer>) list.get(i)).getValue()!=0) {
-                    lastSummaryMark = ((Map.Entry<Member, Integer>) list.get(i)).getValue();
-                    place++;
+            for (Map.Entry<Member, Integer> entry : summaryMarkByCategory.entrySet()
+            ) {
+                if (sortedList.indexOf(entry.getValue()) == -1) {
+                    result.put(entry.getKey(), 0);
+                } else {
+                    result.put(entry.getKey(), sortedList.size() - sortedList.indexOf(entry.getValue()));
                 }
-                if(((Map.Entry<Member, Integer>) list.get(i)).getValue()==0){
-                    result.put(((Map.Entry<Member, Integer>) list.get(i)).getKey(), 0);
-                }else{
-                    result.put(((Map.Entry<Member, Integer>) list.get(i)).getKey(), place);
-                }
-
             }
         }
 
