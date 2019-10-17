@@ -10,6 +10,8 @@ public interface MarkService {
 
     List<Mark> findMarkByJuryAndPerformance(Performance performance, User user);
 
+    List<Mark> findMarksByPerformance(Performance performance);
+
     List<Mark> findAllMarkByCriterion(Criterion criterion);
 
     int getSummaryMarkByAllPerformancesByConcreteJury(Member member, User jury);
@@ -19,5 +21,7 @@ public interface MarkService {
     Map<Member, Integer> getPlaces(Map<Member, Integer> summaryMark);
 
     void deleteAllMarks();
+
+    void deleteMark(Mark mark);
 }
 

@@ -85,18 +85,23 @@ public class MarkServiceImpl implements MarkService {
                 @Override
                 public int compare(Map.Entry<Integer, Integer> a, Map.Entry<Integer, Integer> b) {
                     if(b.getValue()==0) return -1;
-                    return a.getValue() + b.getValue();
+                    return a.getValue() - b.getValue();
                 }
             });
 
             int place = 0;
             int lastSummaryMark = -1;
             for (int i = 0; i < list.size(); i++) {
-                if (((Map.Entry<Member, Integer>) list.get(i)).getValue() != lastSummaryMark) {
+                if (((Map.Entry<Member, Integer>) list.get(i)).getValue() != lastSummaryMark && ((Map.Entry<Member, Integer>) list.get(i)).getValue()!=0) {
                     lastSummaryMark = ((Map.Entry<Member, Integer>) list.get(i)).getValue();
                     place++;
                 }
-                result.put(((Map.Entry<Member, Integer>) list.get(i)).getKey(), place);
+                if(((Map.Entry<Member, Integer>) list.get(i)).getValue()==0){
+                    result.put(((Map.Entry<Member, Integer>) list.get(i)).getKey(), 0);
+                }else{
+                    result.put(((Map.Entry<Member, Integer>) list.get(i)).getKey(), place);
+                }
+
             }
         }
 
@@ -106,5 +111,15 @@ public class MarkServiceImpl implements MarkService {
     @Override
     public void deleteAllMarks() {
         repository.deleteAll();
+    }
+
+    @Override
+    public List<Mark> findMarksByPerformance(Performance performance) {
+       return repository.findMarksByPerformance(performance);
+    }
+
+    @Override
+    public void deleteMark(Mark mark) {
+        repository.delete(mark);
     }
 }

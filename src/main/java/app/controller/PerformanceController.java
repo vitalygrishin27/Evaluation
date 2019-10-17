@@ -1,7 +1,9 @@
 package app.controller;
 
+import app.model.Mark;
 import app.model.Member;
 import app.model.Performance;
+import app.service.impl.MarkServiceImpl;
 import app.service.impl.MemberServiceImpl;
 import app.service.impl.PerformanceServiceImpl;
 import app.utils.WebUtils;
@@ -29,6 +31,9 @@ public class PerformanceController {
 
     @Autowired
     MemberServiceImpl memberService;
+
+    @Autowired
+    MarkServiceImpl markService;
 
     @RequestMapping(value = "/performance/{id}") //memberID
     public String performances(@PathVariable int id, Model model) {
@@ -83,6 +88,10 @@ public class PerformanceController {
     @RequestMapping(value = "/performance/delete/{id}", method = RequestMethod.GET)
     public String deletePerformance(@PathVariable long id) {
         Performance performance = performanceService.findPerformanceById(id);
+        for (Mark mark: markService.findMarksByPerformance(performance)
+             ) {
+            markService.deleteMark(mark);
+        }
         performanceService.delete(performance);
         return "redirect:/performance/" + performance.getMember().getId() + "?lang=" + Locale.getDefault();
     }
