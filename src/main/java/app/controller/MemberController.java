@@ -2,9 +2,10 @@ package app.controller;
 
 import app.model.Category;
 import app.model.Member;
+import app.model.Performance;
 import app.service.impl.CategoryServiceImpl;
 import app.service.impl.MemberServiceImpl;
-import app.utils.WebUtils;
+import app.service.impl.PerformanceServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,9 @@ public class MemberController {
 
     @Autowired
     CategoryServiceImpl categoryService;
+
+    @Autowired
+    PerformanceServiceImpl performanceService;
 
     @Autowired
     ReloadableResourceBundleMessageSource messageSource;
@@ -70,9 +74,20 @@ public class MemberController {
     }
 
     @RequestMapping(value = "/member/save", method = RequestMethod.POST)
-    public String saveMember(@ModelAttribute("member") Member member, @ModelAttribute("category") Category category) {
+    public String saveMember(@ModelAttribute("member") Member member, @ModelAttribute("category") Category category, @ModelAttribute("performanceName") String performanceName) {
         member.setCategory(categoryService.findCategoryByName(category.getCategoryName()));
         memberService.save(member);
+        if(!performanceName.equals("")){
+            Performance performance =new Performance();
+            performance.setMember(member);
+            performance.setPerformanceName(performanceName);
+            if (performanceService.findAllPerformances().isEmpty()) {
+                performance.setTurnNumber(1);
+            } else {
+                performance.setTurnNumber(performanceService.findLastTurnNumber() + 1);
+            }
+            performanceService.save(performance);
+        }
         return "redirect:/members?lang=" + Locale.getDefault();
     }
 

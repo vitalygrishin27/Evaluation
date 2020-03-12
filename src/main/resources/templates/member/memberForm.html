@@ -58,7 +58,10 @@
                     </select>
                 </td>
             </tr>
-
+            <tr>
+                <th><label for="performanceName"><b th:utext="#{performance.label.title}">Title</b></label></th>
+                <td><input type="text" id="performanceName" name='performanceName'></td>
+            </tr>
             <tr>
                 <td colspan="2">
                     <button type="submit" th:utext="#{member.label.save}">Save</button>
