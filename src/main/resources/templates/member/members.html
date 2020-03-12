@@ -26,6 +26,12 @@
     <!--   <div th:if="${not #lists.isEmpty(members)}">  -->
     <table>
         <tr>
+            <th colspan="7" href="/member/form">
+                <a class="addButton" th:utext="#{member.label.add}" href="/member/form"
+                   th:href="@{/member/form?lang=} + ${#request.Locale.getDefault()}">New Member</a>
+            </th>
+        </tr>
+        <tr>
             <th colspan="7" th:utext="#{member.label.tableTitle}">Jury List</th>
         </tr>
         <tr>
@@ -55,12 +61,6 @@
                    th:utext="#{member.label.edit}">Edit</a></td>
             <td><a th:href="${'/member/delete/' + member.id}" th:utext="#{member.label.delete}"
                    onclick="return confirm('Вы уверены в удалении?')">Delete</a></td>
-        </tr>
-        <tr>
-            <th colspan="7" href="/member/form">
-                <a class="addButton" th:utext="#{member.label.add}" href="/member/form"
-                   th:href="@{/member/form?lang=} + ${#request.Locale.getDefault()}">New Member</a>
-            </th>
         </tr>
     </table>
     <!-- </div>  -->
