@@ -5,12 +5,14 @@ import app.service.UserService;
 import app.service.impl.ConfigurationServiceImpl;
 import app.service.impl.POIServiceImpl;
 import app.service.impl.PerformanceServiceImpl;
+import app.utils.Statement;
 import com.ibm.icu.text.Transliterator;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,6 +43,9 @@ public class OnlineController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    Statement statement;
 
 
     @RequestMapping(value = "/online", method = RequestMethod.GET)
@@ -144,15 +149,27 @@ public class OnlineController {
         resp.getWriter().write(String.valueOf(jsonObjectResponse));
         resp.flushBuffer();
     }
-
-
+@Transactional
     @RequestMapping(value = "/statement", method = RequestMethod.GET)
-    public void createStatement(HttpServletResponse response) {
+    public void createStatement(HttpServletResponse response) throws IOException {
 
-        poiService.createNewDocument(configurationService.getConfiguration().getContestName());
+        if(statement.isNeedToCreateNewOne()){
+            statement.setNeedToCreateNewOne(false);
+        Thread threadForStatement=new Thread(statement);
+        threadForStatement.start();
+            response.sendRedirect("/");
+        return;
+        }
+
+        if(statement.isProcessIsAlreadyRun()){
+            response.sendRedirect("/");
+            return;
+        }
+       // poiService.createNewDocument(configurationService.getConfiguration().getContestName());
 
 
         try {
+            statement.setNeedToCreateNewOne(true);
             ServletOutputStream out = response.getOutputStream();
             byte[] byteArray = Files.readAllBytes(Paths.get("FullStatement.xls"));
             response.setContentType("application/vnd.ms-excel");
