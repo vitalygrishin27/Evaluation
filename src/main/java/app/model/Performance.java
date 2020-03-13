@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -14,6 +15,7 @@ import java.util.Comparator;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "performances")
+@Transactional
 public class Performance {
 
     @Id
@@ -31,6 +33,7 @@ public class Performance {
     @ManyToOne(optional = false)
     @JoinColumn(name = "member_id")
     private Member member;
+
 
     @OneToMany(mappedBy = "performance",fetch = FetchType.LAZY)
     private Collection<Mark> marks;
