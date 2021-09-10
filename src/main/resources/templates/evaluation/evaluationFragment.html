@@ -62,7 +62,41 @@
                             th:onclick="'setMark(\'' + ${evaluate.id} + '\',5);'">
                         5
                     </button>
-
+                    <button type="button" th:class="button + ${evaluate.id}"
+                            th:utext="#{label.six}"
+                            th:onclick="'setMark(\'' + ${evaluate.id} + '\',6);'">
+                        6
+                    </button>
+                    <button type="button" th:class="button + ${evaluate.id}"
+                            th:utext="#{label.seven}"
+                            th:onclick="'setMark(\'' + ${evaluate.id} + '\',7);'">
+                        7
+                    </button>
+                    <button type="button" th:class="button + ${evaluate.id}"
+                            th:utext="#{label.eight}"
+                            th:onclick="'setMark(\'' + ${evaluate.id} + '\',8);'">
+                        8
+                    </button>
+                    <button type="button" th:class="button + ${evaluate.id}"
+                            th:utext="#{label.nine}"
+                            th:onclick="'setMark(\'' + ${evaluate.id} + '\',9);'">
+                        9
+                    </button>
+                    <button type="button" th:class="button + ${evaluate.id}"
+                            th:utext="#{label.ten}"
+                            th:onclick="'setMark(\'' + ${evaluate.id} + '\',10);'">
+                        10
+                    </button>
+                    <button type="button" th:class="button + ${evaluate.id}"
+                            th:utext="#{label.eleven}"
+                            th:onclick="'setMark(\'' + ${evaluate.id} + '\',11);'">
+                        11
+                    </button>
+                    <button type="button" th:class="button + ${evaluate.id}"
+                            th:utext="#{label.twelve}"
+                            th:onclick="'setMark(\'' + ${evaluate.id} + '\',12);'">
+                        12
+                    </button>
 
                     <input hidden th:name="${evaluate.value}" class="mark"
                            th:id="${evaluate.id}"
